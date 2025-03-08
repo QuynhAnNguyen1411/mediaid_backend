@@ -11,10 +11,12 @@ import com.mediaid.mediaid.service.abtract.StaticService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 @Slf4j
+@Service
 public class StaticServiceImplement implements StaticService {
     @Autowired
     GenderRepo genderRepo;
