@@ -16,4 +16,8 @@ public class StaticController {
     public ResponseEntity<?> getStaticDataForRegistry() {
         return staticService.getStaticRegistryData();
     }
+    @GetMapping("/staticDataForSoKham")
+    public ResponseEntity<?> getStaticDataForSoKham() {
+        return staticService.getStaticRegistryData();
+    }
 }

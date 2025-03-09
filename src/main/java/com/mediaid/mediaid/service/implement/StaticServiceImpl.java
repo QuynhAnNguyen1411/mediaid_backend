@@ -1,8 +1,8 @@
 package com.mediaid.mediaid.service.implement;
 
-import com.mediaid.mediaid.DTO.Gender;
-import com.mediaid.mediaid.DTO.Nation;
-import com.mediaid.mediaid.DTO.StaticRegistryData;
+import com.mediaid.mediaid.DTO.staticData.GioiTinhDTO;
+import com.mediaid.mediaid.DTO.staticData.DanTocDTO;
+import com.mediaid.mediaid.DTO.staticData.StaticRegistryData;
 import com.mediaid.mediaid.model.DanToc;
 import com.mediaid.mediaid.model.GioiTinh;
 import com.mediaid.mediaid.repository.DanTocRepo;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 @Slf4j
 @Service
-public class StaticServiceImplement implements StaticService {
+public class StaticServiceImpl implements StaticService {
     @Autowired
     GenderRepo genderRepo;
     @Autowired
@@ -29,21 +29,26 @@ public class StaticServiceImplement implements StaticService {
             List<GioiTinh> gioiTinhs = genderRepo.findAll();
             List<DanToc> danTocs = danTocRepo.findAll();
 
-            List<Gender> genders = new ArrayList<>();
-            List<Nation> nations = new ArrayList<>();
+            List<GioiTinhDTO> gioiTinhDTOS = new ArrayList<>();
+            List<DanTocDTO> danTocDTOS = new ArrayList<>();
 
             gioiTinhs.forEach( gioiTinh -> {
-                Gender gender = new Gender(gioiTinh.getGioiTinhID(), gioiTinh.getTitle());
-                genders.add(gender);
+                GioiTinhDTO gioiTinhDTO = new GioiTinhDTO(gioiTinh.getGioiTinhID(), gioiTinh.getTitle());
+                gioiTinhDTOS.add(gioiTinhDTO);
             });
             danTocs.forEach( danToc -> {
-                Nation nation = new Nation(danToc.getDanTocID(), danToc.getTitle());
-                nations.add(nation);
+                DanTocDTO danTocDTO = new DanTocDTO(danToc.getDanTocID(), danToc.getTitle());
+                danTocDTOS.add(danTocDTO);
             });
-            return ResponseEntity.ok(new StaticRegistryData(genders, nations));
+            return ResponseEntity.ok(new StaticRegistryData(gioiTinhDTOS, danTocDTOS));
         }catch (Exception e){
             log.error(String.valueOf(e));
             return ResponseEntity.internalServerError().body("Fail to get static registry data");
         }
+    }
+
+    @Override
+    public ResponseEntity<?> getStaticSoKhamData() {
+        return null;
     }
 }

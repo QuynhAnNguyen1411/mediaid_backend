@@ -35,4 +35,5 @@ public class Account {
     private String diaChi;
     private String sdt;
     private String email;
+    private String matKhau;
 }

@@ -1,4 +1,4 @@
-package com.mediaid.mediaid.DTO;
+package com.mediaid.mediaid.DTO.staticData;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +16,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StaticRegistryData {
     @JsonProperty("gender")
-    private List<Gender> genders;
+    private List<GioiTinhDTO> gioiTinhDTOS;
     @JsonProperty("nation")
-    private List<Nation> nations;
+    private List<DanTocDTO> danTocDTOS;
 }

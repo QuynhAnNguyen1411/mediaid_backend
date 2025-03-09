@@ -22,7 +22,6 @@ public class SoKham {
     private Account account;
 
     private String bhyt;
-    private String trangThaiBHYT;
 
     @OneToOne(mappedBy = "soKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private NguoiGiamHo nguoiGiamHos;

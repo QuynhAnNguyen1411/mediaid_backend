@@ -4,4 +4,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface StaticService {
     ResponseEntity<?> getStaticRegistryData();
+    ResponseEntity<?> getStaticSoKhamData();
 }
