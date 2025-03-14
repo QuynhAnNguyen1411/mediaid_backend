@@ -22,16 +22,14 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RegistryForm {
 
-    @NotEmpty
     @NotNull
     private int danTocID;
-    @NotEmpty
+
     @NotNull
     private int gioiTinhID;
     @NotEmpty
     @NotNull
     private String ten;
-    @NotEmpty
     @NotNull
     private Date ngaySinh;
     @NotEmpty

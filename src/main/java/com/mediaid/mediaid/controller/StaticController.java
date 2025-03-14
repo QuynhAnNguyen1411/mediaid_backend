@@ -14,10 +14,12 @@ public class StaticController {
     StaticService staticService;
     @GetMapping("/staticDataForRegistry")
     public ResponseEntity<?> getStaticDataForRegistry() {
+
         return staticService.getStaticRegistryData();
     }
     @GetMapping("/staticDataForSoKham")
     public ResponseEntity<?> getStaticDataForSoKham() {
+
         return staticService.getStaticRegistryData();
     }
 }
