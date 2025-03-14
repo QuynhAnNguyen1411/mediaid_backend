@@ -1,6 +1,7 @@
 package com.mediaid.mediaid.DTO.form;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mediaid.mediaid.model.Account;
 import com.mediaid.mediaid.model.DanToc;
 import com.mediaid.mediaid.model.GioiTinh;
@@ -23,28 +24,38 @@ import java.util.Date;
 public class RegistryForm {
 
     @NotNull
+    @JsonProperty("nationPatient")
     private int danTocID;
 
     @NotNull
+    @JsonProperty("sexPatient")
     private int gioiTinhID;
     @NotEmpty
     @NotNull
+    @JsonProperty("patientName")
     private String ten;
     @NotNull
+    @JsonProperty("dob")
     private Date ngaySinh;
     @NotEmpty
     @NotNull
+    @JsonProperty("personalIdentifier")
     private String cccdCmt;
     @NotEmpty
     @NotNull
+    @JsonProperty("healthInsurance")
     private String bhyt;
     @NotEmpty
     @NotNull
+    @JsonProperty("addressPatient")
     private String diaChi;
     @NotEmpty
     @NotNull
+    @JsonProperty("phoneNumber")
     private String sdt;
+    @JsonProperty("emailPatient")
     private String email;
+    @JsonProperty("patientPassword")
     private String matKhau;
     private NguoiGiamHoDTO nguoiGiamHo;
 
