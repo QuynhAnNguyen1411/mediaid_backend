@@ -1,6 +1,7 @@
 package com.mediaid.mediaid.DTO.form;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mediaid.mediaid.model.NguoiGiamHo;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -19,15 +20,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class NguoiGiamHoDTO {
     @NotEmpty
     @NotNull
+    @JsonProperty("patientFamilyName")
     private String ten;
     @NotEmpty
     @NotNull
+    @JsonProperty("patientFamilyIdentifier")
     private String cccdCmt;
     @NotEmpty
     @NotNull
+    @JsonProperty("patientRelationship")
     private String moiQuanHe;
     @NotEmpty
     @NotNull
+    @JsonProperty("patientFamilyPhoneNumber")
     private String sdt;
 
     @Autowired

@@ -1,7 +1,7 @@
 package com.mediaid.mediaid.DTO.form;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.mediaid.mediaid.model.TaiKhoan;
+import com.mediaid.mediaid.model.Account;
 import com.mediaid.mediaid.model.DanToc;
 import com.mediaid.mediaid.model.GioiTinh;
 import jakarta.validation.constraints.NotEmpty;
@@ -23,28 +23,39 @@ import java.util.Date;
 public class FormDangKy {
 
     @NotNull
+    @JsonProperty("nationPatient")
     private int danTocID;
 
     @NotNull
+    @JsonProperty("sexPatient")
     private int gioiTinhID;
     @NotEmpty
     @NotNull
+    @JsonProperty("patientName")
     private String ten;
     @NotNull
+    @JsonProperty("dob")
     private Date ngaySinh;
     @NotEmpty
     @NotNull
+    @JsonProperty("personalIdentifier")
     private String cccdCmt;
+    @NotEmpty
+    @NotNull
     private String bhyt;
     @NotEmpty
     @NotNull
+    @JsonProperty("addressPatient")
     private String diaChi;
     @NotEmpty
     @NotNull
+    @JsonProperty("phoneNumber")
     private String sdt;
+    @JsonProperty("emailPatient")
     private String email;
     @NotEmpty
     @NotNull
+    @JsonProperty("patientPassword")
     private String matKhau;
     private NguoiGiamHoDTO nguoiGiamHo;
 
