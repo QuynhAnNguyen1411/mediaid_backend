@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
@@ -45,6 +47,7 @@ public class FormDangKy {
     private String cccdCmt;
     @NotEmpty
     @NotNull
+    @JsonProperty("healthInsurance")
     private String bhyt;
     @NotEmpty
     @NotNull
@@ -78,16 +81,20 @@ public class FormDangKy {
     private String sdtNguoiGiamHo;
 
 
-    @Autowired
-    private ModelMapper modelMapper;
+
     public TaiKhoan convertToEntity(FormDangKy registryForm, GioiTinh gioiTinh, DanToc danToc, String matKhau) throws ParseException {
-        modelMapper.typeMap(FormDangKy.class, TaiKhoan.class)
-                .addMappings(mapper -> {
-                    mapper.skip(TaiKhoan::setGioiTinh);
-                    mapper.skip(TaiKhoan::setDanToc);
-                    mapper.skip(TaiKhoan::setMatKhau);
-                    mapper.skip(TaiKhoan::setNgaySinh);
-                });
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
+        // Create an empty TypeMap before adding mappings
+        TypeMap<FormDangKy, TaiKhoan> typeMap = modelMapper.createTypeMap(FormDangKy.class, TaiKhoan.class);
+
+        // Add specific mappings and skip problematic fields
+        typeMap.addMappings(mapper -> {
+            mapper.skip(TaiKhoan::setGioiTinh);
+            mapper.skip(TaiKhoan::setDanToc);
+            mapper.skip(TaiKhoan::setMatKhau);
+            mapper.skip(TaiKhoan::setNgaySinh);
+        });
         TaiKhoan taiKhoan = modelMapper.map(registryForm, TaiKhoan.class);
         taiKhoan.setDanToc(danToc);
         taiKhoan.setNgaySinh(CommonUtil.parseStringToLocalDate(registryForm.getNgaySinh()));

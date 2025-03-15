@@ -31,6 +31,8 @@ public class RegistryServiceImpl implements RegistryService {
     SoKhamRepo soKhamRepo;
     @Autowired
     NguoiGiamHoRepo nguoiGiamHoRepo;
+    @Autowired
+    DecodeEncodeUtil decodeEncodeUtil;
 
     @Override
     @Transactional
@@ -56,8 +58,18 @@ public class RegistryServiceImpl implements RegistryService {
         }
         TaiKhoan taiKhoan;
         try {
-            String decodePassword = DecodeEncodeUtil.encryptAES(registryForm.getMatKhau());
-            taiKhoan = registryForm.convertToEntity(registryForm, gioiTinh, danToc, decodePassword);
+            String decodePassword = decodeEncodeUtil.encryptAES(registryForm.getMatKhau());
+            //taiKhoan = registryForm.convertToEntity(registryForm, gioiTinh, danToc, decodePassword);
+            taiKhoan = new TaiKhoan();
+            taiKhoan.setGioiTinh(gioiTinh);
+            taiKhoan.setMatKhau(decodePassword);
+            taiKhoan.setNgaySinh(CommonUtil.parseStringToLocalDate(registryForm.getNgaySinh()));
+            taiKhoan.setDanToc(danToc);
+            taiKhoan.setTen(registryForm.getTen());
+            taiKhoan.setSdt(registryForm.getSdt());
+            taiKhoan.setCccdCmt(registryForm.getCccdCmt());
+            taiKhoan.setDiaChi(registryForm.getDiaChi());
+            taiKhoan.setEmail(registryForm.getEmail());
             taiKhoan.setAccountID(UUID.randomUUID().toString());
             taiKhoan = accountRepo.save(taiKhoan);
         }catch (Exception e){
@@ -81,7 +93,7 @@ public class RegistryServiceImpl implements RegistryService {
         try {
             nguoiGiamHoRepo.save(nguoiGiamHo);
         }catch (Exception e){
-            log.error(String.valueOf(e));
+            log.error("Exception", e);
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error"));
         }
         return ResponseEntity.ok().body(CommonUtil.returnMessage("message", "Registry successfully"));

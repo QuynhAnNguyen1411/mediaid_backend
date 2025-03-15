@@ -10,17 +10,19 @@ import java.util.Base64;
 @Component
 public class DecodeEncodeUtil {
     @Value("${secret_key}")
-    static String secret_key;
+    String secret_key;
 
-    public static String encryptAES(String password) throws Exception {
-        SecretKeySpec key = new SecretKeySpec(secret_key.getBytes(), "AES");
+    public String encryptAES(String password) throws Exception {
+        String bytes24key = String.format("%-24s", secret_key);
+        SecretKeySpec key = new SecretKeySpec(bytes24key.getBytes(), "AES");
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, key);
         byte[] encryptedBytes = cipher.doFinal(password.getBytes());
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
-    public static String decryptAES(String encryptedPassword) throws Exception {
-        SecretKeySpec key = new SecretKeySpec(secret_key.getBytes(), "AES");
+    public String decryptAES(String encryptedPassword) throws Exception {
+        String bytes24key = String.format("%-24s", secret_key);
+        SecretKeySpec key = new SecretKeySpec(bytes24key.getBytes(), "AES");
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, key);
         byte[] decodedBytes = Base64.getDecoder().decode(encryptedPassword);
