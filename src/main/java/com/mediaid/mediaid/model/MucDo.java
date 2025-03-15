@@ -19,7 +19,7 @@ public class MucDo {
 
     private String mucDo;
 
-    private String status;
+    private boolean status;
 
     @OneToMany(mappedBy = "mucDo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TieuSuDiUng> tieuSuDiUngs;

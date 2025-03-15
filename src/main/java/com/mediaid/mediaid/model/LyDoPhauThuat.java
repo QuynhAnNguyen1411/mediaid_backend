@@ -19,7 +19,7 @@ public class LyDoPhauThuat {
 
     private String lyDo;
 
-    private String status;
+    private boolean status;
 
     @OneToMany(mappedBy = "lyDoPhauThuat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TieuSuPhauThuat> tieuSuPhauThuats;

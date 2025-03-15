@@ -19,7 +19,7 @@ public class TrangThaiDieuTri {
 
     private String ten;
 
-    private String status;
+    private boolean status;
 
     @OneToMany(mappedBy = "trangThaiDieuTri", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TieuSuBenhTat> tieuSuBenhTats;
