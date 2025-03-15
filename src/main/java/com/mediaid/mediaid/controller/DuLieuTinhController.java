@@ -13,13 +13,12 @@ public class DuLieuTinhController {
     @Autowired
     StaticService staticService;
     @GetMapping("/staticDataForRegistry")
-    public ResponseEntity<?> getStaticDataForRegistry() {
+    public ResponseEntity<?> layDuLieuTinhChoFormDangKy() {
 
         return staticService.getStaticRegistryData();
     }
-    @GetMapping("/staticDataForSoKham")
-    public ResponseEntity<?> getStaticDataForSoKham() {
-
+    @GetMapping("/staticDataForTieuSuYTe")
+    public ResponseEntity<?> getDuLieuTinhChoTieuSuYTe() {
         return staticService.getStaticRegistryData();
     }
 }

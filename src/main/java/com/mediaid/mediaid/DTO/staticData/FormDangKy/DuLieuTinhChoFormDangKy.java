@@ -1,4 +1,4 @@
-package com.mediaid.mediaid.DTO.staticData;
+package com.mediaid.mediaid.DTO.staticData.FormDangKy;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

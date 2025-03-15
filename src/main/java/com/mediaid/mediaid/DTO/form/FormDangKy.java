@@ -1,9 +1,10 @@
 package com.mediaid.mediaid.DTO.form;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.mediaid.mediaid.model.Account;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mediaid.mediaid.model.DanToc;
 import com.mediaid.mediaid.model.GioiTinh;
+import com.mediaid.mediaid.model.TaiKhoan;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -57,7 +58,23 @@ public class FormDangKy {
     @NotNull
     @JsonProperty("patientPassword")
     private String matKhau;
-    private NguoiGiamHoDTO nguoiGiamHo;
+    @NotEmpty
+    @NotNull
+    @JsonProperty("patientFamilyName")
+    private String tenNguoiGiamHo;
+    @NotEmpty
+    @NotNull
+    @JsonProperty("patientFamilyIdentifier")
+    private String cccdCmtNguoiGiamHo;
+    @NotEmpty
+    @NotNull
+    @JsonProperty("patientRelationship")
+    private String moiQuanHe;
+    @NotEmpty
+    @NotNull
+    @JsonProperty("patientFamilyPhoneNumber")
+    private String sdtNguoiGiamHo;
+
 
     @Autowired
     private ModelMapper modelMapper;

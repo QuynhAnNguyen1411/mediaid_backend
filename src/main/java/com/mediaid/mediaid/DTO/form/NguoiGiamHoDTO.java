@@ -5,17 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mediaid.mediaid.model.NguoiGiamHo;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class NguoiGiamHoDTO {
     @NotEmpty
@@ -35,9 +32,15 @@ public class NguoiGiamHoDTO {
     @JsonProperty("patientFamilyPhoneNumber")
     private String sdt;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    public NguoiGiamHoDTO(String ten, String cccdCmt, String moiQuanHe, String sdt) {
+        this.ten = ten;
+        this.cccdCmt = cccdCmt;
+        this.moiQuanHe = moiQuanHe;
+        this.sdt = sdt;
+    }
+
     public NguoiGiamHo convertToEntity(NguoiGiamHoDTO nguoiGiamHoDTO) {
+        ModelMapper modelMapper = new ModelMapper();
         modelMapper.typeMap(NguoiGiamHoDTO.class, NguoiGiamHo.class)
                 .addMappings(mapper -> {
                     mapper.skip(NguoiGiamHo::setSoKham);

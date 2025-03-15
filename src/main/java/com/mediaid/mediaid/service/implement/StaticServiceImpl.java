@@ -1,19 +1,16 @@
 package com.mediaid.mediaid.service.implement;
 
-import com.mediaid.mediaid.DTO.staticData.GioiTinhDTO;
-import com.mediaid.mediaid.DTO.staticData.DanTocDTO;
-import com.mediaid.mediaid.DTO.staticData.DuLieuTinhChoFormDangKy;
-import com.mediaid.mediaid.model.DanToc;
-import com.mediaid.mediaid.model.GioiTinh;
-import com.mediaid.mediaid.repository.DanTocRepo;
-import com.mediaid.mediaid.repository.GenderRepo;
+import com.mediaid.mediaid.DTO.staticData.FormDangKy.GioiTinhDTO;
+import com.mediaid.mediaid.DTO.staticData.FormDangKy.DanTocDTO;
+import com.mediaid.mediaid.DTO.staticData.FormDangKy.DuLieuTinhChoFormDangKy;
+import com.mediaid.mediaid.model.*;
+import com.mediaid.mediaid.repository.*;
 import com.mediaid.mediaid.service.abstracts.StaticService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 @Slf4j
 @Service
@@ -22,6 +19,14 @@ public class StaticServiceImpl implements StaticService {
     GenderRepo genderRepo;
     @Autowired
     DanTocRepo danTocRepo;
+    @Autowired
+    LyDoPhauThuatRepo lyDoPhauThuatRepo;
+    @Autowired
+    MucDoRepo mucDoRepo;
+    @Autowired
+    PhuongPhapDieuTriRepo phuongPhapDieuTriRepo;
+    @Autowired
+    TrangThaiDieuTriRepo trangThaiDieuTriRepo;
 
     @Override
     public ResponseEntity<?> getStaticRegistryData() {
@@ -29,17 +34,9 @@ public class StaticServiceImpl implements StaticService {
             List<GioiTinh> gioiTinhs = genderRepo.findAll();
             List<DanToc> danTocs = danTocRepo.findAll();
 
-            List<GioiTinhDTO> gioiTinhDTOS = new ArrayList<>();
-            List<DanTocDTO> danTocDTOS = new ArrayList<>();
+            List<GioiTinhDTO> gioiTinhDTOS = GioiTinhDTO.gioiTinhDTOList(gioiTinhs);
+            List<DanTocDTO> danTocDTOS = DanTocDTO.danTocDTOList(danTocs);
 
-            gioiTinhs.forEach( gioiTinh -> {
-                GioiTinhDTO gioiTinhDTO = new GioiTinhDTO(gioiTinh.getGioiTinhID(), gioiTinh.getTitle());
-                gioiTinhDTOS.add(gioiTinhDTO);
-            });
-            danTocs.forEach( danToc -> {
-                DanTocDTO danTocDTO = new DanTocDTO(danToc.getDanTocID(), danToc.getTitle());
-                danTocDTOS.add(danTocDTO);
-            });
             return ResponseEntity.ok(new DuLieuTinhChoFormDangKy(gioiTinhDTOS, danTocDTOS));
         }catch (Exception e){
             log.error(String.valueOf(e));
@@ -48,7 +45,15 @@ public class StaticServiceImpl implements StaticService {
     }
 
     @Override
-    public ResponseEntity<?> getStaticSoKhamData() {
+    public ResponseEntity<?> getStaticDataForTieuSuYTe() {
+        List<LyDoPhauThuat> lyDoPhauThuats = lyDoPhauThuatRepo.findByStatus(true);
+        List<PhuongPhapDieuTri> phuongPhapDieuTris = phuongPhapDieuTriRepo.findByStatus(true);
+        List<MucDo> mucDos = mucDoRepo.findByStatus(true);
+        List<TrangThaiDieuTri> trangThaiDieuTris = trangThaiDieuTriRepo.findByStatus(true);
+
+
+
         return null;
     }
+
 }

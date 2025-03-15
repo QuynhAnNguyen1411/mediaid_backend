@@ -1,6 +1,7 @@
 package com.mediaid.mediaid.service.implement;
 
 import com.mediaid.mediaid.DTO.form.FormDangKy;
+import com.mediaid.mediaid.DTO.form.NguoiGiamHoDTO;
 import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
 import com.mediaid.mediaid.service.abstracts.RegistryService;
@@ -73,7 +74,8 @@ public class RegistryServiceImpl implements RegistryService {
             log.error("Get data from database fail");
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error"));
         }
-        NguoiGiamHo nguoiGiamHo = registryForm.getNguoiGiamHo().convertToEntity(registryForm.getNguoiGiamHo());
+        NguoiGiamHoDTO nguoiGiamHoDTO = new NguoiGiamHoDTO(registryForm.getTenNguoiGiamHo(), registryForm.getCccdCmtNguoiGiamHo(), registryForm.getMoiQuanHe(), registryForm.getSdtNguoiGiamHo());
+        NguoiGiamHo nguoiGiamHo = nguoiGiamHoDTO.convertToEntity(nguoiGiamHoDTO);
         nguoiGiamHo.setGiamHoID(UUID.randomUUID().toString());
         nguoiGiamHo.setSoKham(soKham);
         try {
