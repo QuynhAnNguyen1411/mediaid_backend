@@ -2,6 +2,9 @@ package com.mediaid.mediaid.util;
 
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,5 +30,11 @@ public class CommonUtil {
         HashMap<String,String> stringStringHashMap = new HashMap<>();
         stringStringHashMap.put(key, value);
         return stringStringHashMap;
+    }
+
+    public static Date parseStringToLocalDate(String date) throws ParseException {
+        // Define the formatter that matches the date format
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        return formatter.parse(date);
     }
 }

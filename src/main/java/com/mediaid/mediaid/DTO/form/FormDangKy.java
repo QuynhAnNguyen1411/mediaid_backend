@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mediaid.mediaid.model.DanToc;
 import com.mediaid.mediaid.model.GioiTinh;
 import com.mediaid.mediaid.model.TaiKhoan;
+import com.mediaid.mediaid.util.CommonUtil;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.text.ParseException;
 import java.util.Date;
 
 @Getter
@@ -36,7 +38,7 @@ public class FormDangKy {
     private String ten;
     @NotNull
     @JsonProperty("dob")
-    private Date ngaySinh;
+    private String ngaySinh;
     @NotEmpty
     @NotNull
     @JsonProperty("personalIdentifier")
@@ -78,15 +80,17 @@ public class FormDangKy {
 
     @Autowired
     private ModelMapper modelMapper;
-    public TaiKhoan convertToEntity(FormDangKy registryForm, GioiTinh gioiTinh, DanToc danToc, String matKhau) {
+    public TaiKhoan convertToEntity(FormDangKy registryForm, GioiTinh gioiTinh, DanToc danToc, String matKhau) throws ParseException {
         modelMapper.typeMap(FormDangKy.class, TaiKhoan.class)
                 .addMappings(mapper -> {
                     mapper.skip(TaiKhoan::setGioiTinh);
                     mapper.skip(TaiKhoan::setDanToc);
                     mapper.skip(TaiKhoan::setMatKhau);
+                    mapper.skip(TaiKhoan::setNgaySinh);
                 });
         TaiKhoan taiKhoan = modelMapper.map(registryForm, TaiKhoan.class);
         taiKhoan.setDanToc(danToc);
+        taiKhoan.setNgaySinh(CommonUtil.parseStringToLocalDate(registryForm.getNgaySinh()));
         taiKhoan.setGioiTinh(gioiTinh);
         taiKhoan.setMatKhau(matKhau);
         return taiKhoan;
