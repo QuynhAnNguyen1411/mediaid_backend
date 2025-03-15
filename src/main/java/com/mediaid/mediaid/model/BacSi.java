@@ -16,7 +16,7 @@ public class BacSi {
 
     @OneToOne
     @JoinColumn(name = "accountID", nullable = false)
-    private Account account;
+    private TaiKhoan taiKhoan;
 
     @ManyToOne
     @JoinColumn(name = "coSoID", nullable = false)

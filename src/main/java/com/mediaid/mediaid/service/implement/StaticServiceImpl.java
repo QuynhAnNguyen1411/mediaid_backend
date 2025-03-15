@@ -2,12 +2,12 @@ package com.mediaid.mediaid.service.implement;
 
 import com.mediaid.mediaid.DTO.staticData.GioiTinhDTO;
 import com.mediaid.mediaid.DTO.staticData.DanTocDTO;
-import com.mediaid.mediaid.DTO.staticData.StaticRegistryData;
+import com.mediaid.mediaid.DTO.staticData.DuLieuTinhChoFormDangKy;
 import com.mediaid.mediaid.model.DanToc;
 import com.mediaid.mediaid.model.GioiTinh;
 import com.mediaid.mediaid.repository.DanTocRepo;
 import com.mediaid.mediaid.repository.GenderRepo;
-import com.mediaid.mediaid.service.abtract.StaticService;
+import com.mediaid.mediaid.service.abstracts.StaticService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +40,7 @@ public class StaticServiceImpl implements StaticService {
                 DanTocDTO danTocDTO = new DanTocDTO(danToc.getDanTocID(), danToc.getTitle());
                 danTocDTOS.add(danTocDTO);
             });
-            return ResponseEntity.ok(new StaticRegistryData(gioiTinhDTOS, danTocDTOS));
+            return ResponseEntity.ok(new DuLieuTinhChoFormDangKy(gioiTinhDTOS, danTocDTOS));
         }catch (Exception e){
             log.error(String.valueOf(e));
             return ResponseEntity.internalServerError().body("Fail to get static registry data");

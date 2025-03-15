@@ -21,7 +21,7 @@ public class DanToc {
 
     private String title;
     @OneToMany(mappedBy = "danToc", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Account> accounts;
+    private List<TaiKhoan> taiKhoans;
 
     public DanToc(String title) {
         this.title = title;

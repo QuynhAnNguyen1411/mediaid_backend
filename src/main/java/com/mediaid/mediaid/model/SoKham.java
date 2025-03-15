@@ -19,7 +19,7 @@ public class SoKham {
 
     @ManyToOne
     @JoinColumn(name = "accountID")
-    private Account account;
+    private TaiKhoan taiKhoan;
 
     private String bhyt;
 

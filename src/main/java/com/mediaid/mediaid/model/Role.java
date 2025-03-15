@@ -22,5 +22,5 @@ public class Role {
     private String title;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Account> account;
+    private List<TaiKhoan> taiKhoan;
 }

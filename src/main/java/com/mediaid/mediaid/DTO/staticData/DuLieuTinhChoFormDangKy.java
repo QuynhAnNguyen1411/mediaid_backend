@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class StaticRegistryData {
+public class DuLieuTinhChoFormDangKy {
     @JsonProperty("gender")
     private List<GioiTinhDTO> gioiTinhDTOS;
     @JsonProperty("nation")

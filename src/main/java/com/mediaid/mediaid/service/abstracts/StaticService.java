@@ -1,4 +1,4 @@
-package com.mediaid.mediaid.service.abtract;
+package com.mediaid.mediaid.service.abstracts;
 
 import org.springframework.http.ResponseEntity;
 

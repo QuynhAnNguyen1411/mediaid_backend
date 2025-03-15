@@ -1,7 +1,7 @@
 package com.mediaid.mediaid.DTO.form;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.mediaid.mediaid.model.Account;
+import com.mediaid.mediaid.model.TaiKhoan;
 import com.mediaid.mediaid.model.DanToc;
 import com.mediaid.mediaid.model.GioiTinh;
 import jakarta.validation.constraints.NotEmpty;
@@ -20,7 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RegistryForm {
+public class FormDangKy {
 
     @NotNull
     private int danTocID;
@@ -35,8 +35,6 @@ public class RegistryForm {
     @NotEmpty
     @NotNull
     private String cccdCmt;
-    @NotEmpty
-    @NotNull
     private String bhyt;
     @NotEmpty
     @NotNull
@@ -45,22 +43,24 @@ public class RegistryForm {
     @NotNull
     private String sdt;
     private String email;
+    @NotEmpty
+    @NotNull
     private String matKhau;
     private NguoiGiamHoDTO nguoiGiamHo;
 
     @Autowired
     private ModelMapper modelMapper;
-    public Account convertToEntity(RegistryForm registryForm, GioiTinh gioiTinh, DanToc danToc, String matKhau) {
-        modelMapper.typeMap(RegistryForm.class, Account.class)
+    public TaiKhoan convertToEntity(FormDangKy registryForm, GioiTinh gioiTinh, DanToc danToc, String matKhau) {
+        modelMapper.typeMap(FormDangKy.class, TaiKhoan.class)
                 .addMappings(mapper -> {
-                    mapper.skip(Account::setGioiTinh);
-                    mapper.skip(Account::setDanToc);
-                    mapper.skip(Account::setMatKhau);
+                    mapper.skip(TaiKhoan::setGioiTinh);
+                    mapper.skip(TaiKhoan::setDanToc);
+                    mapper.skip(TaiKhoan::setMatKhau);
                 });
-        Account account = modelMapper.map(registryForm, Account.class);
-        account.setDanToc(danToc);
-        account.setGioiTinh(gioiTinh);
-        account.setMatKhau(matKhau);
-        return account;
+        TaiKhoan taiKhoan = modelMapper.map(registryForm, TaiKhoan.class);
+        taiKhoan.setDanToc(danToc);
+        taiKhoan.setGioiTinh(gioiTinh);
+        taiKhoan.setMatKhau(matKhau);
+        return taiKhoan;
     }
 }

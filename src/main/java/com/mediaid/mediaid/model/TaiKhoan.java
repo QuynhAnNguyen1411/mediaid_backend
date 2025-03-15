@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+public class TaiKhoan {
     @Id
     private String accountID;
 

@@ -1,6 +1,6 @@
 package com.mediaid.mediaid.controller;
 
-import com.mediaid.mediaid.service.abtract.StaticService;
+import com.mediaid.mediaid.service.abstracts.StaticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/static")
-public class StaticController {
+public class DuLieuTinhController {
     @Autowired
     StaticService staticService;
     @GetMapping("/staticDataForRegistry")

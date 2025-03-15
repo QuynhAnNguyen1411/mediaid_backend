@@ -1,9 +1,9 @@
 package com.mediaid.mediaid.service.implement;
 
-import com.mediaid.mediaid.DTO.form.RegistryForm;
+import com.mediaid.mediaid.DTO.form.FormDangKy;
 import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
-import com.mediaid.mediaid.service.abtract.RegistryService;
+import com.mediaid.mediaid.service.abstracts.RegistryService;
 import com.mediaid.mediaid.util.CommonUtil;
 import com.mediaid.mediaid.util.DecodeEncodeUtil;
 import com.mediaid.mediaid.util.ValidationUtil;
@@ -33,7 +33,7 @@ public class RegistryServiceImpl implements RegistryService {
 
     @Override
     @Transactional
-    public ResponseEntity<?> registry(RegistryForm registryForm, BindingResult bindingResult) {
+    public ResponseEntity<?> registry(FormDangKy registryForm, BindingResult bindingResult) {
         HashMap<String,String> errors = ValidationUtil.validationCheckBindingResult(bindingResult);
         if (!CommonUtil.isNullOrEmpty(errors)){
             log.warn(errors.toString());
@@ -53,12 +53,12 @@ public class RegistryServiceImpl implements RegistryService {
             log.warn("Invalid gioiTinhID or danTocID");
             return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid gioiTinhID or danTocID"));
         }
-        Account account;
+        TaiKhoan taiKhoan;
         try {
             String decodePassword = DecodeEncodeUtil.encryptAES(registryForm.getMatKhau());
-            account = registryForm.convertToEntity(registryForm, gioiTinh, danToc, decodePassword);
-            account.setAccountID(UUID.randomUUID().toString());
-            account = accountRepo.save(account);
+            taiKhoan = registryForm.convertToEntity(registryForm, gioiTinh, danToc, decodePassword);
+            taiKhoan.setAccountID(UUID.randomUUID().toString());
+            taiKhoan = accountRepo.save(taiKhoan);
         }catch (Exception e){
             log.error(String.valueOf(e));
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error"));
@@ -66,7 +66,7 @@ public class RegistryServiceImpl implements RegistryService {
         SoKham soKham = new SoKham();
         soKham.setSoKhamID(UUID.randomUUID().toString());
         soKham.setBhyt(registryForm.getBhyt());
-        soKham.setAccount(account);
+        soKham.setTaiKhoan(taiKhoan);
         try {
             soKham = soKhamRepo.save(soKham);
         }catch (Exception e){

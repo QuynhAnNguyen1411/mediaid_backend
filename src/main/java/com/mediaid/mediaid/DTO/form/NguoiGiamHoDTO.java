@@ -38,7 +38,6 @@ public class NguoiGiamHoDTO {
                     mapper.skip(NguoiGiamHo::setSoKham);
                     mapper.skip(NguoiGiamHo::setGiamHoID);
                 });
-        NguoiGiamHo nguoiGiamHo = modelMapper.map(nguoiGiamHoDTO, NguoiGiamHo.class);
-        return nguoiGiamHo;
+        return modelMapper.map(nguoiGiamHoDTO, NguoiGiamHo.class);
     }
 }

@@ -20,7 +20,7 @@ public class GioiTinh {
 
     private String title;
     @OneToMany(mappedBy = "gioiTinh", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Account> accounts;
+    private List<TaiKhoan> taiKhoans;
 
     public GioiTinh(String title) {
         this.title = title;
