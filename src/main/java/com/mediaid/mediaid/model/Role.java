@@ -21,6 +21,10 @@ public class Role {
 
     private String title;
 
+    public Role(String title) {
+        this.title = title;
+    }
+
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TaiKhoan> taiKhoan;
 }

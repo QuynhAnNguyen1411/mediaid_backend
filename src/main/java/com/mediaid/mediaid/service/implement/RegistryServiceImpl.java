@@ -2,6 +2,7 @@ package com.mediaid.mediaid.service.implement;
 
 import com.mediaid.mediaid.DTO.form.FormDangKy;
 import com.mediaid.mediaid.DTO.form.NguoiGiamHoDTO;
+import com.mediaid.mediaid.constant.CommonConstant;
 import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
 import com.mediaid.mediaid.service.abstracts.RegistryService;
@@ -33,6 +34,8 @@ public class RegistryServiceImpl implements RegistryService {
     NguoiGiamHoRepo nguoiGiamHoRepo;
     @Autowired
     DecodeEncodeUtil decodeEncodeUtil;
+    @Autowired
+    RoleRepo roleRepo;
 
     @Override
     @Transactional
@@ -44,9 +47,11 @@ public class RegistryServiceImpl implements RegistryService {
         }
         GioiTinh gioiTinh;
         DanToc danToc;
+        Role role;
         try {
             gioiTinh = genderRepo.findByGioiTinhID(registryForm.getGioiTinhID());
             danToc = danTocRepo.findByDanTocID(registryForm.getDanTocID());
+            role = roleRepo.findByRoleId(CommonConstant.ROLE_BENH_NHAN_ID);
         }catch (Exception e){
             log.error(String.valueOf(e));
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error"));
@@ -65,6 +70,7 @@ public class RegistryServiceImpl implements RegistryService {
             taiKhoan.setMatKhau(decodePassword);
             taiKhoan.setNgaySinh(CommonUtil.parseStringToLocalDate(registryForm.getNgaySinh()));
             taiKhoan.setDanToc(danToc);
+            taiKhoan.setRole(role);
             taiKhoan.setTen(registryForm.getTen());
             taiKhoan.setSdt(registryForm.getSdt());
             taiKhoan.setCccdCmt(registryForm.getCccdCmt());
