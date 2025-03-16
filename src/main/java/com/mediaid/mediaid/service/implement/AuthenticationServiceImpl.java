@@ -5,7 +5,7 @@ import com.mediaid.mediaid.DTO.form.NguoiGiamHoDTO;
 import com.mediaid.mediaid.constant.CommonConstant;
 import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
-import com.mediaid.mediaid.service.abstracts.RegistryService;
+import com.mediaid.mediaid.service.abstracts.AuthenticationService;
 import com.mediaid.mediaid.util.CommonUtil;
 import com.mediaid.mediaid.util.DecodeEncodeUtil;
 import com.mediaid.mediaid.util.ValidationUtil;
@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-public class RegistryServiceImpl implements RegistryService {
+public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     GenderRepo genderRepo;
     @Autowired
@@ -102,6 +102,7 @@ public class RegistryServiceImpl implements RegistryService {
             log.error("Exception", e);
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error"));
         }
+        log.info("Registry successfully");
         return ResponseEntity.ok().body(CommonUtil.returnMessage("message", "Registry successfully"));
     }
 }

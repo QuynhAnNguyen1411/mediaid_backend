@@ -1,11 +1,7 @@
 package com.mediaid.mediaid.util;
 
-import com.mediaid.mediaid.model.DanToc;
-import com.mediaid.mediaid.model.GioiTinh;
-import com.mediaid.mediaid.model.Role;
-import com.mediaid.mediaid.repository.DanTocRepo;
-import com.mediaid.mediaid.repository.GenderRepo;
-import com.mediaid.mediaid.repository.RoleRepo;
+import com.mediaid.mediaid.model.*;
+import com.mediaid.mediaid.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -18,11 +14,17 @@ public class DataInitializer implements CommandLineRunner {
     private final DanTocRepo danTocRepository;
     private final GenderRepo genderRepo;
     private final RoleRepo roleRepo;
+    private final LyDoPhauThuatRepo lyDoPhauThuatRepo;
+    private final MucDoRepo mucDoRepo;
+    private final PhuongPhapDieuTriRepo phuongPhapDieuTriRepo;
 
-    public DataInitializer(DanTocRepo danTocRepository, GenderRepo genderRepo, RoleRepo roleRepo) {
+    public DataInitializer(DanTocRepo danTocRepository, GenderRepo genderRepo, RoleRepo roleRepo, LyDoPhauThuatRepo lyDoPhauThuatRepo, MucDoRepo mucDoRepo, PhuongPhapDieuTriRepo phuongPhapDieuTriRepo) {
         this.danTocRepository = danTocRepository;
         this.genderRepo = genderRepo;
         this.roleRepo = roleRepo;
+        this.lyDoPhauThuatRepo = lyDoPhauThuatRepo;
+        this.mucDoRepo = mucDoRepo;
+        this.phuongPhapDieuTriRepo = phuongPhapDieuTriRepo;
     }
 
     @Override
@@ -99,10 +101,45 @@ public class DataInitializer implements CommandLineRunner {
         }
         if (roleRepo.count() ==0){
             List<Role> roleList = List.of(
-                    new Role("Bệnh nhân")
-            );
+                    new Role("Bệnh nhân"),
+                    new Role("Bác sĩ")
+             );
             roleRepo.saveAll(roleList);
             log.info("Insert default Role data into the database.");
+        }
+        if (phuongPhapDieuTriRepo.count() ==0){
+            List<PhuongPhapDieuTri> phuongPhapDieuTriList = List.of(
+                    new PhuongPhapDieuTri("Điều trị nội khoa (dùng thuốc)", true),
+                    new PhuongPhapDieuTri("Điều trị phẫu thuật", true),
+                    new PhuongPhapDieuTri("Điều trị bằng liệu pháp vật lý", true),
+                    new PhuongPhapDieuTri("Điều trị tâm lý", true),
+                    new PhuongPhapDieuTri("Điều trị bằng dinh dưỡng", true),
+                    new PhuongPhapDieuTri("Điều trị bằng vật lý và các phương pháp thay thế", true),
+                    new PhuongPhapDieuTri("Điều trị bằng liệu pháp hormon", true),
+                    new PhuongPhapDieuTri("Điều trị bằng phóng xạ (xạ trị)", true),
+                    new PhuongPhapDieuTri("Điều trị bằng truyền máu", true),
+                    new PhuongPhapDieuTri("Điều trị bằng các phương pháp chăm sóc đặc biệt", true),
+                    new PhuongPhapDieuTri("Điều trị bằng liệu pháp miễn dịch", true),
+                    new PhuongPhapDieuTri("Điều trị thay thế cơ quan", true)
+            );
+            phuongPhapDieuTriRepo.saveAll(phuongPhapDieuTriList);
+            log.info("Insert default PhuongPhapDieuTri data into the database.");
+        }
+        if (lyDoPhauThuatRepo.count() ==0){
+            List<LyDoPhauThuat> lyDoPhauThuatList = List.of(
+                    new LyDoPhauThuat("Bệnh nhân", true)
+            );
+            lyDoPhauThuatRepo.saveAll(lyDoPhauThuatList);
+            log.info("Insert default LyDoPhauThuat data into the database.");
+        }
+        if (mucDoRepo.count() ==0){
+            List<MucDo> mucDoList = List.of(
+                    new MucDo("Nhẹ", true),
+                    new MucDo("Vừa", true),
+                    new MucDo("Nặng", true)
+                    );
+            mucDoRepo.saveAll(mucDoList);
+            log.info("Insert default MucDo data into the database.");
         }
     }
 }

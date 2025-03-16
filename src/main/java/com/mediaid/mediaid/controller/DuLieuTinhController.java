@@ -14,11 +14,10 @@ public class DuLieuTinhController {
     StaticService staticService;
     @GetMapping("/staticDataForRegistry")
     public ResponseEntity<?> layDuLieuTinhChoFormDangKy() {
-
         return staticService.getStaticRegistryData();
     }
     @GetMapping("/staticDataForTieuSuYTe")
     public ResponseEntity<?> getDuLieuTinhChoTieuSuYTe() {
-        return staticService.getStaticRegistryData();
+        return staticService.getStaticDataForTieuSuYTe();
     }
 }

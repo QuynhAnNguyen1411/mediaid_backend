@@ -20,6 +20,11 @@ public class PhuongPhapDieuTri {
 
     private boolean status;
 
+    public PhuongPhapDieuTri(String ten, boolean status) {
+        this.ten = ten;
+        this.status = status;
+    }
+
     @OneToMany(mappedBy = "phuongPhapDieuTri", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TieuSuBenhTat> tieuSuBenhTats;
 }

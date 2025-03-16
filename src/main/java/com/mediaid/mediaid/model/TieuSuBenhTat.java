@@ -18,8 +18,8 @@ public class TieuSuBenhTat {
     private SoKham soKham;
 
     @ManyToOne
-    @JoinColumn(name = "trangThaiDieuTriID", nullable = false)
-    private TrangThaiDieuTri trangThaiDieuTri;
+    @JoinColumn(name = "mucDoID", nullable = false)
+    private MucDo mucDo;
 
     @ManyToOne
     @JoinColumn(name = "phuongPhapDieuTriID", nullable = false)

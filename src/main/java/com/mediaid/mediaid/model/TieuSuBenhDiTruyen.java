@@ -19,8 +19,8 @@ public class TieuSuBenhDiTruyen {
     private SoKham soKham;
 
     @ManyToOne
-    @JoinColumn(name="trangThaiThanhVienID")
-    private TrangThaiDieuTri trangThaiDieuTri;
+    @JoinColumn(name = "mucDoID", nullable = false)
+    private MucDo mucDo;
 
     private String loaiBenh;
 

@@ -12,11 +12,16 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TemplateDuLieuTinhDTO {
-    private String ID;
+    private int ID;
     private String ten;
+
+    public TemplateDuLieuTinhDTO(int ID, String ten) {
+        this.ID = ID;
+        this.ten = ten;
+    }
+
     // Generic method to map a single entity to DTO
     public static <E, D> D mapEntityToDTO(E entity, DTOMapper<E, D> mapper) {
         return mapper.map(entity);
@@ -30,8 +35,5 @@ public class TemplateDuLieuTinhDTO {
     }
 
     // Functional Interface for mapping logic
-    @FunctionalInterface
-    public interface DTOMapper<E, D> {
-        D map(E entity);
-    }
+
 }
