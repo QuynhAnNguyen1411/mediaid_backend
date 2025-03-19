@@ -1,6 +1,6 @@
 package com.mediaid.mediaid.controller;
 
-import com.mediaid.mediaid.DTO.form.FormDangKy;
+import com.mediaid.mediaid.DTO.form.formDangKy.FormDangKy;
 import com.mediaid.mediaid.service.abstracts.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

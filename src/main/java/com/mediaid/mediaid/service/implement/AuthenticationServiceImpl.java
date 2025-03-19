@@ -1,7 +1,7 @@
 package com.mediaid.mediaid.service.implement;
 
-import com.mediaid.mediaid.DTO.form.FormDangKy;
-import com.mediaid.mediaid.DTO.form.NguoiGiamHoDTO;
+import com.mediaid.mediaid.DTO.form.formDangKy.FormDangKy;
+import com.mediaid.mediaid.DTO.form.formDangKy.NguoiGiamHoDTO;
 import com.mediaid.mediaid.constant.CommonConstant;
 import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;

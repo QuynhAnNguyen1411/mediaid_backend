@@ -1,4 +1,4 @@
-package com.mediaid.mediaid.DTO.form;
+package com.mediaid.mediaid.DTO.form.formDangKy;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

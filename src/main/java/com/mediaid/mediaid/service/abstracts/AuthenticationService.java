@@ -1,6 +1,6 @@
 package com.mediaid.mediaid.service.abstracts;
 
-import com.mediaid.mediaid.DTO.form.FormDangKy;
+import com.mediaid.mediaid.DTO.form.formDangKy.FormDangKy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
