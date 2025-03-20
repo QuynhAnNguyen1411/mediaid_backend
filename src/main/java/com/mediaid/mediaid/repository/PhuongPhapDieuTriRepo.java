@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface PhuongPhapDieuTriRepo extends JpaRepository<PhuongPhapDieuTri, Integer> {
     List<PhuongPhapDieuTri> findByStatus(boolean status);
+    PhuongPhapDieuTri findByPhuongPhapDieuTriId(int id);
+
 }

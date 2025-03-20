@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SoKhamRepo extends JpaRepository<SoKham, String> {
+    SoKham findBySoKhamId(String id);
 }

@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface MucDoRepo extends JpaRepository<MucDo, Integer> {
     List<MucDo> findByStatus(boolean status);
+    MucDo findByMucDoId(int id);
 
 }
