@@ -1,5 +1,6 @@
 package com.mediaid.mediaid.controller;
 
+import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuBenhDiTruyenDTO;
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuBenhTatDTO;
 import com.mediaid.mediaid.service.abstracts.SoKhamService;
 import jakarta.validation.Valid;
@@ -17,5 +18,9 @@ public class SoKhamController {
     @PostMapping("/capNhatTieuSuBenhTat")
     public ResponseEntity<?> capNhatTieuSuBenhTat(@RequestBody @Valid TieuSuBenhTatDTO tieuSuBenhTatDTO, BindingResult bindingResult) {
         return soKhamService.capNhatTieuSuBenhTat(tieuSuBenhTatDTO, bindingResult);
+    }
+    @PostMapping("/capNhatTieuSuBenhDiTruyen")
+    public ResponseEntity<?> capNhatTieuSuBenhDiTruyen(@RequestBody @Valid TieuSuBenhDiTruyenDTO tieuSuBenhDiTruyenDTO, BindingResult bindingResult) {
+        return soKhamService.capNhatTieuSuBenhDiTruyen(tieuSuBenhDiTruyenDTO, bindingResult);
     }
 }

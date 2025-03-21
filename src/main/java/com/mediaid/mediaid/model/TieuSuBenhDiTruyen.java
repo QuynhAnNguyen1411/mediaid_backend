@@ -24,7 +24,7 @@ public class TieuSuBenhDiTruyen {
 
     private String loaiBenh;
 
-    private String thanhVienThanhNien;
+    private String thanhVienGiaDinh;
 
     private String moiQuanHeThanhVien;
 

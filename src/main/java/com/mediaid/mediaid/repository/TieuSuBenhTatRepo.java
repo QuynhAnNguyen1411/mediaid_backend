@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TieuSuBenhTatRepo extends JpaRepository<TieuSuBenhTat, String> {
-    TieuSuBenhTat findByTieuSuBenhTatId(String id);
+    TieuSuBenhTat findByTieuSuBenhTatID(String id);
 
 }

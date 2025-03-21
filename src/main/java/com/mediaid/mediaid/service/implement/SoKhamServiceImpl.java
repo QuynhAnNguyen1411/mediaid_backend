@@ -1,15 +1,11 @@
 package com.mediaid.mediaid.service.implement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuBenhDiTruyenDTO;
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuBenhTatDTO;
-import com.mediaid.mediaid.model.MucDo;
-import com.mediaid.mediaid.model.PhuongPhapDieuTri;
-import com.mediaid.mediaid.model.SoKham;
-import com.mediaid.mediaid.model.TieuSuBenhTat;
-import com.mediaid.mediaid.repository.MucDoRepo;
-import com.mediaid.mediaid.repository.PhuongPhapDieuTriRepo;
-import com.mediaid.mediaid.repository.SoKhamRepo;
-import com.mediaid.mediaid.repository.TieuSuBenhTatRepo;
+import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuDiUngDTO;
+import com.mediaid.mediaid.model.*;
+import com.mediaid.mediaid.repository.*;
 import com.mediaid.mediaid.service.abstracts.SoKhamService;
 import com.mediaid.mediaid.util.CommonUtil;
 import com.mediaid.mediaid.util.ValidationUtil;
@@ -33,6 +29,10 @@ public class SoKhamServiceImpl implements SoKhamService {
     SoKhamRepo soKhamRepo;
     @Autowired
     TieuSuBenhTatRepo tieuSuBenhTatRepo;
+    @Autowired
+    TieuSuBenhDiTruyenRepo tieuSuBenhDiTruyenRepo;
+    @Autowired
+    TieuSuDiUngRepo tieuSuDiUngRepo;
     @Override
     public ResponseEntity<?> capNhatTieuSuBenhTat(TieuSuBenhTatDTO tieuSuBenhTatDTO, BindingResult bindingResult) {
         HashMap<String,String> errors = ValidationUtil.validationCheckBindingResult(bindingResult);
@@ -45,9 +45,9 @@ public class SoKhamServiceImpl implements SoKhamService {
         SoKham soKham;
         TieuSuBenhTat tieuSuBenhTat;
         try {
-            soKham = soKhamRepo.findBySoKhamId(tieuSuBenhTatDTO.getSoKhamID());
-            mucDo = mucDoRepo.findByMucDoId(tieuSuBenhTatDTO.getMucDoID());
-            phuongPhapDieuTri = phuongPhapDieuTriRepo.findByPhuongPhapDieuTriId(tieuSuBenhTatDTO.getPhuongPhapDieuTriID());
+            soKham = soKhamRepo.findBySoKhamID(tieuSuBenhTatDTO.getSoKhamID());
+            mucDo = mucDoRepo.findByMucDoID(tieuSuBenhTatDTO.getMucDoID());
+            phuongPhapDieuTri = phuongPhapDieuTriRepo.findByPhuongPhapDieuTriID(tieuSuBenhTatDTO.getPhuongPhapDieuTriID());
             if(CommonUtil.isNullOrEmpty(soKham) || CommonUtil.isNullOrEmpty(mucDo) || CommonUtil.isNullOrEmpty(phuongPhapDieuTri)){
                 log.warn("Invalid id data in request "+new ObjectMapper().writeValueAsString(tieuSuBenhTatDTO));
                 return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid data"));
@@ -57,7 +57,7 @@ public class SoKhamServiceImpl implements SoKhamService {
                 tieuSuBenhTat.setSoKham(soKham);
                 tieuSuBenhTat.setTieuSuBenhTatID(UUID.randomUUID().toString());
             } else {
-                tieuSuBenhTat = tieuSuBenhTatRepo.findByTieuSuBenhTatId(tieuSuBenhTatDTO.getTieuSuBenhTatID());
+                tieuSuBenhTat = tieuSuBenhTatRepo.findByTieuSuBenhTatID(tieuSuBenhTatDTO.getTieuSuBenhTatID());
                 if (CommonUtil.isNullOrEmpty(tieuSuBenhTat)){
                     log.warn("Invalid id data in update request "+new ObjectMapper().writeValueAsString(tieuSuBenhTatDTO));
                     return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid tieuSuBenhTatID"));
@@ -77,6 +77,99 @@ public class SoKhamServiceImpl implements SoKhamService {
         try {
             tieuSuBenhTatRepo.save(tieuSuBenhTat);
             return ResponseEntity.ok(CommonUtil.returnMessage("message", "Save/update tieuSuBenhTat successfully"));
+        }catch (Exception e){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error appear"));
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> capNhatTieuSuBenhDiTruyen(TieuSuBenhDiTruyenDTO tieuSuBenhDiTruyenDTO, BindingResult bindingResult) {
+        HashMap<String,String> errors = ValidationUtil.validationCheckBindingResult(bindingResult);
+        if (!CommonUtil.isNullOrEmpty(errors)){
+            log.warn(errors.toString());
+            return ResponseEntity.badRequest().body(errors);
+        }
+        MucDo mucDo;
+        SoKham soKham;
+        TieuSuBenhDiTruyen tieuSuBenhDiTruyen;
+        try {
+            soKham = soKhamRepo.findBySoKhamID(tieuSuBenhDiTruyenDTO.getSoKhamID());
+            mucDo = mucDoRepo.findByMucDoID(tieuSuBenhDiTruyenDTO.getMucDoID());
+            if(CommonUtil.isNullOrEmpty(soKham) || CommonUtil.isNullOrEmpty(mucDo)){
+                log.warn("Invalid id data in request "+new ObjectMapper().writeValueAsString(tieuSuBenhDiTruyenDTO));
+                return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid data"));
+            }
+            if (CommonUtil.isNullOrEmpty(tieuSuBenhDiTruyenDTO.getTieuSuBenhDiTruyenID())){
+                tieuSuBenhDiTruyen = new TieuSuBenhDiTruyen();
+                tieuSuBenhDiTruyen.setSoKham(soKham);
+                tieuSuBenhDiTruyen.setTieuSuBenhDiTruyenID(UUID.randomUUID().toString());
+            } else {
+                tieuSuBenhDiTruyen = tieuSuBenhDiTruyenRepo.findByTieuSuBenhDiTruyenId(tieuSuBenhDiTruyenDTO.getTieuSuBenhDiTruyenID());
+                if (CommonUtil.isNullOrEmpty(tieuSuBenhDiTruyen)){
+                    log.warn("Invalid id data in update request "+new ObjectMapper().writeValueAsString(tieuSuBenhDiTruyenDTO));
+                    return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid tieuSuBenhDiTruyenID"));
+                }
+            }
+        }catch (Exception e){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error appear"));
+        }
+        tieuSuBenhDiTruyen.setMucDo(mucDo);
+        tieuSuBenhDiTruyen.setLoaiBenh(tieuSuBenhDiTruyenDTO.getLoaiBenh());
+        tieuSuBenhDiTruyen.setThanhVienGiaDinh(tieuSuBenhDiTruyenDTO.getThanhVienGiaDinh());
+        tieuSuBenhDiTruyen.setMoiQuanHeThanhVien(tieuSuBenhDiTruyenDTO.getMoiQuanHeThanhVien());
+        tieuSuBenhDiTruyen.setNamPhatHien(tieuSuBenhDiTruyenDTO.getNamPhatHien());
+        tieuSuBenhDiTruyen.setGhiChu(tieuSuBenhDiTruyenDTO.getGhiChu());
+        try {
+            tieuSuBenhDiTruyenRepo.save(tieuSuBenhDiTruyen);
+            return ResponseEntity.ok(CommonUtil.returnMessage("message", "Save/update tieuSuBenhDiTruyen successfully"));
+        }catch (Exception e){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error appear"));
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> capNhatTieuSuDiUng(TieuSuDiUngDTO tieuSuDiUngDTO, BindingResult bindingResult) {
+        HashMap<String,String> errors = ValidationUtil.validationCheckBindingResult(bindingResult);
+        if (!CommonUtil.isNullOrEmpty(errors)){
+            log.warn(errors.toString());
+            return ResponseEntity.badRequest().body(errors);
+        }
+        MucDo mucDo;
+        SoKham soKham;
+        TieuSuDiUng tieuSuDiUng;
+        try {
+            soKham = soKhamRepo.findBySoKhamID(tieuSuDiUngDTO.getSoKhamID());
+            mucDo = mucDoRepo.findByMucDoID(tieuSuDiUngDTO.getMucDoID());
+            if(CommonUtil.isNullOrEmpty(soKham) || CommonUtil.isNullOrEmpty(mucDo)){
+                log.warn("Invalid id data in request "+new ObjectMapper().writeValueAsString(tieuSuDiUngDTO));
+                return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid data"));
+            }
+            if (CommonUtil.isNullOrEmpty(tieuSuDiUngDTO.getTieuSuDiUngID())){
+                tieuSuDiUng = new TieuSuDiUng();
+                tieuSuDiUng.setSoKham(soKham);
+                tieuSuDiUng.setTieuSuDiUngID(UUID.randomUUID().toString());
+            } else {
+                tieuSuDiUng = tieuSuDiUngRepo.findByTieuSuDiUngId(tieuSuDiUngDTO.getTieuSuDiUngID());
+                if (CommonUtil.isNullOrEmpty(tieuSuDiUng)){
+                    log.warn("Invalid id data in update request "+new ObjectMapper().writeValueAsString(tieuSuDiUngDTO));
+                    return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid tieuSuDiUngID"));
+                }
+            }
+        }catch (Exception e){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error appear"));
+        }
+        tieuSuDiUng.setMucDo(mucDo);
+        tieuSuDiUng.setTacNhan(tieuSuDiUngDTO.getTacNhan());
+        tieuSuDiUng.setTrieuChung(tieuSuDiUngDTO.getTrieuChung());
+        tieuSuDiUng.setLanCuoiXayRa(tieuSuDiUngDTO.getLanCuoiXayRa());
+        tieuSuDiUng.setGhiChu(tieuSuDiUngDTO.getGhiChu());
+        try {
+            tieuSuDiUngRepo.save(tieuSuDiUng);
+            return ResponseEntity.ok(CommonUtil.returnMessage("message", "Save/update tieuSuBenhDiTruyen successfully"));
         }catch (Exception e){
             log.error("Exception", e);
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error appear"));
