@@ -19,7 +19,6 @@ public class TieuSuBenhDiTruyenDTO {
     @NotEmpty
     private String soKhamID;
     @NotNull
-    @NotEmpty
     private int mucDoID;
     @NotNull
     @NotEmpty
