@@ -105,7 +105,7 @@ public class SoKhamServiceImpl implements SoKhamService {
                 tieuSuBenhDiTruyen.setSoKham(soKham);
                 tieuSuBenhDiTruyen.setTieuSuBenhDiTruyenID(UUID.randomUUID().toString());
             } else {
-                tieuSuBenhDiTruyen = tieuSuBenhDiTruyenRepo.findByTieuSuBenhDiTruyenId(tieuSuBenhDiTruyenDTO.getTieuSuBenhDiTruyenID());
+                tieuSuBenhDiTruyen = tieuSuBenhDiTruyenRepo.findByTieuSuBenhDiTruyenID(tieuSuBenhDiTruyenDTO.getTieuSuBenhDiTruyenID());
                 if (CommonUtil.isNullOrEmpty(tieuSuBenhDiTruyen)){
                     log.warn("Invalid id data in update request "+new ObjectMapper().writeValueAsString(tieuSuBenhDiTruyenDTO));
                     return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid tieuSuBenhDiTruyenID"));
@@ -152,7 +152,7 @@ public class SoKhamServiceImpl implements SoKhamService {
                 tieuSuDiUng.setSoKham(soKham);
                 tieuSuDiUng.setTieuSuDiUngID(UUID.randomUUID().toString());
             } else {
-                tieuSuDiUng = tieuSuDiUngRepo.findByTieuSuDiUngId(tieuSuDiUngDTO.getTieuSuDiUngID());
+                tieuSuDiUng = tieuSuDiUngRepo.findByTieuSuDiUngID(tieuSuDiUngDTO.getTieuSuDiUngID());
                 if (CommonUtil.isNullOrEmpty(tieuSuDiUng)){
                     log.warn("Invalid id data in update request "+new ObjectMapper().writeValueAsString(tieuSuDiUngDTO));
                     return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid tieuSuDiUngID"));

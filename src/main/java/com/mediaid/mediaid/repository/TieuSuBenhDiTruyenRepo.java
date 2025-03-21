@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TieuSuBenhDiTruyenRepo extends JpaRepository<TieuSuBenhDiTruyen, String> {
-    TieuSuBenhDiTruyen findByTieuSuBenhDiTruyenId(String id);
+    TieuSuBenhDiTruyen findByTieuSuBenhDiTruyenID(String id);
 }

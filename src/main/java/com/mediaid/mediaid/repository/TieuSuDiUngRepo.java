@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TieuSuDiUngRepo extends JpaRepository<TieuSuDiUng, String> {
-    TieuSuDiUng findByTieuSuDiUngId(String id);
+    TieuSuDiUng findByTieuSuDiUngID(String id);
 }
