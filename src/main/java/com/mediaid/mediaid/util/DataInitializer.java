@@ -127,7 +127,18 @@ public class DataInitializer implements CommandLineRunner {
         }
         if (lyDoPhauThuatRepo.count() ==0){
             List<LyDoPhauThuat> lyDoPhauThuatList = List.of(
-                    new LyDoPhauThuat("Bệnh nhân", true)
+                    new LyDoPhauThuat("Điều trị bệnh lý", true),
+                    new LyDoPhauThuat("Cấp cứu", true),
+                    new LyDoPhauThuat("Chỉnh hình", true),
+                    new LyDoPhauThuat("Phẫu thuật thẩm mỹ", true),
+                    new LyDoPhauThuat("Phẫu thuật nội soi", true),
+                    new LyDoPhauThuat("Cải thiện chức năng", true),
+                    new LyDoPhauThuat("Điều trị nhiễm trùng", true),
+                    new LyDoPhauThuat("Chẩn đoán", true),
+                    new LyDoPhauThuat("Điều trị bệnh lý thần kinh", true),
+                    new LyDoPhauThuat("Phẫu thuật giảm đau", true),
+                    new LyDoPhauThuat("Phẫu thuật giảm cân (Phẫu thuật bariatric)", true),
+                    new LyDoPhauThuat("Phẫu thuật điều trị ung thư", true)
             );
             lyDoPhauThuatRepo.saveAll(lyDoPhauThuatList);
             log.info("Insert default LyDoPhauThuat data into the database.");
