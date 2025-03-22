@@ -11,4 +11,5 @@ public class SoKhamDTO {
     private String cmndCmt;
     private String bhyt;
     private String sdt;
+
 }

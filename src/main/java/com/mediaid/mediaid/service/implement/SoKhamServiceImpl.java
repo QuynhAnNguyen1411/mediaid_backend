@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuBenhDiTruyenDTO;
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuBenhTatDTO;
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuDiUngDTO;
+import com.mediaid.mediaid.DTO.staticData.GetMappingData.SoKhamDTO;
 import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
 import com.mediaid.mediaid.service.abstracts.SoKhamService;
@@ -169,7 +170,27 @@ public class SoKhamServiceImpl implements SoKhamService {
         tieuSuDiUng.setGhiChu(tieuSuDiUngDTO.getGhiChu());
         try {
             tieuSuDiUngRepo.save(tieuSuDiUng);
-            return ResponseEntity.ok(CommonUtil.returnMessage("message", "Save/update tieuSuBenhDiTruyen successfully"));
+            return ResponseEntity.ok(CommonUtil.returnMessage("message", "Save/update tieuSuDiUng successfully"));
+        }catch (Exception e){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error appear"));
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getSoKham(String accountID) {
+        if ( CommonUtil.isNullOrEmpty(accountID)){
+            log.warn("Invalid accountID");
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Internal accountID"));
+        }
+        SoKhamDTO soKhamDTO;
+        try {
+            soKhamDTO = soKhamRepo.findByAccountID(accountID);
+            if (CommonUtil.isNullOrEmpty(soKhamDTO)){
+                log.warn("Invalid accountID");
+                return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Internal accountID"));
+            }
+            return ResponseEntity.ok(soKhamDTO);
         }catch (Exception e){
             log.error("Exception", e);
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error appear"));
