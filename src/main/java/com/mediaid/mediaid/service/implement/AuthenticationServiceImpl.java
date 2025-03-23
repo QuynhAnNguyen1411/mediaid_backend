@@ -117,7 +117,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         try {
             String decodePassword = decodeEncodeUtil.encryptAES(dangNhapDTO.getPassword());
-            TaiKhoan taiKhoan = accountRepo.findByTenAndMatKhau(dangNhapDTO.getUsername(), decodePassword);
+            TaiKhoan taiKhoan = accountRepo.findByCccdCmtAndMatKhau(dangNhapDTO.getCmt(), decodePassword);
             if(!CommonUtil.isNullOrEmpty(taiKhoan)){
                 String token = JwtHandler.generateJWT(taiKhoan.getAccountID());
                 HashMap<String, String> response = CommonUtil.returnMessage("token", token);

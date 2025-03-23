@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AccountRepo extends JpaRepository<TaiKhoan, String> {
-    TaiKhoan findByTenAndMatKhau(String username, String password);
+    TaiKhoan findByCccdCmtAndMatKhau(String cccd, String password);
 }

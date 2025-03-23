@@ -10,7 +10,7 @@ import lombok.Setter;
 public class DangNhapDTO {
     @NotNull
     @NotEmpty
-    private String username;
+    private String cmt;
     @NotNull
     @NotEmpty
     private String password;
