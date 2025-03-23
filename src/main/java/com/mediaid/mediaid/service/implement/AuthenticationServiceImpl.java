@@ -9,6 +9,7 @@ import com.mediaid.mediaid.repository.*;
 import com.mediaid.mediaid.service.abstracts.AuthenticationService;
 import com.mediaid.mediaid.util.CommonUtil;
 import com.mediaid.mediaid.util.DecodeEncodeUtil;
+import com.mediaid.mediaid.util.JwtHandler;
 import com.mediaid.mediaid.util.ValidationUtil;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -109,6 +110,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public ResponseEntity<?> login(DangNhapDTO dangNhapDTO, BindingResult bindingResult) {
-        return null;
+        HashMap<String,String> errors = ValidationUtil.validationCheckBindingResult(bindingResult);
+        if (!CommonUtil.isNullOrEmpty(errors)){
+            log.warn(errors.toString());
+            return ResponseEntity.badRequest().body(errors);
+        }
+        try {
+            String decodePassword = decodeEncodeUtil.encryptAES(dangNhapDTO.getPassword());
+            TaiKhoan taiKhoan = accountRepo.findByTenAndMatKhau(dangNhapDTO.getUsername(), decodePassword);
+            if(!CommonUtil.isNullOrEmpty(taiKhoan)){
+                String token = JwtHandler.generateJWT(taiKhoan.getAccountID());
+                HashMap<String, String> response = CommonUtil.returnMessage("token", token);
+                response.put("accountID", taiKhoan.getAccountID());
+                log.info("Login successfully");
+                return ResponseEntity.ok().body(response);
+            }
+            log.info("Login fail, personalIdentifier or password");
+            return ResponseEntity.ok().body(CommonUtil.returnMessage("message", "Login fail"));
+        }catch (Exception e ){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error"));
+        }
     }
 }

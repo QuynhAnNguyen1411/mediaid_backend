@@ -1,6 +1,7 @@
 package com.mediaid.mediaid.controller;
 
 import com.mediaid.mediaid.DTO.form.formDangKy.FormDangKy;
+import com.mediaid.mediaid.DTO.form.formDangNhap.DangNhapDTO;
 import com.mediaid.mediaid.service.abstracts.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,9 @@ public class DangKyController {
     @PostMapping("/registry")
     public ResponseEntity<?> registry(@RequestBody @Valid FormDangKy registryForm, BindingResult bindingResult) {
         return authenticationService.registry(registryForm, bindingResult);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody @Valid DangNhapDTO dangNhapDTO, BindingResult bindingResult) {
+        return authenticationService.login(dangNhapDTO, bindingResult);
     }
 }
