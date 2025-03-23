@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SoKhamRepo extends JpaRepository<SoKham, String> {
     SoKham findBySoKhamID(String id);
-    @Query("SELECT new com.mediaid.mediaid.DTO.staticData.GetMappingData.SoKhamDTO(a.accountid, a.ten, a.cccd_cmt, b.bhyt, a.sdt) FROM account a inner join  so_kham b on a.accountid = b.accountid  where a.accountid = ?1")
+    @Query("SELECT new com.mediaid.mediaid.DTO.staticData.GetMappingData.SoKhamDTO(a.soKhamID, b.ten, b.cccdCmt, a.bhyt, b.sdt) FROM SoKham a inner join a.taiKhoan b where b.accountID = ?1")
     SoKhamDTO findByAccountID(String accounID);
 
 

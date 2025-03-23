@@ -2,6 +2,7 @@ package com.mediaid.mediaid.service.implement;
 
 import com.mediaid.mediaid.DTO.form.formDangKy.FormDangKy;
 import com.mediaid.mediaid.DTO.form.formDangKy.NguoiGiamHoDTO;
+import com.mediaid.mediaid.DTO.form.formDangNhap.DangNhapDTO;
 import com.mediaid.mediaid.constant.CommonConstant;
 import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
@@ -104,5 +105,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         log.info("Registry successfully");
         return ResponseEntity.ok().body(CommonUtil.returnMessage("message", "Registry successfully"));
+    }
+
+    @Override
+    public ResponseEntity<?> login(DangNhapDTO dangNhapDTO, BindingResult bindingResult) {
+        return null;
     }
 }
