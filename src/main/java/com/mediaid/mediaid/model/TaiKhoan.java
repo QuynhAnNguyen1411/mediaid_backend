@@ -31,8 +31,10 @@ public class TaiKhoan {
 
     private String ten;
     private Date ngaySinh;
+    @Column(unique = true, nullable = false)
     private String cccdCmt;
     private String diaChi;
+    @Column(unique = true, nullable = false)
     private String sdt;
     private String email;
     private String matKhau;

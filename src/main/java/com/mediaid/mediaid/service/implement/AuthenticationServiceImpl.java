@@ -50,7 +50,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         GioiTinh gioiTinh;
         DanToc danToc;
         Role role;
+        TaiKhoan taiKhoan;
         try {
+            taiKhoan = accountRepo.findByCccdCmt(registryForm.getCccdCmt());
+            if (!CommonUtil.isNullOrEmpty(taiKhoan)){
+                log.warn("CMT đã đăng ký tài khoản trên hệ thống");
+                return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "CMT đã đăng ký trên hệ thống"));
+            }
+            taiKhoan = accountRepo.findBySdt(registryForm.getSdt());
+            if (!CommonUtil.isNullOrEmpty(taiKhoan)){
+                log.warn("SDT đã đăng ký tài khoản trên hệ thống");
+                return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "SDT đã đăng ký trên hệ thống"));
+            }
             gioiTinh = genderRepo.findByGioiTinhID(registryForm.getGioiTinhID());
             danToc = danTocRepo.findByDanTocID(registryForm.getDanTocID());
             role = roleRepo.findByRoleId(CommonConstant.ROLE_BENH_NHAN_ID);
@@ -63,7 +74,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.warn("Invalid gioiTinhID or danTocID");
             return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid gioiTinhID or danTocID"));
         }
-        TaiKhoan taiKhoan;
         try {
             String decodePassword = decodeEncodeUtil.encryptAES(registryForm.getMatKhau());
             //taiKhoan = registryForm.convertToEntity(registryForm, gioiTinh, danToc, decodePassword);
