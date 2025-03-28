@@ -15,28 +15,28 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TieuSuBenhTatDTO {
-    @JsonProperty(namespace = "")
+    @JsonProperty("tieuSuBenhTatID")
     private String tieuSuBenhTatID;
     @NotNull
     @NotEmpty
-    @JsonProperty(namespace = "accountID")
+    @JsonProperty("accountID")
     private String accountID;
     @NotNull
-    @JsonProperty(namespace = "medicalLevel")
+    @JsonProperty("medicalLevel")
     private int mucDoID;
     @NotNull
-    @JsonProperty(namespace = "treatmentMethod")
+    @JsonProperty("treatmentMethod")
     private int phuongPhapDieuTriID;
     @NotNull
     @NotEmpty
-    @JsonProperty(namespace = "typeOfDisease")
+    @JsonProperty("typeOfDisease")
     private String loaiBenh;
-    @JsonProperty(namespace = "complications")
+    @JsonProperty("complications")
     private String bienChung;
-    @JsonProperty(namespace = "hospitalTreatment")
+    @JsonProperty("hospitalTreatment")
     private String benhVienDieuTri;
-    @JsonProperty(namespace = "yearOfDiagnosis")
+    @JsonProperty("yearOfDiagnosis")
     private String namPhatHien;
-    @JsonProperty(namespace = "noteDisease")
+    @JsonProperty("noteDisease")
     private String ghiChu;
 }
