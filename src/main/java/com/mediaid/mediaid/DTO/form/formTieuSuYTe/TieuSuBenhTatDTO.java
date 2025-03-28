@@ -19,8 +19,8 @@ public class TieuSuBenhTatDTO {
     private String tieuSuBenhTatID;
     @NotNull
     @NotEmpty
-    @JsonProperty(namespace = "treatmentMethod")
-    private String soKhamID;
+    @JsonProperty(namespace = "accountID")
+    private String accountID;
     @NotNull
     @JsonProperty(namespace = "medicalLevel")
     private int mucDoID;

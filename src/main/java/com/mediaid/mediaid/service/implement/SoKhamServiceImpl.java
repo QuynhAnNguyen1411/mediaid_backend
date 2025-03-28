@@ -46,7 +46,7 @@ public class SoKhamServiceImpl implements SoKhamService {
         SoKham soKham;
         TieuSuBenhTat tieuSuBenhTat;
         try {
-            soKham = soKhamRepo.findBySoKhamID(tieuSuBenhTatDTO.getSoKhamID());
+            soKham = soKhamRepo.findSoKhamByAccountID(tieuSuBenhTatDTO.getAccountID());
             mucDo = mucDoRepo.findByMucDoID(tieuSuBenhTatDTO.getMucDoID());
             phuongPhapDieuTri = phuongPhapDieuTriRepo.findByPhuongPhapDieuTriID(tieuSuBenhTatDTO.getPhuongPhapDieuTriID());
             if(CommonUtil.isNullOrEmpty(soKham) || CommonUtil.isNullOrEmpty(mucDo) || CommonUtil.isNullOrEmpty(phuongPhapDieuTri)){
