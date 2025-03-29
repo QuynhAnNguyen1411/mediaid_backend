@@ -30,4 +30,8 @@ public class SoKhamController {
     public ResponseEntity<?> layThongTinSoKham(@RequestParam String accountID) {
         return soKhamService.getSoKham(accountID);
     }
+    @GetMapping("/layDanhSachTieuSuPreview")
+    public ResponseEntity<?> layDanhSachTieuSuPreview(@RequestParam String accountID, @RequestParam String type) {
+        return soKhamService.getDanhSachTieuSuTheoLoai(accountID, type);
+    }
 }

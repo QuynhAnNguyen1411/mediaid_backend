@@ -5,6 +5,7 @@ import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuBenhDiTruyenDTO;
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuBenhTatDTO;
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuDiUngDTO;
 import com.mediaid.mediaid.DTO.staticData.GetMappingData.SoKhamDTO;
+import com.mediaid.mediaid.DTO.staticData.TieuSuPreviewData;
 import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
 import com.mediaid.mediaid.service.abstracts.SoKhamService;
@@ -16,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -195,5 +198,25 @@ public class SoKhamServiceImpl implements SoKhamService {
             log.error("Exception", e);
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error appear"));
         }
+    }
+
+    @Override
+    public ResponseEntity<?> getDanhSachTieuSuTheoLoai(String accountID, String type) {
+        if ( CommonUtil.isNullOrEmpty(accountID) || CommonUtil.isNullOrEmpty(type)){
+            log.warn("Invalid parammeter, accountID: "+accountID+", type: "+type);
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Internal accountID"));
+        }
+        List<TieuSuPreviewData> tieuSuPreviewDatas;
+        switch (type) {
+            case "TieuSuBenhTat" -> tieuSuPreviewDatas = tieuSuBenhTatRepo.findPreviewByAccountID(accountID);
+            case "TieuSuBenhDiTruyen" -> tieuSuPreviewDatas = tieuSuBenhDiTruyenRepo.findPreviewByAccountID(accountID);
+            case "TieuSuDiUng" -> tieuSuPreviewDatas = tieuSuDiUngRepo.findPreviewByAccountID(accountID);
+            case "TieuSuPhauThuat" -> tieuSuPreviewDatas = new ArrayList<>();
+            default -> {
+                log.warn("Invalid type of tieuSu: " + type);
+                return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid type of tieuSu"));
+            }
+        }
+        return ResponseEntity.ok(tieuSuPreviewDatas);
     }
 }
