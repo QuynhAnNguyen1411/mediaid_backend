@@ -21,6 +21,8 @@ public class TieuSuBenhTatDTO {
     @NotEmpty
     @JsonProperty("accountID")
     private String accountID;
+    @JsonProperty("soKhamID")
+    private String soKhamID;
     @NotNull
     @JsonProperty("medicalLevel")
     private int mucDoID;
