@@ -5,7 +5,6 @@ import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuBenhDiTruyenDTO;
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuBenhTatDTO;
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuDiUngDTO;
 import com.mediaid.mediaid.DTO.staticData.GetMappingData.SoKhamDTO;
-import com.mediaid.mediaid.DTO.staticData.TieuSuPreviewData;
 import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
 import com.mediaid.mediaid.service.abstracts.SoKhamService;
@@ -207,7 +206,7 @@ public class SoKhamServiceImpl implements SoKhamService {
             log.warn("Invalid parammeter, accountID: " + accountID + ", type: " + type);
             return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Internal accountID"));
         }
-        List<TieuSuPreviewData> tieuSuPreviewDatas;
+        List<?> tieuSuPreviewDatas;
         switch (type) {
             case "TieuSuBenhTat" -> tieuSuPreviewDatas = tieuSuBenhTatRepo.findPreviewByAccountID(accountID);
             case "TieuSuBenhDiTruyen" -> tieuSuPreviewDatas = tieuSuBenhDiTruyenRepo.findPreviewByAccountID(accountID);
