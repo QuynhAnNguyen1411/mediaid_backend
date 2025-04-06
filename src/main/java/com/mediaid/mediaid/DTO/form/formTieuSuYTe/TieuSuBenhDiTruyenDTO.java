@@ -1,6 +1,7 @@
 package com.mediaid.mediaid.DTO.form.formTieuSuYTe;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,21 +15,25 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TieuSuBenhDiTruyenDTO {
+    @JsonProperty("geneticDiseaseHistoryID")
     private String tieuSuBenhDiTruyenID;
     @NotNull
     @NotEmpty
+    @JsonProperty("geneticDiseaseHistoryID")
     private String soKhamID;
     @NotNull
+    @JsonProperty("medicalLevelFM")
     private int mucDoID;
     @NotNull
     @NotEmpty
+    @JsonProperty("geneticDisease")
     private String loaiBenh;
-
+    @JsonProperty("relationshipFM")
     private String thanhVienGiaDinh;
 
-    private String moiQuanHeThanhVien;
-
+    @JsonProperty("yearOfDiseaseFM")
     private String namPhatHien;
 
+    @JsonProperty("noteDiseaseFM")
     private String ghiChu;
 }

@@ -26,8 +26,6 @@ public class TieuSuBenhDiTruyen {
 
     private String thanhVienGiaDinh;
 
-    private String moiQuanHeThanhVien;
-
     private String namPhatHien;
 
     private String ghiChu;

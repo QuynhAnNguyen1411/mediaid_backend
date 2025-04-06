@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -36,7 +35,8 @@ public class SoKhamServiceImpl implements SoKhamService {
     TieuSuBenhDiTruyenRepo tieuSuBenhDiTruyenRepo;
     @Autowired
     TieuSuDiUngRepo tieuSuDiUngRepo;
-
+    @Autowired
+    TieuSuPhauThuatRepo tieuSuPhauThuatRepo;
     @Override
     public ResponseEntity<?> capNhatTieuSuBenhTat(TieuSuBenhTatDTO tieuSuBenhTatDTO, BindingResult bindingResult) {
         HashMap<String, String> errors = ValidationUtil.validationCheckBindingResult(bindingResult);
@@ -122,7 +122,6 @@ public class SoKhamServiceImpl implements SoKhamService {
         tieuSuBenhDiTruyen.setMucDo(mucDo);
         tieuSuBenhDiTruyen.setLoaiBenh(tieuSuBenhDiTruyenDTO.getLoaiBenh());
         tieuSuBenhDiTruyen.setThanhVienGiaDinh(tieuSuBenhDiTruyenDTO.getThanhVienGiaDinh());
-        tieuSuBenhDiTruyen.setMoiQuanHeThanhVien(tieuSuBenhDiTruyenDTO.getMoiQuanHeThanhVien());
         tieuSuBenhDiTruyen.setNamPhatHien(tieuSuBenhDiTruyenDTO.getNamPhatHien());
         tieuSuBenhDiTruyen.setGhiChu(tieuSuBenhDiTruyenDTO.getGhiChu());
         try {
@@ -207,43 +206,45 @@ public class SoKhamServiceImpl implements SoKhamService {
             return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Internal accountID"));
         }
         List<?> tieuSuPreviewDatas;
-        switch (type) {
-            case "TieuSuBenhTat" -> tieuSuPreviewDatas = tieuSuBenhTatRepo.findPreviewByAccountID(accountID);
-            case "TieuSuBenhDiTruyen" -> tieuSuPreviewDatas = tieuSuBenhDiTruyenRepo.findPreviewByAccountID(accountID);
-            case "TieuSuDiUng" -> tieuSuPreviewDatas = tieuSuDiUngRepo.findPreviewByAccountID(accountID);
-            case "TieuSuPhauThuat" -> tieuSuPreviewDatas = new ArrayList<>();
-            default -> {
-                log.warn("Invalid type of tieuSu: " + type);
-                return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid type of tieuSu"));
+        try{
+            switch (type) {
+                case "TieuSuBenhTat" -> tieuSuPreviewDatas = tieuSuBenhTatRepo.findPreviewByAccountID(accountID);
+                case "TieuSuBenhDiTruyen" -> tieuSuPreviewDatas = tieuSuBenhDiTruyenRepo.findPreviewByAccountID(accountID);
+                case "TieuSuDiUng" -> tieuSuPreviewDatas = tieuSuDiUngRepo.findPreviewByAccountID(accountID);
+                case "TieuSuPhauThuat" -> tieuSuPreviewDatas = tieuSuPhauThuatRepo.findPreviewByAccountID(accountID);
+                default -> {
+                    log.warn("Invalid type of tieuSu: " + type);
+                    return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid type of tieuSu"));
+                }
             }
+            return ResponseEntity.ok(tieuSuPreviewDatas);
+        }catch (Exception e){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body("Internal error from server");
         }
-        return ResponseEntity.ok(tieuSuPreviewDatas);
     }
 
     @Override
-    public ResponseEntity<?> getTieuSuBenhTatDTO(String tieuSuBenhTatID) {
-        if (CommonUtil.isNullOrEmpty(tieuSuBenhTatID)) {
-            log.warn("Invalid parammeter, accountID: " + tieuSuBenhTatID);
+    public ResponseEntity<?> deleteTieuSuTheoLoai(String tieuSuID, String type) {
+        if (CommonUtil.isNullOrEmpty(tieuSuID) || CommonUtil.isNullOrEmpty(type)) {
+            log.warn("Invalid parammeter, tieuSuID: " + tieuSuID + ", type: " + type);
             return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Internal accountID"));
         }
         try {
-            TieuSuBenhTat tieuSuBenhTat = tieuSuBenhTatRepo.findByTieuSuBenhTatID(tieuSuBenhTatID);
-            TieuSuBenhTatDTO tieuSuBenhTatDTO = new TieuSuBenhTatDTO(
-                    tieuSuBenhTat.getTieuSuBenhTatID(),
-                    null,
-                    tieuSuBenhTat.getSoKham().getSoKhamID(),
-                    tieuSuBenhTat.getMucDo().getMucDoID(),
-                    tieuSuBenhTat.getPhuongPhapDieuTri().getPhuongPhapDieuTriID(),
-                    tieuSuBenhTat.getLoaiBenh(),
-                    tieuSuBenhTat.getBienChung(),
-                    tieuSuBenhTat.getBenhVienDieuTri(),
-                    tieuSuBenhTat.getNamPhatHien(),
-                    tieuSuBenhTat.getGhiChu()
-            );
-            return ResponseEntity.ok().body(tieuSuBenhTatDTO);
-        } catch (Exception e) {
+            switch (type) {
+                case "TieuSuBenhTat" -> tieuSuBenhTatRepo.deleteById(tieuSuID);
+                case "TieuSuBenhDiTruyen" -> tieuSuBenhDiTruyenRepo.deleteById(tieuSuID);
+                case "TieuSuDiUng" -> tieuSuDiUngRepo.deleteById(tieuSuID);
+                case "TieuSuPhauThuat" -> tieuSuPhauThuatRepo.deleteById(tieuSuID);
+                default -> {
+                    log.warn("Invalid type of tieuSu: " + type);
+                    return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid type of tieuSu"));
+                }
+            }
+            return ResponseEntity.ok("Delete tieuSu with id: "+tieuSuID);
+        }catch (Exception e){
             log.error("Exception", e);
-            return ResponseEntity.internalServerError().body("Internal error");
+            return ResponseEntity.internalServerError().body("Internal error from server");
         }
     }
 }

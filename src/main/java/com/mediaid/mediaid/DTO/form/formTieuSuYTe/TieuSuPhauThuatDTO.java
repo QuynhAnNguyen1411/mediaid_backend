@@ -1,9 +1,6 @@
 package com.mediaid.mediaid.DTO.form.formTieuSuYTe;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.mediaid.mediaid.model.LyDoPhauThuat;
-import com.mediaid.mediaid.model.MucDo;
-import com.mediaid.mediaid.model.SoKham;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,13 +17,13 @@ public class TieuSuPhauThuatDTO {
     private String tieuSuPhauThuatID;
     @NotNull
     @NotEmpty
-    private SoKham soKham;
+    private String soKhamID;
     @NotNull
     @NotEmpty
-    private LyDoPhauThuat lyDoPhauThuatID;
+    private int lyDoPhauThuatID;
     @NotNull
     @NotEmpty
-    private MucDo mucDoID;
+    private int mucDoID;
     @NotNull
     @NotEmpty
     private String ten;
