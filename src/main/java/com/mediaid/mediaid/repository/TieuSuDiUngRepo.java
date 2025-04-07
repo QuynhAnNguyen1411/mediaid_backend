@@ -12,7 +12,7 @@ import java.util.List;
 public interface TieuSuDiUngRepo extends JpaRepository<TieuSuDiUng, String> {
     TieuSuDiUng findByTieuSuDiUngID(String id);
     @Query("SELECT new com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuDiUngDTO(" +
-            "a.tieuSuDiUngID, b.soKhamID, d.mucDoID, a.tacNhan, a.trieuChung, a.lanCuoiXayRa, a.ghiChu) " +
+            "a.tieuSuDiUngID, c.accountID, b.soKhamID, d.mucDoID, a.tacNhan, a.trieuChung, a.lanCuoiXayRa, a.ghiChu) " +
             "FROM TieuSuDiUng a inner join a.soKham b inner join b.taiKhoan c inner join a.mucDo d " +
             "where c.accountID = ?1")
     List<TieuSuDiUngDTO> findPreviewByAccountID(String accounID);

@@ -144,7 +144,7 @@ public class SoKhamServiceImpl implements SoKhamService {
         SoKham soKham;
         TieuSuDiUng tieuSuDiUng;
         try {
-            soKham = soKhamRepo.findBySoKhamID(tieuSuDiUngDTO.getSoKhamID());
+            soKham = soKhamRepo.findSoKhamByAccountID(tieuSuDiUngDTO.getAccountID());
             mucDo = mucDoRepo.findByMucDoID(tieuSuDiUngDTO.getMucDoID());
             if (CommonUtil.isNullOrEmpty(soKham) || CommonUtil.isNullOrEmpty(mucDo)) {
                 log.warn("Invalid id data in request " + new ObjectMapper().writeValueAsString(tieuSuDiUngDTO));
