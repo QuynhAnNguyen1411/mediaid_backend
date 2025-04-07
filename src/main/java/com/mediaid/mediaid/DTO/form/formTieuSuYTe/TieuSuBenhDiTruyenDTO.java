@@ -19,11 +19,13 @@ public class TieuSuBenhDiTruyenDTO {
     private String tieuSuBenhDiTruyenID;
     @NotNull
     @NotEmpty
-    @JsonProperty("geneticDiseaseHistoryID")
+    @JsonProperty("accountID")
+    private String accountID;
+    @JsonProperty("soKhamID")
     private String soKhamID;
     @NotNull
     @JsonProperty("medicalLevelFM")
-    private int mucDoID;
+    private Integer mucDoID;
     @NotNull
     @NotEmpty
     @JsonProperty("geneticDisease")

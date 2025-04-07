@@ -98,7 +98,7 @@ public class SoKhamServiceImpl implements SoKhamService {
         SoKham soKham;
         TieuSuBenhDiTruyen tieuSuBenhDiTruyen;
         try {
-            soKham = soKhamRepo.findBySoKhamID(tieuSuBenhDiTruyenDTO.getSoKhamID());
+            soKham = soKhamRepo.findSoKhamByAccountID(tieuSuBenhDiTruyenDTO.getAccountID());
             mucDo = mucDoRepo.findByMucDoID(tieuSuBenhDiTruyenDTO.getMucDoID());
             if (CommonUtil.isNullOrEmpty(soKham) || CommonUtil.isNullOrEmpty(mucDo)) {
                 log.warn("Invalid id data in request " + new ObjectMapper().writeValueAsString(tieuSuBenhDiTruyenDTO));
@@ -241,6 +241,7 @@ public class SoKhamServiceImpl implements SoKhamService {
                     return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid type of tieuSu"));
                 }
             }
+            log.info("Delete tieuSu with id: "+tieuSuID+", type: "+type);
             return ResponseEntity.ok("Delete tieuSu with id: "+tieuSuID);
         }catch (Exception e){
             log.error("Exception", e);
