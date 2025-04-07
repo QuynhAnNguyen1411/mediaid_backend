@@ -27,6 +27,8 @@ public class TieuSuThuocDTO {
     @NotEmpty
     private String tinhTrangSuDungID;
     @NotNull
+    private Integer loaiSanPhamID;
+    @NotNull
     @NotEmpty
     private String tenThuoc;
     @NotNull

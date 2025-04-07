@@ -21,6 +21,9 @@ public class TieuSuThuoc {
     @ManyToOne
     @JoinColumn(name = "tinhTrangSuDungID", nullable = false)
     private TinhTrangSuDung tinhTrangSuDung;
+    @ManyToOne
+    @JoinColumn(name = "loaiSanPhamID", nullable = false)
+    private LoaiSanPham loaiSanPham;
 
     private String tenThuoc;
     private String batDau;

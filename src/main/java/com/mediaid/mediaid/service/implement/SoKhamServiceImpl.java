@@ -41,6 +41,8 @@ public class SoKhamServiceImpl implements SoKhamService {
     TinhTrangSuDungRepo tinhTrangSuDungRepo;
     @Autowired
     TieuSuThuocRepo tieuSuThuocRepo;
+    @Autowired
+    LoaiSanPhamRepo loaiSanPhamRepo;
     @Override
     public ResponseEntity<?> capNhatTieuSuBenhTat(TieuSuBenhTatDTO tieuSuBenhTatDTO, BindingResult bindingResult) {
         HashMap<String, String> errors = ValidationUtil.validationCheckBindingResult(bindingResult);
@@ -243,9 +245,11 @@ public class SoKhamServiceImpl implements SoKhamService {
         TinhTrangSuDung tinhTrangSuDung;
         SoKham soKham;
         TieuSuThuoc tieuSuThuoc;
+        LoaiSanPham loaiSanPham;
         try {
             soKham = soKhamRepo.findSoKhamByAccountID(tieuSuThuocDTO.getAccountID());
             tinhTrangSuDung = tinhTrangSuDungRepo.findByTinhTrangSuDungID(tieuSuThuocDTO.getTinhTrangSuDungID());
+            loaiSanPham = loaiSanPhamRepo.findByLoaiSanPhamID(tieuSuThuocDTO.getLoaiSanPhamID());
 
             if (CommonUtil.isNullOrEmpty(soKham) || CommonUtil.isNullOrEmpty(tinhTrangSuDung) ) {
                 log.warn("Invalid id data in request " + new ObjectMapper().writeValueAsString(tieuSuThuocDTO));
@@ -266,6 +270,7 @@ public class SoKhamServiceImpl implements SoKhamService {
             log.error("Exception", e);
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error appear"));
         }
+        tieuSuThuoc.setLoaiSanPham(loaiSanPham);
         tieuSuThuoc.setTinhTrangSuDung(tinhTrangSuDung);
         tieuSuThuoc.setTenThuoc(tieuSuThuocDTO.getTenThuoc());
         tieuSuThuoc.setBatDau(tieuSuThuocDTO.getBatDau());
