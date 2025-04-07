@@ -2,6 +2,7 @@ package com.mediaid.mediaid.repository;
 
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuPhauThuatDTO;
 import com.mediaid.mediaid.model.TieuSuPhauThuat;
+import com.mediaid.mediaid.model.TinhTrangSuDung;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -9,13 +10,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TieuSuPhauThuatRepo extends JpaRepository<TieuSuPhauThuat, String> {
-    TieuSuPhauThuat findByTieuSuPhauThuatID(String id);
-    @Query("SELECT new com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuPhauThuatDTO(" +
-            "a.tieuSuPhauThuatID, c.accountID, b.soKhamID, e.lyDoPhauThuatID, d.mucDoID, a.ten, a.thoiDiemThucHien, a.benhVienThucHien, a.bienChung, a.ghiChu) " +
-            "FROM TieuSuPhauThuat a inner join a.soKham b inner join b.taiKhoan c inner join a.mucDo d inner join a.lyDoPhauThuat e " +
-            "where c.accountID = ?1")
-    List<TieuSuPhauThuatDTO> findPreviewByAccountID(String accounID);
+public interface TinhTrangSuDungRepo extends JpaRepository<TinhTrangSuDung, Integer> {
+    TinhTrangSuDung findByTinhTrangSuDungID(int id);
 }
 //    private String tieuSuPhauThuatID;
 //    private String soKhamID;

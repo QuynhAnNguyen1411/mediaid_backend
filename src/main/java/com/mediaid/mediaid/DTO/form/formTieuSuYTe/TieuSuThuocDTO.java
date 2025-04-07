@@ -2,6 +2,10 @@ package com.mediaid.mediaid.DTO.form.formTieuSuYTe;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mediaid.mediaid.model.SoKham;
+import com.mediaid.mediaid.model.TinhTrangSuDung;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,25 +18,23 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TieuSuPhauThuatDTO {
+public class TieuSuThuocDTO {
     @JsonProperty("")
-    private String tieuSuPhauThuatID;
+    private String tieuSuThuocID;
     @NotNull
     @NotEmpty
+    @JsonProperty("accountID")
     private String accountID;
-
+    @JsonProperty("soKhamID")
     private String soKhamID;
     @NotNull
-    private Integer lyDoPhauThuatID;
-    @NotNull
-    private Integer mucDoID;
+    private Integer tinhTrangSuDungID;
     @NotNull
     @NotEmpty
-    private String ten;
+    private String tenThuoc;
     @NotNull
     @NotEmpty
-    private String thoiDiemThucHien;
-    private String benhVienThucHien;
-    private String bienChung;
+    private String batDau;
+    private String ketThuc;
     private String ghiChu;
 }
