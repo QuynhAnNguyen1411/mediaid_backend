@@ -2,10 +2,6 @@ package com.mediaid.mediaid.DTO.form.formTieuSuYTe;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mediaid.mediaid.model.SoKham;
-import com.mediaid.mediaid.model.TinhTrangSuDung;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -28,7 +24,8 @@ public class TieuSuThuocDTO {
     @JsonProperty("soKhamID")
     private String soKhamID;
     @NotNull
-    private Integer tinhTrangSuDungID;
+    @NotEmpty
+    private String tinhTrangSuDungID;
     @NotNull
     @NotEmpty
     private String tenThuoc;
