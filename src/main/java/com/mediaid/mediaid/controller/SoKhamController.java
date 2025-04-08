@@ -1,8 +1,6 @@
 package com.mediaid.mediaid.controller;
 
-import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuBenhDiTruyenDTO;
-import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuBenhTatDTO;
-import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuDiUngDTO;
+import com.mediaid.mediaid.DTO.form.formTieuSuYTe.*;
 import com.mediaid.mediaid.service.abstracts.SoKhamService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +23,14 @@ public class SoKhamController {
     @PostMapping("/capNhatTieuSuDiUng")
     public ResponseEntity<?> capNhatTieuSuDiUng(@RequestBody @Valid TieuSuDiUngDTO tieuSuDiUngDTO, BindingResult bindingResult) {
         return soKhamService.capNhatTieuSuDiUng(tieuSuDiUngDTO, bindingResult);
+    }
+    @PostMapping("/capNhatTieuSuPhauThuat")
+    public ResponseEntity<?> capNhatTieuSuPhauThuat(@RequestBody @Valid TieuSuPhauThuatDTO tieuSuPhauThuatDTO, BindingResult bindingResult) {
+        return soKhamService.capNhatTieuSuPhauThuat(tieuSuPhauThuatDTO, bindingResult);
+    }
+    @PostMapping("/capNhatTieuSuThuoc")
+    public ResponseEntity<?> capNhatTieuSuThuoc(@RequestBody @Valid TieuSuThuocDTO tieuSuThuocDTO, BindingResult bindingResult) {
+        return soKhamService.capNhatTieuSuThuoc(tieuSuThuocDTO, bindingResult);
     }
     @GetMapping("/layThongTinSoKham")
     public ResponseEntity<?> layThongTinSoKham(@RequestParam String accountID) {
