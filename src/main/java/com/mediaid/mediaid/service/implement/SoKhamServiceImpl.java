@@ -192,6 +192,7 @@ public class SoKhamServiceImpl implements SoKhamService {
             log.warn(errors.toString());
             return ResponseEntity.badRequest().body(errors);
         }
+        log.info("Cap nhat tieu su phau thuat");
         LyDoPhauThuat lyDoPhauThuat;
         SoKham soKham;
         TieuSuPhauThuat tieuSuPhauThuat;
