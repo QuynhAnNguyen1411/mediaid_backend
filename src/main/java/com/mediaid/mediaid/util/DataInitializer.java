@@ -182,18 +182,26 @@ public class DataInitializer implements CommandLineRunner {
         }
         if(thoiQuenRepo.count() == 0){
             List<ThoiQuen> thoiQuens = List.of(
-                    new ThoiQuen("Đang sử dụng", true),
-                    new ThoiQuen("Đang sử dụng", true),
-                    new ThoiQuen("Đang sử dụng", true)
+                    new ThoiQuen("Sử dụng chất kích thích \n" + "(thuốc lá, ma túy, thuốc lá điện tử)", true),
+                    new ThoiQuen("Uống nhiều rượu bia", true),
+                    new ThoiQuen("Ăn mặn", true),
+                    new ThoiQuen("Stress tâm lý", true),
+                    new ThoiQuen("Thường xuyên thiếu ngủ", true),
+                    new ThoiQuen("Ít vận động thể dục hoặc ngồi nhiều", true)
                     );
             thoiQuenRepo.saveAll(thoiQuens);
             log.info("Insert default thoiQuens data into the database.");
         }
         if(moiTruongRepo.count() == 0){
             List<MoiTruong> moiTruongs = List.of(
-                    new MoiTruong("Đang sử dụng", true),
-                    new MoiTruong("Đang sử dụng", true),
-                    new MoiTruong("Đang sử dụng", true)
+                    new MoiTruong("Văn phòng ngồi nhiều", true),
+                    new MoiTruong("Công trường / Lao động tay chân nặng", true),
+                    new MoiTruong("Đứng lâu (bán hàng, giáo viên...)", true),
+                    new MoiTruong("Di chuyển liên tục (giao hàng, kỹ thuật viên...)", true),
+                    new MoiTruong("Môi trường tiếp xúc hóa chất / bụi / độc hại", true),
+                    new MoiTruong("Áp lực công việc cao", true),
+                    new MoiTruong("Ít tương tác xã hội / cô lập", true),
+                    new MoiTruong("Làm việc ca đêm / theo ca", true)
             );
             moiTruongRepo.saveAll(moiTruongs);
             log.info("Insert default moiTruongs data into the database.");
