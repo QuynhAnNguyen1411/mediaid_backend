@@ -1,7 +1,6 @@
 package com.mediaid.mediaid.DTO.staticData;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,10 +14,20 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TemplateDuLieuTinhDTO {
     private int ID;
+    private long longID;
+    private String stringID;
     private String ten;
 
     public TemplateDuLieuTinhDTO(int ID, String ten) {
         this.ID = ID;
+        this.ten = ten;
+    }
+    public TemplateDuLieuTinhDTO(String stringID, String ten) {
+        this.stringID = stringID;
+        this.ten = ten;
+    }
+    public TemplateDuLieuTinhDTO(long longID, String ten) {
+        this.longID = longID;
         this.ten = ten;
     }
 

@@ -28,6 +28,14 @@ public class StaticServiceImpl implements StaticService {
     MucDoRepo mucDoRepo;
     @Autowired
     PhuongPhapDieuTriRepo phuongPhapDieuTriRepo;
+    @Autowired
+    TinhTrangSuDungRepo tinhTrangSuDungRepo;
+    @Autowired
+    LoaiSanPhamRepo loaiSanPhamRepo;
+    @Autowired
+    ThoiQuenRepo thoiQuenRepo;
+    @Autowired
+    MoiTruongRepo moiTruongRepo;
 
     @Override
     public ResponseEntity<?> getStaticRegistryData() {
@@ -67,6 +75,52 @@ public class StaticServiceImpl implements StaticService {
 
             DuLieuTinhTieuSuYTe duLieuTinhTieuSuYTe = new DuLieuTinhTieuSuYTe(lyDoPhauThuatDTOS,phuongPhapDieuTriDTOS,mucDoDTOS);
             return ResponseEntity.ok(duLieuTinhTieuSuYTe);
+        }catch (Exception e){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Fail to retrieving static data"));
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getStaticDataForTieuSuThuoc() {
+        List<TinhTrangSuDungDTO> tinhTrangSuDungDTOS;
+        List<LoaiSanPhamDTO> loaiSanPhamDTOS;
+
+        try {
+            List<TinhTrangSuDung> tinhTrangSuDungs = tinhTrangSuDungRepo.findByStatus(true);
+            List<LoaiSanPham> loaiSanPhams = loaiSanPhamRepo.findByStatus(true);
+
+            DTOMapper<TinhTrangSuDung, TinhTrangSuDungDTO> tinhTrangSuDungDtoMapper = new TinhTrangSuDungDTO();
+            tinhTrangSuDungDTOS = TinhTrangSuDungDTO.mapEntityListToDTOList(tinhTrangSuDungs, tinhTrangSuDungDtoMapper);
+
+            DTOMapper<LoaiSanPham, LoaiSanPhamDTO> loaiSanPhamDtoMapper = new LoaiSanPhamDTO();
+            loaiSanPhamDTOS = LoaiSanPhamDTO.mapEntityListToDTOList(loaiSanPhams, loaiSanPhamDtoMapper);
+
+            DuLieuTinhTieuSuYTe duLieuTinhTieuSuYTe = new DuLieuTinhTieuSuYTe(loaiSanPhamDTOS, tinhTrangSuDungDTOS);
+            return ResponseEntity.ok(duLieuTinhTieuSuYTe);
+        }catch (Exception e){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Fail to retrieving static data"));
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getStaticDataForLoiSong() {
+        List<ThoiQuenDTO> thoiQuenDTOS;
+        List<MoiTruongDTO> moiTruongDTOS;
+
+        try {
+            List<ThoiQuen> thoiQuens = thoiQuenRepo.findByStatus(true);
+            List<MoiTruong> moiTruongs = moiTruongRepo.findByStatus(true);
+
+            DTOMapper<ThoiQuen, ThoiQuenDTO> thoiQuenDtoMapper = new ThoiQuenDTO();
+            thoiQuenDTOS = ThoiQuenDTO.mapEntityListToDTOList(thoiQuens, thoiQuenDtoMapper);
+
+            DTOMapper<MoiTruong, MoiTruongDTO> moiTruongDtoMapper = new MoiTruongDTO();
+            moiTruongDTOS = MoiTruongDTO.mapEntityListToDTOList(moiTruongs, moiTruongDtoMapper);
+
+            DuLieuTinhTieuSuLoiSong duLieuTinhTieuSuLoiSong = new DuLieuTinhTieuSuLoiSong(thoiQuenDTOS, moiTruongDTOS);
+            return ResponseEntity.ok(duLieuTinhTieuSuLoiSong);
         }catch (Exception e){
             log.error("Exception", e);
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Fail to retrieving static data"));

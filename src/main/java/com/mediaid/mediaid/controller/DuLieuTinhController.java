@@ -20,4 +20,13 @@ public class DuLieuTinhController {
     public ResponseEntity<?> getDuLieuTinhChoTieuSuYTe() {
         return staticService.getStaticDataForTieuSuYTe();
     }
+
+    @GetMapping("/staticDataForTieuSuThuoc")
+    public ResponseEntity<?> staticDataForTieuSuThuoc() {
+        return staticService.getStaticDataForTieuSuThuoc();
+    }
+    @GetMapping("/staticDataForTieuSuLoiSong")
+    public ResponseEntity<?> staticDataForTieuSuLoiSong() {
+        return staticService.getStaticDataForLoiSong();
+    }
 }

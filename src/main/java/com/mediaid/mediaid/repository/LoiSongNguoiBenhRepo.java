@@ -1,16 +1,12 @@
 package com.mediaid.mediaid.repository;
 
-import com.mediaid.mediaid.model.TinhTrangSuDung;
+import com.mediaid.mediaid.model.LoiSongNguoiBenh;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface TinhTrangSuDungRepo extends JpaRepository<TinhTrangSuDung, String> {
-    TinhTrangSuDung findByTinhTrangSuDungID(String id);
-    List<TinhTrangSuDung> findByStatus(boolean status);
-
+public interface LoiSongNguoiBenhRepo extends JpaRepository<LoiSongNguoiBenh, String> {
+    LoiSongNguoiBenh findByLoiSongNguoiBenhID(String id);
 }
 //    private String tieuSuPhauThuatID;
 //    private String soKhamID;

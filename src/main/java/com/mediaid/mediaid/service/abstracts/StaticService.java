@@ -5,4 +5,6 @@ import org.springframework.http.ResponseEntity;
 public interface StaticService {
     ResponseEntity<?> getStaticRegistryData();
     ResponseEntity<?> getStaticDataForTieuSuYTe();
+    ResponseEntity<?> getStaticDataForTieuSuThuoc();
+    ResponseEntity<?> getStaticDataForLoiSong();
 }

@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -17,14 +18,23 @@ public class DataInitializer implements CommandLineRunner {
     private final LyDoPhauThuatRepo lyDoPhauThuatRepo;
     private final MucDoRepo mucDoRepo;
     private final PhuongPhapDieuTriRepo phuongPhapDieuTriRepo;
+    private final LoaiSanPhamRepo loaiSanPhamRepo;
+    private final TinhTrangSuDungRepo tinhTrangSuDungRepo;
+    private final ThoiQuenRepo thoiQuenRepo;
+    private final MoiTruongRepo moiTruongRepo;
 
-    public DataInitializer(DanTocRepo danTocRepository, GenderRepo genderRepo, RoleRepo roleRepo, LyDoPhauThuatRepo lyDoPhauThuatRepo, MucDoRepo mucDoRepo, PhuongPhapDieuTriRepo phuongPhapDieuTriRepo) {
+    public DataInitializer(DanTocRepo danTocRepository, GenderRepo genderRepo, RoleRepo roleRepo, LyDoPhauThuatRepo lyDoPhauThuatRepo, MucDoRepo mucDoRepo, PhuongPhapDieuTriRepo phuongPhapDieuTriRepo, LoaiSanPhamRepo loaiSanPhamRepo,TinhTrangSuDungRepo tinhTrangSuDungRepo,
+                           ThoiQuenRepo thoiQuenRepo, MoiTruongRepo moiTruongRepo) {
         this.danTocRepository = danTocRepository;
         this.genderRepo = genderRepo;
         this.roleRepo = roleRepo;
         this.lyDoPhauThuatRepo = lyDoPhauThuatRepo;
         this.mucDoRepo = mucDoRepo;
         this.phuongPhapDieuTriRepo = phuongPhapDieuTriRepo;
+        this.loaiSanPhamRepo = loaiSanPhamRepo;
+        this.tinhTrangSuDungRepo = tinhTrangSuDungRepo;
+        this.thoiQuenRepo = thoiQuenRepo;
+        this.moiTruongRepo = moiTruongRepo;
     }
 
     @Override
@@ -151,6 +161,42 @@ public class DataInitializer implements CommandLineRunner {
                     );
             mucDoRepo.saveAll(mucDoList);
             log.info("Insert default MucDo data into the database.");
+        }
+        if (loaiSanPhamRepo.count() == 0){
+            List<LoaiSanPham> loaiSanPhams = List.of(
+                    new LoaiSanPham("Thuốc kê đơn", true),
+                    new LoaiSanPham("Thuốc không kê đơn", true),
+                    new LoaiSanPham("Thực phẩm chức năng" , true)
+                    );
+            loaiSanPhamRepo.saveAll(loaiSanPhams);
+            log.info("Insert default loaiSanPham data into the database.");
+        }
+        if (tinhTrangSuDungRepo.count() == 0){
+            List<TinhTrangSuDung> tinhTrangSuDungs = List.of(
+                    new TinhTrangSuDung(UUID.randomUUID().toString(), "Đang sử dụng"),
+                    new TinhTrangSuDung(UUID.randomUUID().toString(), "Đã sử dụng xong 1 - 2 tháng trước"),
+                    new TinhTrangSuDung(UUID.randomUUID().toString(), "Đã từng sử dụng trong thời gian dài")
+                    );
+            tinhTrangSuDungRepo.saveAll(tinhTrangSuDungs);
+            log.info("Insert default tinhTrangSuDungs data into the database.");
+        }
+        if(thoiQuenRepo.count() == 0){
+            List<ThoiQuen> thoiQuens = List.of(
+                    new ThoiQuen("Đang sử dụng", true),
+                    new ThoiQuen("Đang sử dụng", true),
+                    new ThoiQuen("Đang sử dụng", true)
+                    );
+            thoiQuenRepo.saveAll(thoiQuens);
+            log.info("Insert default thoiQuens data into the database.");
+        }
+        if(moiTruongRepo.count() == 0){
+            List<MoiTruong> moiTruongs = List.of(
+                    new MoiTruong("Đang sử dụng", true),
+                    new MoiTruong("Đang sử dụng", true),
+                    new MoiTruong("Đang sử dụng", true)
+            );
+            moiTruongRepo.saveAll(moiTruongs);
+            log.info("Insert default moiTruongs data into the database.");
         }
     }
 }

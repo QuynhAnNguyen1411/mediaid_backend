@@ -15,7 +15,6 @@ public interface SoKhamRepo extends JpaRepository<SoKham, String> {
     @Query("SELECT new com.mediaid.mediaid.DTO.staticData.GetMappingData.SoKhamDTO(a.soKhamID, b.ten, b.cccdCmt, a.bhyt, b.sdt) FROM SoKham a inner join a.taiKhoan b where b.accountID = ?1")
     SoKhamDTO findByAccountID(String accounID);
 
-
 //    private String accountID;
 //    private String accountName;
 //    private String cmndCmt;

@@ -15,10 +15,16 @@ public class ThoiQuen {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long thoiQuenID;
+    private long thoiQuenID;
 
     private String ten;
     private boolean status;
+
+    public ThoiQuen(String ten, boolean status) {
+        this.ten = ten;
+        this.status = status;
+    }
+
     @OneToMany(mappedBy = "thoiQuen", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ThoiQuenLoiSong> thoiQuenLoiSongs;
 }

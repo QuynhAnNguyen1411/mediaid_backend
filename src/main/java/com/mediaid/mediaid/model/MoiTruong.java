@@ -20,6 +20,11 @@ public class MoiTruong {
     private String ten;
     private boolean status;
 
+    public MoiTruong(String ten, boolean status) {
+        this.ten = ten;
+        this.status = status;
+    }
+
     @OneToMany(mappedBy = "moiTruong", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LoiSongNguoiBenh> loiSongNguoiBenhs;
 }

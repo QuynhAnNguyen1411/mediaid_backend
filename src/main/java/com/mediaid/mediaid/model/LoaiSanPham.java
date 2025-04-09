@@ -21,6 +21,12 @@ public class LoaiSanPham {
     private int loaiSanPhamID;
 
     private String loaiSanPham;
+    private boolean status;
+
+    public LoaiSanPham(String loaiSanPham, boolean status) {
+        this.loaiSanPham = loaiSanPham;
+        this.status = status;
+    }
 
     @OneToMany(mappedBy = "loaiSanPham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TieuSuThuoc> tieuSuThuocs;
