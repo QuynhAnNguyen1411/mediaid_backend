@@ -21,7 +21,7 @@ public class TinhTrangSuDung {
     private boolean status;
 
     public TinhTrangSuDung(String tinhTrang, boolean status) {
-        this.tinhTrangSuDungID = tinhTrangSuDungID;
+        this.tinhTrang = tinhTrang;
         this.status = status;
     }
 
