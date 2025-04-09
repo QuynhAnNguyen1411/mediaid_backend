@@ -173,9 +173,9 @@ public class DataInitializer implements CommandLineRunner {
         }
         if (tinhTrangSuDungRepo.count() == 0){
             List<TinhTrangSuDung> tinhTrangSuDungs = List.of(
-                    new TinhTrangSuDung(UUID.randomUUID().toString(), "Đang sử dụng"),
-                    new TinhTrangSuDung(UUID.randomUUID().toString(), "Đã sử dụng xong 1 - 2 tháng trước"),
-                    new TinhTrangSuDung(UUID.randomUUID().toString(), "Đã từng sử dụng trong thời gian dài")
+                    new TinhTrangSuDung("Đang sử dụng", true),
+                    new TinhTrangSuDung("Đã sử dụng xong 1 - 2 tháng trước", true),
+                    new TinhTrangSuDung("Đã từng sử dụng trong thời gian dài", true)
                     );
             tinhTrangSuDungRepo.saveAll(tinhTrangSuDungs);
             log.info("Insert default tinhTrangSuDungs data into the database.");

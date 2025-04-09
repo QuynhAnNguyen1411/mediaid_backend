@@ -15,7 +15,7 @@ public class ThoiQuen {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long thoiQuenID;
+    private int thoiQuenID;
 
     private String ten;
     private boolean status;

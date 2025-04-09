@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TinhTrangSuDungRepo extends JpaRepository<TinhTrangSuDung, String> {
-    TinhTrangSuDung findByTinhTrangSuDungID(String id);
+public interface TinhTrangSuDungRepo extends JpaRepository<TinhTrangSuDung, Integer> {
+    TinhTrangSuDung findByTinhTrangSuDungID(int id);
     List<TinhTrangSuDung> findByStatus(boolean status);
 
 }

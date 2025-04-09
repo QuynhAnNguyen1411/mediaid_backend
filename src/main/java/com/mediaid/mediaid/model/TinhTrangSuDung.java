@@ -14,14 +14,15 @@ import java.util.List;
 public class TinhTrangSuDung {
 
     @Id
-    private String tinhTrangSuDungID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int tinhTrangSuDungID;
 
     private String tinhTrang;
     private boolean status;
 
-    public TinhTrangSuDung(String tinhTrangSuDungID, String tinhTrang) {
+    public TinhTrangSuDung(String tinhTrang, boolean status) {
         this.tinhTrangSuDungID = tinhTrangSuDungID;
-        this.tinhTrang = tinhTrang;
+        this.status = status;
     }
 
     @OneToMany(mappedBy = "tinhTrangSuDung", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

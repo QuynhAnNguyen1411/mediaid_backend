@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class TinhTrangSuDungDTO extends TemplateDuLieuTinhDTO implements DTOMapper<TinhTrangSuDung, TinhTrangSuDungDTO> {
-    public TinhTrangSuDungDTO(String ID, String ten) {
+    public TinhTrangSuDungDTO(int ID, String ten) {
         super(ID, ten);
     }
 

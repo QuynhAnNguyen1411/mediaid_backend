@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class ThoiQuenDTO extends TemplateDuLieuTinhDTO implements DTOMapper<ThoiQuen, ThoiQuenDTO> {
-    public ThoiQuenDTO(long ID, String ten) {
+    public ThoiQuenDTO(int ID, String ten) {
         super(ID, ten);
     }
 
