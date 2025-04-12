@@ -28,6 +28,10 @@ public class SoKhamController {
     public ResponseEntity<?> capNhatTieuSuPhauThuat(@RequestBody @Valid TieuSuPhauThuatDTO tieuSuPhauThuatDTO, BindingResult bindingResult) {
         return soKhamService.capNhatTieuSuPhauThuat(tieuSuPhauThuatDTO, bindingResult);
     }
+    @PostMapping("/capNhatTieuSuLoiSong")
+    public ResponseEntity<?> capNhatTieuSuLoiSong(@RequestBody @Valid TieuSuLoiSongDTO tieuSuPhauThuatDTO, BindingResult bindingResult) {
+        return soKhamService.capNhatTieuSuLoiSong(tieuSuPhauThuatDTO, bindingResult);
+    }
     @PostMapping("/capNhatTieuSuThuoc")
     public ResponseEntity<?> capNhatTieuSuThuoc(@RequestBody @Valid TieuSuThuocDTO tieuSuThuocDTO, BindingResult bindingResult) {
         return soKhamService.capNhatTieuSuThuoc(tieuSuThuocDTO, bindingResult);
@@ -35,6 +39,10 @@ public class SoKhamController {
     @GetMapping("/layThongTinSoKham")
     public ResponseEntity<?> layThongTinSoKham(@RequestParam String accountID) {
         return soKhamService.getSoKham(accountID);
+    }
+    @GetMapping("/layTieuSuLoiSong")
+    public ResponseEntity<?> layTieuSuLoiSong(@RequestParam String accountID) {
+        return soKhamService.getTieuSuLoiSong(accountID);
     }
     @GetMapping("/layDanhSachTieuSuPreview")
     public ResponseEntity<?> layDanhSachTieuSuPreview(@RequestParam String accountID, @RequestParam String type) {

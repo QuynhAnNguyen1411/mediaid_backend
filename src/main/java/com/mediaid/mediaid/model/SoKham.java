@@ -27,8 +27,8 @@ public class SoKham {
     private NguoiGiamHo nguoiGiamHos;
     @OneToMany(mappedBy = "soKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TieuSuThuoc> tieuSuThuocs;
-    @OneToMany(mappedBy = "soKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<LoiSongNguoiBenh> loiSongNguoiBenhs;
+    @OneToOne(mappedBy = "soKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private LoiSongNguoiBenh loiSongNguoiBenhs;
     @OneToMany(mappedBy = "soKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TieuSuDiUng> tieuSuDiUngs;
     @OneToMany(mappedBy = "soKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

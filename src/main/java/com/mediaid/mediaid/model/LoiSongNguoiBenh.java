@@ -16,7 +16,7 @@ public class LoiSongNguoiBenh {
     @Id
     private String loiSongNguoiBenhID;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "soKhamID", nullable = false)
     private SoKham soKham;
 

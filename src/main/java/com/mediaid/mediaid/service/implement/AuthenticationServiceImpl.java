@@ -39,6 +39,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     RoleRepo roleRepo;
 
+    @Autowired
+    LoiSongNguoiBenhRepo loiSongNguoiBenhRepo;
+
     @Override
     @Transactional
     public ResponseEntity<?> registry(FormDangKy registryForm, BindingResult bindingResult) {
@@ -103,6 +106,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }catch (Exception e){
             log.error("Get data from database fail");
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error"));
+        }
+        LoiSongNguoiBenh loiSongNguoiBenh = new LoiSongNguoiBenh();
+        loiSongNguoiBenh.setLoiSongNguoiBenhID(UUID.randomUUID().toString());
+        loiSongNguoiBenh.setSoKham(soKham);
+        try {
+            loiSongNguoiBenhRepo.save(loiSongNguoiBenh);
+        }catch (Exception e){
+            log.error("Get data from database fail");
         }
         NguoiGiamHoDTO nguoiGiamHoDTO = new NguoiGiamHoDTO(registryForm.getTenNguoiGiamHo(), registryForm.getCccdCmtNguoiGiamHo(), registryForm.getMoiQuanHe(), registryForm.getSdtNguoiGiamHo());
         NguoiGiamHo nguoiGiamHo = nguoiGiamHoDTO.convertToEntity(nguoiGiamHoDTO);

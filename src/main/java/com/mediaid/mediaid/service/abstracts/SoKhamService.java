@@ -10,8 +10,11 @@ public interface SoKhamService {
     ResponseEntity<?> capNhatTieuSuDiUng(TieuSuDiUngDTO tieuSuDiUngDTO, BindingResult bindingResult);
     ResponseEntity<?> capNhatTieuSuPhauThuat(TieuSuPhauThuatDTO tieuSuPhauThuatDTO, BindingResult bindingResult);
     ResponseEntity<?> capNhatTieuSuThuoc(TieuSuThuocDTO tieuSuThuocDTO, BindingResult bindingResult);
+    ResponseEntity<?> capNhatTieuSuLoiSong(TieuSuLoiSongDTO tieuSuLoiSongDTO, BindingResult bindingResult);
+
 
     ResponseEntity<?> getSoKham(String accountID);
     ResponseEntity<?> getDanhSachTieuSuTheoLoai(String accountID, String type);
     ResponseEntity<?> deleteTieuSuTheoLoai(String tieuSuID, String type);
+    ResponseEntity<?> getTieuSuLoiSong(String accountID);
 }

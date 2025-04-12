@@ -43,6 +43,15 @@ public class SoKhamServiceImpl implements SoKhamService {
     TieuSuThuocRepo tieuSuThuocRepo;
     @Autowired
     LoaiSanPhamRepo loaiSanPhamRepo;
+    @Autowired
+    LoiSongNguoiBenhRepo loiSongNguoiBenhRepo;
+    @Autowired
+    MoiTruongRepo moiTruongRepo;
+    @Autowired
+    ThoiQuenLoiSongRepo thoiQuenLoiSongRepo;
+    @Autowired
+    ThoiQuenRepo thoiQuenRepo;
+
     @Override
     public ResponseEntity<?> capNhatTieuSuBenhTat(TieuSuBenhTatDTO tieuSuBenhTatDTO, BindingResult bindingResult) {
         HashMap<String, String> errors = ValidationUtil.validationCheckBindingResult(bindingResult);
@@ -288,6 +297,60 @@ public class SoKhamServiceImpl implements SoKhamService {
     }
 
     @Override
+    public ResponseEntity<?> capNhatTieuSuLoiSong(TieuSuLoiSongDTO tieuSuLoiSongDTO, BindingResult bindingResult) {
+        HashMap<String, String> errors = ValidationUtil.validationCheckBindingResult(bindingResult);
+        if (!CommonUtil.isNullOrEmpty(errors)) {
+            log.warn(errors.toString());
+            return ResponseEntity.badRequest().body(errors);
+        }
+        LoiSongNguoiBenh loiSongNguoiBenh;
+        MoiTruong moiTruong = null;
+        try {
+            List<ThoiQuen> thoiQuens = thoiQuenRepo.findThoiQuenByIds(tieuSuLoiSongDTO.getThoiQuenLoiSongs());
+            if (CommonUtil.isNullOrEmpty(thoiQuens) || thoiQuens.size()!=tieuSuLoiSongDTO.getThoiQuenLoiSongs().size()){
+                log.warn("Invalid thoiQuen options");
+                return ResponseEntity.badRequest().body("Invalid thoiQuen options");
+            }
+            loiSongNguoiBenh = loiSongNguoiBenhRepo.findByAccountID(tieuSuLoiSongDTO.getAccountID());
+            if (CommonUtil.isNullOrEmpty(loiSongNguoiBenh)){
+                log.warn("Invalid tieuSuLoiSong");
+                return ResponseEntity.badRequest().body("Invalid tieuSuLoiSong");
+            }
+            if (!CommonUtil.isNullOrEmpty(tieuSuLoiSongDTO.getMoiTruongID())){
+                moiTruong = moiTruongRepo.findByMoiTruongID(tieuSuLoiSongDTO.getMoiTruongID());
+            }
+            if (!CommonUtil.isNullOrEmpty(tieuSuLoiSongDTO.getThoiQuenLoiSongs())){
+                List<ThoiQuenLoiSong> thoiQuenLoiSongs = thoiQuenLoiSongRepo.findByLoiSongNguoiBenhID(loiSongNguoiBenh.getLoiSongNguoiBenhID());
+                for (ThoiQuenLoiSong thoiQuenLoiSong: thoiQuenLoiSongs){
+                    for (ThoiQuen thoiQuen: thoiQuens){
+                        if(thoiQuen.getThoiQuenID() == thoiQuenLoiSong.getThoiQuen().getThoiQuenID()){
+                            thoiQuenLoiSongs.remove(thoiQuenLoiSong);
+                            thoiQuens.remove(thoiQuen);
+                        }
+                    }
+                }
+                List<ThoiQuenLoiSong> thoiQuenLoiSongsAddList = thoiQuens.stream().map(e -> new ThoiQuenLoiSong(UUID.randomUUID().toString(),e,loiSongNguoiBenh)).toList();
+                if (!thoiQuenLoiSongs.isEmpty())
+                    thoiQuenLoiSongRepo.deleteAll(thoiQuenLoiSongs);
+                if (!thoiQuenLoiSongsAddList.isEmpty())
+                    thoiQuenLoiSongRepo.saveAll(thoiQuenLoiSongsAddList);
+            }
+        } catch (Exception e) {
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error appear"));
+        }
+        loiSongNguoiBenh.setGhiChu(tieuSuLoiSongDTO.getGhiChu());
+        loiSongNguoiBenh.setMoiTruong(moiTruong);
+        try {
+            loiSongNguoiBenhRepo.save(loiSongNguoiBenh);
+            return ResponseEntity.ok(CommonUtil.returnMessage("message", "Save/update tieuSuThuoc successfully"));
+        } catch (Exception e) {
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error appear"));
+        }
+    }
+
+    @Override
     public ResponseEntity<?> getSoKham(String accountID) {
         if (CommonUtil.isNullOrEmpty(accountID)) {
             log.warn("Invalid accountID");
@@ -353,6 +416,27 @@ public class SoKhamServiceImpl implements SoKhamService {
             }
             log.info("Delete tieuSu with id: "+tieuSuID+", type: "+type);
             return ResponseEntity.ok("Delete tieuSu with id: "+tieuSuID);
+        }catch (Exception e){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body("Internal error from server");
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getTieuSuLoiSong(String accountID) {
+        if (CommonUtil.isNullOrEmpty(accountID)) {
+            log.warn("Invalid parammeter, accountID");
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Internal accountID"));
+        }
+        try {
+            TieuSuLoiSongDTO tieuSuLoiSongDTO=loiSongNguoiBenhRepo.findDTOByAccountID(accountID);
+            if (CommonUtil.isNullOrEmpty(tieuSuLoiSongDTO)){
+                log.warn("TieuSuLoiSong not exit in db");
+                return ResponseEntity.internalServerError().body("TieuSuLoiSong not exit in db");
+            }
+            List<Integer> thoiQuenIDs = thoiQuenLoiSongRepo.findIDByLoiSongNguoiBenhIds(tieuSuLoiSongDTO.getLoiSongNguoiBenhID());
+            tieuSuLoiSongDTO.setThoiQuenLoiSongs(thoiQuenIDs);
+            return ResponseEntity.ok(tieuSuLoiSongDTO);
         }catch (Exception e){
             log.error("Exception", e);
             return ResponseEntity.internalServerError().body("Internal error from server");

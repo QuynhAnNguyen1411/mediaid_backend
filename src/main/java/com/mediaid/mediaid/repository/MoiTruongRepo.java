@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface MoiTruongRepo extends JpaRepository<MoiTruong, Integer> {
-//    ThoiQuenLoiSong findByThoiQuenLoiSongID(String id);
+    MoiTruong findByMoiTruongID(int id);
     List<MoiTruong> findByStatus(boolean status);
 }
 //    private String tieuSuPhauThuatID;
