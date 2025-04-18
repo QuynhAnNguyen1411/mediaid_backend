@@ -22,6 +22,16 @@ public class BoPhanCoThe {
     private boolean status;
 
     @OneToMany(mappedBy = "boPhanCoThe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ChanDoan> chanDoans;
+    private List<TrieuChungCuaBoPhan> trieuChungCuaBoPhans;
+
+    @OneToMany(mappedBy = "boPhanCoThe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ChanDoanBangBoPhan> chanDoanBangBoPhans;
+
+    @ManyToOne
+    @JoinColumn(name = "phanVungCoTheID")
+    private PhanVungCoThe phanVungCoThe;
+    @ManyToOne
+    @JoinColumn(name = "GioiTinhID")
+    private GioiTinh gioiTinh;
 }
 

@@ -10,15 +10,17 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "PhongKham")
 public class PhongKham {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int phongKhamID;
 
     private String phongKham;
+    private boolean isPhongKhamChanDoan;
+    private int gioiHanLaySo;
 
-    private String status;
+    private boolean status;
 
     @OneToMany(mappedBy = "phongKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LichSuKhamChiTiet> lichSuKhamChiTiets;

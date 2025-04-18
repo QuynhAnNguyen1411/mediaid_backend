@@ -7,7 +7,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @Slf4j
@@ -22,9 +21,11 @@ public class DataInitializer implements CommandLineRunner {
     private final TinhTrangSuDungRepo tinhTrangSuDungRepo;
     private final ThoiQuenRepo thoiQuenRepo;
     private final MoiTruongRepo moiTruongRepo;
+    private final PhongKhamRepo phongKhamRepo;
+
 
     public DataInitializer(DanTocRepo danTocRepository, GenderRepo genderRepo, RoleRepo roleRepo, LyDoPhauThuatRepo lyDoPhauThuatRepo, MucDoRepo mucDoRepo, PhuongPhapDieuTriRepo phuongPhapDieuTriRepo, LoaiSanPhamRepo loaiSanPhamRepo,TinhTrangSuDungRepo tinhTrangSuDungRepo,
-                           ThoiQuenRepo thoiQuenRepo, MoiTruongRepo moiTruongRepo) {
+                           ThoiQuenRepo thoiQuenRepo, MoiTruongRepo moiTruongRepo, PhongKhamRepo phongKhamRepo) {
         this.danTocRepository = danTocRepository;
         this.genderRepo = genderRepo;
         this.roleRepo = roleRepo;
@@ -35,6 +36,7 @@ public class DataInitializer implements CommandLineRunner {
         this.tinhTrangSuDungRepo = tinhTrangSuDungRepo;
         this.thoiQuenRepo = thoiQuenRepo;
         this.moiTruongRepo = moiTruongRepo;
+        this.phongKhamRepo = phongKhamRepo;
     }
 
     @Override
@@ -206,5 +208,13 @@ public class DataInitializer implements CommandLineRunner {
             moiTruongRepo.saveAll(moiTruongs);
             log.info("Insert default moiTruongs data into the database.");
         }
+//        if(phongKhamRepo.count() == 0){
+//            List<PhongKham> phongKhams = List.of(
+//                    new PhongKham("Văn phòng ngồi nhiều", true)
+//            );
+//            phongKhamRepo.saveAll(phongKhams);
+//            log.info("Insert default moiTruongs data into the database.");
+//        }
     }
+
 }
