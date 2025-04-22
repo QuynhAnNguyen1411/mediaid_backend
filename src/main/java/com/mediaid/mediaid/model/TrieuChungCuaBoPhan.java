@@ -18,12 +18,11 @@ import lombok.Setter;
 public class TrieuChungCuaBoPhan {
     @Id
     private String TrieuChungBoPhanID;
-
-    @ManyToOne
-    @JoinColumn(name = "boPhanCoTheID")
-    private BoPhanCoThe boPhanCoThe;
     @ManyToOne
     @JoinColumn(name = "TrieuChungID")
     private TrieuChung trieuChung;
+    @ManyToOne
+    @JoinColumn(name = "boPhanCoTheID")
+    private BoPhanCoThe boPhanCoThe;
 }
 

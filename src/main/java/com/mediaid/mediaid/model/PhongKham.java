@@ -13,18 +13,21 @@ import java.util.List;
 public class PhongKham {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int phongKhamID;
+    private String phongKhamID;
 
     private String phongKham;
     private boolean isPhongKhamChanDoan;
-    private int gioiHanLaySo;
-
     private boolean status;
 
+    public PhongKham(String phongKhamID, String phongKham, boolean isPhongKhamChanDoan, boolean status) {
+        this.phongKhamID = phongKhamID;
+        this.phongKham = phongKham;
+        this.isPhongKhamChanDoan = isPhongKhamChanDoan;
+        this.status = status;
+    }
+
     @OneToMany(mappedBy = "phongKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<LichSuKhamChiTiet> lichSuKhamChiTiets;
+    private List<PhongKhamChiTiet> phongKhamChiTiets;
     @OneToMany(mappedBy = "phongKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ChanDoan> chanDoans;
-
 }

@@ -21,9 +21,15 @@ public class TrieuChung {
     private String TrieuChung;
     private boolean status;
 
+    public TrieuChung(String trieuChungID, String trieuChung, boolean status) {
+        TrieuChungID = trieuChungID;
+        TrieuChung = trieuChung;
+        this.status = status;
+    }
+
     @OneToMany(mappedBy = "trieuChung", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TrieuChungCuaBoPhan> trieuChungCuaBoPhans;
     @OneToMany(mappedBy = "trieuChung", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ChanDoanBangTrieuChung> chanDoanBangTrieuChungs;
+    private List<ChanDoan> chanDoans;
 }
 

@@ -13,13 +13,19 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class PhanVungCoThe {
     @Id
     private String PhanVungID;
-
+    @Column(unique = true)
     private String Ten;
     private boolean status;
+
+    public PhanVungCoThe(String phanVungID, String ten, boolean status, PhongKham phongKham) {
+        PhanVungID = phanVungID;
+        Ten = ten;
+        this.status = status;
+        this.phongKham = phongKham;
+    }
 
     @ManyToOne
     @JoinColumn(name = "phongKhamID")
@@ -27,5 +33,7 @@ public class PhanVungCoThe {
 
     @OneToMany(mappedBy = "phanVungCoThe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BoPhanCoThe> boPhanCoThes;
+    @OneToMany(mappedBy = "phanVungCoThe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ChanDoan> chanDoans;
 }
 

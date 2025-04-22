@@ -29,6 +29,9 @@ public class LichSuKham {
     @ManyToOne
     @JoinColumn(name = "dichVuBenhVienID")
     private DichVuBenhVien dichVuBenhVien;
+    @ManyToOne
+    @JoinColumn(name = "coSoID")
+    private CoSoBenhVien coSoBenhVien;
 
     @OneToMany(mappedBy = "lichSuKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LichSuKhamChiTiet> lichSuKhamChiTiets;

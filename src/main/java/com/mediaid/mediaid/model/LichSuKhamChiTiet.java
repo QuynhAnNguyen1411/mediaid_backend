@@ -22,8 +22,8 @@ public class LichSuKhamChiTiet {
     private DichVuKham dichVuKham;
 
     @ManyToOne
-    @JoinColumn(name = "phongKhamID", nullable = false)
-    private PhongKham phongKham;
+    @JoinColumn(name = "phongKhamChiTietID", nullable = false)
+    private PhongKhamChiTiet phongKhamChiTiet;
 
     private Date ngayKham;
     private Double gia;

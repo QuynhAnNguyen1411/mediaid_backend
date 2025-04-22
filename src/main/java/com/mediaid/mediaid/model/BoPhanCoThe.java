@@ -16,16 +16,24 @@ import java.util.List;
 @AllArgsConstructor
 public class BoPhanCoThe {
     @Id
-    private String BoPhanID;
+    private String boPhanID;
 
-    private String Ten;
+    private String ten;
     private boolean status;
+
+    public BoPhanCoThe(String boPhanID, String ten, boolean status, PhanVungCoThe phanVungCoThe, GioiTinh gioiTinh) {
+        this.boPhanID = boPhanID;
+        this.ten = ten;
+        this.status = status;
+        this.phanVungCoThe = phanVungCoThe;
+        this.gioiTinh = gioiTinh;
+    }
 
     @OneToMany(mappedBy = "boPhanCoThe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TrieuChungCuaBoPhan> trieuChungCuaBoPhans;
 
     @OneToMany(mappedBy = "boPhanCoThe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ChanDoanBangBoPhan> chanDoanBangBoPhans;
+    private List<ChanDoan> chanDoans;
 
     @ManyToOne
     @JoinColumn(name = "phanVungCoTheID")
