@@ -2,7 +2,6 @@ package com.mediaid.mediaid.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,14 +14,14 @@ import java.util.List;
 @NoArgsConstructor
 public class PhanVungCoThe {
     @Id
-    private String PhanVungID;
+    private String phanVungID;
     @Column(unique = true)
-    private String Ten;
+    private String ten;
     private boolean status;
 
     public PhanVungCoThe(String phanVungID, String ten, boolean status, PhongKham phongKham) {
-        PhanVungID = phanVungID;
-        Ten = ten;
+        this.phanVungID = phanVungID;
+        this.ten = ten;
         this.status = status;
         this.phongKham = phongKham;
     }

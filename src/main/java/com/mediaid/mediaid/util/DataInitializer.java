@@ -229,18 +229,18 @@ public class DataInitializer implements CommandLineRunner {
             CoSoBenhVien coSoBenhVien1 = new CoSoBenhVien(1, "Văn phòng ngồi nhiều", "Văn phòng ngồi nhiều");
             coSoBenhVien1 = coSoBenhVienRepo.save(coSoBenhVien1);
             List<PhongKham> phongKhams = List.of(
-                    new PhongKham("pk1", "Ngoại Phụ khoa", true, true),
-                    new PhongKham("pk2", "Ngoại Vú", true, true),
-                    new PhongKham("pk3", "Tim mạch", true, true),
-                    new PhongKham("pk4", "Đầu mặt cổ", true, true),
-                    new PhongKham("pk5", "Tiết niệu", true, true),
-                    new PhongKham("pk6", "Gan mật", true, true),
-                    new PhongKham("pk7", "Nội", true, true),
-                    new PhongKham("pk8", "Ngoại thần kinh", true, true),
-                    new PhongKham("pk9", "Lồng ngực", true, true),
-                    new PhongKham("pk10", "Chuyên khoa", true, true),
-                    new PhongKham("pk11", "Tổng hợp", true, true),
-                    new PhongKham("pk12", "Cơ xương khớp", true, true)
+                    new PhongKham("pk_1", "Ngoại Phụ khoa", true, true),
+                    new PhongKham("pk_2", "Ngoại Vú", true, true),
+                    new PhongKham("pk_3", "Tim mạch", true, true),
+                    new PhongKham("pk_4", "Đầu mặt cổ", true, true),
+                    new PhongKham("pk_5", "Tiết niệu", true, true),
+                    new PhongKham("pk_6", "Gan mật", true, true),
+                    new PhongKham("pk_7", "Nội", true, true),
+                    new PhongKham("pk_8", "Ngoại thần kinh", true, true),
+                    new PhongKham("pk_9", "Lồng ngực", true, true),
+                    new PhongKham("pk_10", "Chuyên khoa", true, true),
+                    new PhongKham("pk_11", "Tổng hợp", true, true),
+                    new PhongKham("pk_12", "Cơ xương khớp", true, true)
             );
 
             List<PhongKhamChiTiet> phongKhamChiTietsPk1 = List.of(
@@ -328,15 +328,15 @@ public class DataInitializer implements CommandLineRunner {
         if (phanVungCoTheRepo.count() == 0){
             List<PhanVungCoThe> phanVungCoThes = List.of(
                     new PhanVungCoThe("pv_1", "Đầu", true, null),
-                    new PhanVungCoThe("pv_2", "Da", true, phongKhamRepo.findById("pk4").get()),
+                    new PhanVungCoThe("pv_2", "Da", true, phongKhamRepo.findById("pk_4").get()),
                     new PhanVungCoThe("pv_3", "Cổ", true, null),
                     new PhanVungCoThe("pv_4", "Ngực", true, null),
-                    new PhanVungCoThe("pv_5", "Tay", true, phongKhamRepo.findById("pk10").get()),
+                    new PhanVungCoThe("pv_5", "Tay", true, phongKhamRepo.findById("pk_10").get()),
                     new PhanVungCoThe("pv_6", "Bụng", true, null),
                     new PhanVungCoThe("pv_7", "Xương chậu", true, null),
                     new PhanVungCoThe("pv_8", "Lưng", true, null),
-                    new PhanVungCoThe("pv_9", "Mông", true, phongKhamRepo.findById("pk12").get()),
-                    new PhanVungCoThe("pv_10", "Chân", true, phongKhamRepo.findById("pk12").get())
+                    new PhanVungCoThe("pv_9", "Mông", true, phongKhamRepo.findById("pk_12").get()),
+                    new PhanVungCoThe("pv_10", "Chân", true, phongKhamRepo.findById("pk_12").get())
             );
             phanVungCoThes = phanVungCoTheRepo.saveAll(phanVungCoThes);
 
@@ -415,44 +415,69 @@ public class DataInitializer implements CommandLineRunner {
             log.info("Insert default phanVungCoThes data into the database.");
         }
         if(trieuChungCuaBoPhanRepo.count()==0){
-            List<TrieuChung> trieuChungs = trieuChungRepo.findAll();
-            List<BoPhanCoThe> boPhanCoThes = boPhanCoTheRepo.findAll();
+            List<TrieuChung> trieuChungs = trieuChungRepo.findAllAndOrder();
+            List<BoPhanCoThe> boPhanCoThes = boPhanCoTheRepo.findAllAndOrder();
+            log.info(boPhanCoThes.size()+" "+ boPhanCoThes.get(24).getBoPhanID());
 
             List<TrieuChungCuaBoPhan> trieuChungCuaBoPhans = List.of(
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(0), boPhanCoThes.get(0)),
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(0), boPhanCoThes.get(2)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(1), boPhanCoThes.get(0)),
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(1), boPhanCoThes.get(2)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(2), boPhanCoThes.get(0)),
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(2), boPhanCoThes.get(2)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(3), boPhanCoThes.get(0)),
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(3), boPhanCoThes.get(2)),
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(3), boPhanCoThes.get(9)),
-                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(3), boPhanCoThes.get(18)),
+                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(3), boPhanCoThes.get(23)),
+                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(3), boPhanCoThes.get(24)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(4), boPhanCoThes.get(3)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(5), boPhanCoThes.get(3)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(6), boPhanCoThes.get(3)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(7), boPhanCoThes.get(9)),
-                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(7), boPhanCoThes.get(18)),
+                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(7), boPhanCoThes.get(23)),
+                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(7), boPhanCoThes.get(24)),
+
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(8), boPhanCoThes.get(9)),
-                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(8), boPhanCoThes.get(18)),
+                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(8), boPhanCoThes.get(23)),
+                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(8), boPhanCoThes.get(24)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(9), boPhanCoThes.get(9)),
-                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(9), boPhanCoThes.get(18)),
+                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(9), boPhanCoThes.get(23)),
+                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(9), boPhanCoThes.get(24)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(10), boPhanCoThes.get(1)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(11), boPhanCoThes.get(1)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(12), boPhanCoThes.get(1)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(13), boPhanCoThes.get(1)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(14), boPhanCoThes.get(11)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(15), boPhanCoThes.get(11)),
+
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(16), boPhanCoThes.get(11)),
-                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(17), boPhanCoThes.get(15)),
-                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(17), boPhanCoThes.get(20)),
-                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(18), boPhanCoThes.get(20)),
-                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(19), boPhanCoThes.get(20))
+
+                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(17), boPhanCoThes.get(14)),
+                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(17), boPhanCoThes.get(25)),
+
+                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(18), boPhanCoThes.get(25)),
+
+                    new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(19), boPhanCoThes.get(25))
             );
             trieuChungCuaBoPhanRepo.saveAll(trieuChungCuaBoPhans);
-            List<PhanVungCoThe> phanVungCoThes = phanVungCoTheRepo.findAll();
-            List<PhongKham> phongKhams = phongKhamRepo.findAll();
+            List<PhanVungCoThe> phanVungCoThes = phanVungCoTheRepo.findAllAndOrder();
+            List<PhongKham> phongKhams = phongKhamRepo.findAllAndOrder();
             List<ChanDoan> chanDoans = List.of(
                     new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),phanVungCoThes.get(4), null, null),
                     new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11),phanVungCoThes.get(4), null, null),
