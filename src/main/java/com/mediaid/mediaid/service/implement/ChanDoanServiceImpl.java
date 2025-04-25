@@ -3,9 +3,7 @@ package com.mediaid.mediaid.service.implement;
 import com.mediaid.mediaid.DTO.chanDoan.DanhSachBoPhan;
 import com.mediaid.mediaid.DTO.chanDoan.DanhSachBoPhanVaTrieuChung;
 import com.mediaid.mediaid.DTO.chanDoan.DanhSachTrieuChung;
-import com.mediaid.mediaid.model.BoPhanCoThe;
-import com.mediaid.mediaid.model.PhanVungCoThe;
-import com.mediaid.mediaid.model.TrieuChung;
+import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
 import com.mediaid.mediaid.service.abstracts.ChanDoanService;
 import com.mediaid.mediaid.util.CommonUtil;
@@ -28,11 +26,18 @@ public class ChanDoanServiceImpl implements ChanDoanService {
     BoPhanCoTheRepo boPhanCoTheRepo;
     @Autowired
     TrieuChungRepo trieuChungRepo;
+    @Autowired
+    AccountRepo accountRepo;
 
     @Override
-    public ResponseEntity<?> layDanhSachBoPhanVaTrieuChung(int gioiTinhID) {
+    public ResponseEntity<?> layDanhSachBoPhanVaTrieuChung(String accountID) {
         List<PhanVungCoThe> phanVungCoTheList = phanVungCoTheRepo.findByStatus(true);
         Map<String, DanhSachBoPhanVaTrieuChung> danhSachBoPhanHashMap = new HashMap<>();
+        TaiKhoan taiKhoan = accountRepo.findByAccountID(accountID);
+        if (CommonUtil.isNullOrEmpty(taiKhoan)){
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message","Invalid accountID"));
+        }
+        int gioiTinhID = taiKhoan.getGioiTinh().getGioiTinhID();
 
         DanhSachBoPhanVaTrieuChung danhSachBoPhanVaTrieuChung;
         List<BoPhanCoThe> boPhanCoThes;

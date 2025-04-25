@@ -12,7 +12,7 @@ public class ChanDoanController {
     ChanDoanService chanDoanService;
 
     @GetMapping("/layDanhSachBoPhanVaTrieuChung")
-    public ResponseEntity<?> layDanhSachBoPhanVaTrieuChung(@RequestParam int gioiTinhID) {
-        return chanDoanService.layDanhSachBoPhanVaTrieuChung(gioiTinhID);
+    public ResponseEntity<?> layDanhSachBoPhanVaTrieuChung(@RequestParam String accountID) {
+        return chanDoanService.layDanhSachBoPhanVaTrieuChung(accountID);
     }
 }

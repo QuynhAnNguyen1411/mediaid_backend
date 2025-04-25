@@ -10,4 +10,5 @@ public interface AccountRepo extends JpaRepository<TaiKhoan, String> {
     TaiKhoan findByCccdCmt(String cccd);
     TaiKhoan findBySdt(String sdt);
 
+    TaiKhoan findByAccountID(String accountID);
 }
