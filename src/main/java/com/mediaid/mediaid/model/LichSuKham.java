@@ -2,7 +2,8 @@ package com.mediaid.mediaid.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -27,9 +28,6 @@ public class LichSuKham {
     private TrangThaiKham trangThaiKham;
 
     @ManyToOne
-    @JoinColumn(name = "dichVuBenhVienID")
-    private DichVuBenhVien dichVuBenhVien;
-    @ManyToOne
     @JoinColumn(name = "coSoID")
     private CoSoBenhVien coSoBenhVien;
 
@@ -39,6 +37,9 @@ public class LichSuKham {
     @OneToMany(mappedBy = "lichSuKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LichSuSuDungThuoc> lichSuSuDungThuocs;
 
-    private Date ngayKham;
+    private LocalDateTime ngayKham;
+    private LocalDateTime ngayKetLuan;
+    private Double tongThu;
     private String ketLuan;
+    private String ghiChu;
 }

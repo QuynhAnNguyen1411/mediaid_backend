@@ -19,20 +19,16 @@ public class PhanVungCoThe {
     private String ten;
     private boolean status;
 
-    public PhanVungCoThe(String phanVungID, String ten, boolean status, PhongKham phongKham) {
+    public PhanVungCoThe(String phanVungID, String ten, boolean status) {
         this.phanVungID = phanVungID;
         this.ten = ten;
         this.status = status;
-        this.phongKham = phongKham;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "phongKhamID")
-    private PhongKham phongKham;
 
     @OneToMany(mappedBy = "phanVungCoThe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BoPhanCoThe> boPhanCoThes;
     @OneToMany(mappedBy = "phanVungCoThe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ChanDoan> chanDoans;
+    private List<ChanDoanBangPhanVung> chanDoanBangPhanVungs;
+
 }
 

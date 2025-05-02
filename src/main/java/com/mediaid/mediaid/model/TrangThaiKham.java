@@ -17,6 +17,10 @@ public class TrangThaiKham {
 
     private String trangThai;
 
+    public TrangThaiKham(String trangThai) {
+        this.trangThai = trangThai;
+    }
+
     @OneToMany(mappedBy = "trangThaiKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LichSuKham> lichSuKhams;
 }

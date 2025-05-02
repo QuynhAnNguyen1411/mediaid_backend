@@ -15,22 +15,17 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChanDoan {
+public class ChanDoanBangBoPhan {
     @Id
     private String chanDoanBPID;
-
+    private boolean coTrieuChung;
+    @ManyToOne
+    @JoinColumn(name = "boPhanID", nullable = false)
+    private BoPhanCoThe boPhanCoThe;
     @ManyToOne
     @JoinColumn(name = "phongKhamID", nullable = false)
     private PhongKham phongKham;
-    @ManyToOne
-    @JoinColumn(name = "phanVungID")
-    private PhanVungCoThe phanVungCoThe;
 
-    @ManyToOne
-    @JoinColumn(name = "boPhanID")
-    private BoPhanCoThe boPhanCoThe;
-    @ManyToOne
-    @JoinColumn(name = "trieuChungID")
-    private TrieuChung trieuChung;
+
 }
 

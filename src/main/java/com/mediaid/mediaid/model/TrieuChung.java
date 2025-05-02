@@ -29,7 +29,5 @@ public class TrieuChung {
 
     @OneToMany(mappedBy = "trieuChung", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TrieuChungCuaBoPhan> trieuChungCuaBoPhans;
-    @OneToMany(mappedBy = "trieuChung", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ChanDoan> chanDoans;
 }
 

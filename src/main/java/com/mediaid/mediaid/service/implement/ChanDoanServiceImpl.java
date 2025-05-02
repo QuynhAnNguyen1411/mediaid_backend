@@ -1,5 +1,6 @@
 package com.mediaid.mediaid.service.implement;
 
+import com.mediaid.mediaid.DTO.chanDoan.ChanDoanDTO;
 import com.mediaid.mediaid.DTO.chanDoan.DanhSachBoPhan;
 import com.mediaid.mediaid.DTO.chanDoan.DanhSachBoPhanVaTrieuChung;
 import com.mediaid.mediaid.DTO.chanDoan.DanhSachTrieuChung;
@@ -7,10 +8,12 @@ import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
 import com.mediaid.mediaid.service.abstracts.ChanDoanService;
 import com.mediaid.mediaid.util.CommonUtil;
+import com.mediaid.mediaid.util.ValidationUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,5 +74,16 @@ public class ChanDoanServiceImpl implements ChanDoanService {
             danhSachBoPhanHashMap.put(phanVungCoThe.getPhanVungID(), danhSachBoPhanVaTrieuChung);
         }
         return ResponseEntity.ok(danhSachBoPhanHashMap);
+    }
+
+    @Override
+    public ResponseEntity<?> chanDoan(ChanDoanDTO chanDoanDTO, BindingResult bindingResult) {
+        HashMap<String,String> errors = ValidationUtil.validationCheckBindingResult(bindingResult);
+        if (!CommonUtil.isNullOrEmpty(errors)){
+            log.warn(errors.toString());
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        return null;
     }
 }

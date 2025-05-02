@@ -6,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,11 +31,31 @@ public class DataInitializer implements CommandLineRunner {
     private final TrieuChungCuaBoPhanRepo trieuChungCuaBoPhanRepo;
     private final TrieuChungRepo trieuChungRepo;
     private final BoPhanCoTheRepo boPhanCoTheRepo;
-    private final ChanDoanRepo chanDoanRepo;
+    private final ChanDoanBangPhanVungRepo chanDoanBangPhanVungRepo;
+    private final MauPhanLoaiKhamRepo mauPhanLoaiKhamRepo;
+    private final DichVuKhamRepo dichVuKhamRepo;
+    private final TrangThaiKhamSoBoRepo trangThaiKhamSoBoRepo;
 
-    public DataInitializer(DanTocRepo danTocRepository, GenderRepo genderRepo, RoleRepo roleRepo, LyDoPhauThuatRepo lyDoPhauThuatRepo, MucDoRepo mucDoRepo, PhuongPhapDieuTriRepo phuongPhapDieuTriRepo, LoaiSanPhamRepo loaiSanPhamRepo,TinhTrangSuDungRepo tinhTrangSuDungRepo,
-                           ThoiQuenRepo thoiQuenRepo, MoiTruongRepo moiTruongRepo, PhanVungCoTheRepo phanVungCoTheRepo, CoSoBenhVienRepo coSoBenhVienRepo, PhongKhamRepo phongKhamRepo, TrieuChungCuaBoPhanRepo trieuChungCuaBoPhanRepo,
-                           TrieuChungRepo trieuChungRepo, BoPhanCoTheRepo boPhanCoTheRepo, ChanDoanRepo chanDoanRepo) {
+    private final AccountRepo accountRepo;
+    private final BacSiRepo bacSiRepo;
+    private final DecodeEncodeUtil decodeEncodeUtil;
+    private final SoKhamRepo soKhamRepo;
+    private final LichSuKhamRepo lichSuKhamRepo;
+    private final LichSuKhamChiTietRepo lichSuKhamChiTietRepo;
+    private final PhongKhamChiTietRepo phongKhamChiTietRepo;
+    private final LichSuSuDungThuocRepo lichSuSuDungThuocRepo;
+
+
+    public DataInitializer(DanTocRepo danTocRepository, GenderRepo genderRepo, RoleRepo roleRepo, LyDoPhauThuatRepo lyDoPhauThuatRepo,
+                           MucDoRepo mucDoRepo, PhuongPhapDieuTriRepo phuongPhapDieuTriRepo, LoaiSanPhamRepo loaiSanPhamRepo,
+                           TinhTrangSuDungRepo tinhTrangSuDungRepo, ThoiQuenRepo thoiQuenRepo, MoiTruongRepo moiTruongRepo,
+                           CoSoBenhVienRepo coSoBenhVienRepo, PhanVungCoTheRepo phanVungCoTheRepo, PhongKhamRepo phongKhamRepo,
+                           TrieuChungCuaBoPhanRepo trieuChungCuaBoPhanRepo, TrieuChungRepo trieuChungRepo, BoPhanCoTheRepo boPhanCoTheRepo,
+                           ChanDoanBangPhanVungRepo chanDoanBangPhanVungRepo, MauPhanLoaiKhamRepo mauPhanLoaiKhamRepo,
+                           DichVuKhamRepo dichVuKhamRepo, TrangThaiKhamSoBoRepo trangThaiKhamSoBoRepo, AccountRepo accountRepo,
+                           BacSiRepo bacSiRepo, DecodeEncodeUtil decodeEncodeUtil, SoKhamRepo soKhamRepo, LichSuKhamRepo lichSuKhamRepo,
+                           LichSuKhamChiTietRepo lichSuKhamChiTietRepo, PhongKhamChiTietRepo phongKhamChiTietRepo,
+                           LichSuSuDungThuocRepo lichSuSuDungThuocRepo) {
         this.danTocRepository = danTocRepository;
         this.genderRepo = genderRepo;
         this.roleRepo = roleRepo;
@@ -44,15 +66,25 @@ public class DataInitializer implements CommandLineRunner {
         this.tinhTrangSuDungRepo = tinhTrangSuDungRepo;
         this.thoiQuenRepo = thoiQuenRepo;
         this.moiTruongRepo = moiTruongRepo;
-        this.phanVungCoTheRepo = phanVungCoTheRepo;
         this.coSoBenhVienRepo = coSoBenhVienRepo;
+        this.phanVungCoTheRepo = phanVungCoTheRepo;
         this.phongKhamRepo = phongKhamRepo;
         this.trieuChungCuaBoPhanRepo = trieuChungCuaBoPhanRepo;
         this.trieuChungRepo = trieuChungRepo;
         this.boPhanCoTheRepo = boPhanCoTheRepo;
-        this.chanDoanRepo = chanDoanRepo;
+        this.chanDoanBangPhanVungRepo = chanDoanBangPhanVungRepo;
+        this.mauPhanLoaiKhamRepo = mauPhanLoaiKhamRepo;
+        this.dichVuKhamRepo = dichVuKhamRepo;
+        this.trangThaiKhamSoBoRepo = trangThaiKhamSoBoRepo;
+        this.accountRepo = accountRepo;
+        this.bacSiRepo = bacSiRepo;
+        this.decodeEncodeUtil = decodeEncodeUtil;
+        this.soKhamRepo = soKhamRepo;
+        this.lichSuKhamRepo = lichSuKhamRepo;
+        this.lichSuKhamChiTietRepo = lichSuKhamChiTietRepo;
+        this.phongKhamChiTietRepo = phongKhamChiTietRepo;
+        this.lichSuSuDungThuocRepo = lichSuSuDungThuocRepo;
     }
-
 
     @Override
     public void run(String... args) {
@@ -223,25 +255,56 @@ public class DataInitializer implements CommandLineRunner {
             moiTruongRepo.saveAll(moiTruongs);
             log.info("Insert default moiTruongs data into the database.");
         }
-        if(coSoBenhVienRepo.count() == 0){
-            List<CoSoBenhVien> coSoBenhViens = new ArrayList<>();
+        if(mauPhanLoaiKhamRepo.count()==0){
+            List<MauLoaiKham> mauLoaiKhams = List.of(
+                    new MauLoaiKham("Green", "Chẩn đoán hình ảnh"),
+                    new MauLoaiKham("Red", "Thủ thuật y tế và can thiệp"),
+                    new MauLoaiKham("Yellow", "Xét nghệm chức năng"),
+                    new MauLoaiKham("Blue","Chẩn đoán sơ bộ")
+            );
+            mauLoaiKhams = mauPhanLoaiKhamRepo.saveAll(mauLoaiKhams);
+            List<DichVuKham> dichVuKhams = List.of(
+                    new DichVuKham("Siêu âm", 100000.0,true, mauLoaiKhams.get(0)),
+                    new DichVuKham("Chụp XQuang (thường + số hóa)", 100000.0,true, mauLoaiKhams.get(0)),
+                    new DichVuKham("Chụp cắt lớp vi tính, chụp mạch và chụp cộng hưởng từ", 100000.0,true, mauLoaiKhams.get(0)),
 
-            CoSoBenhVien coSoBenhVien1 = new CoSoBenhVien(1, "Văn phòng ngồi nhiều", "Văn phòng ngồi nhiều");
+                    new DichVuKham("Chọc tế bào", 100000.0,true, mauLoaiKhams.get(1)),
+                    new DichVuKham("Sinh thiết", 100000.0,true, mauLoaiKhams.get(1)),
+                    new DichVuKham("nội soi", 100000.0,true, mauLoaiKhams.get(1)),
+
+                    new DichVuKham("Xét nghiệm máu", 100000.0,true, mauLoaiKhams.get(2)),
+                    new DichVuKham("Xét nghiệm nước tiểu", 100000.0,true, mauLoaiKhams.get(2)),
+                    new DichVuKham("Xét nghiệm vi khuẩn, Virus", 100000.0,true, mauLoaiKhams.get(2)),
+                    new DichVuKham("Điện tim", 100000.0,true, mauLoaiKhams.get(2)),
+                    new DichVuKham("Đo mật độ xương", 100000.0,true, mauLoaiKhams.get(2)),
+                    new DichVuKham("Đo chức năng hô hấp", 100000.0,true, mauLoaiKhams.get(2)),
+                    new DichVuKham("Test dị ứng", 100000.0,true, mauLoaiKhams.get(2)),
+
+                    new DichVuKham("Chẩn đoán sơ bộ", 100000.0,true, mauLoaiKhams.get(3))
+            );
+            dichVuKhamRepo.saveAll(dichVuKhams);
+        }
+        if(coSoBenhVienRepo.count() == 0 || phongKhamRepo.count() ==0){
+            CoSoBenhVien coSoBenhVien1 = new CoSoBenhVien(1, "Cơ sở K Tân Triều", "Tân Triều");
+            DichVuKham dichVuKham = dichVuKhamRepo.findById(14).get();
             coSoBenhVien1 = coSoBenhVienRepo.save(coSoBenhVien1);
             List<PhongKham> phongKhams = List.of(
-                    new PhongKham("pk_1", "Ngoại Phụ khoa", true, true),
-                    new PhongKham("pk_2", "Ngoại Vú", true, true),
-                    new PhongKham("pk_3", "Tim mạch", true, true),
-                    new PhongKham("pk_4", "Đầu mặt cổ", true, true),
-                    new PhongKham("pk_5", "Tiết niệu", true, true),
-                    new PhongKham("pk_6", "Gan mật", true, true),
-                    new PhongKham("pk_7", "Nội", true, true),
-                    new PhongKham("pk_8", "Ngoại thần kinh", true, true),
-                    new PhongKham("pk_9", "Lồng ngực", true, true),
-                    new PhongKham("pk_10", "Chuyên khoa", true, true),
-                    new PhongKham("pk_11", "Tổng hợp", true, true),
-                    new PhongKham("pk_12", "Cơ xương khớp", true, true)
+                    new PhongKham("pk_1", "Ngoại Phụ khoa", true, true, dichVuKham),
+                    new PhongKham("pk_2", "Ngoại Vú", true, true, dichVuKham),
+                    new PhongKham("pk_3", "Tim mạch", true, true, dichVuKham),
+                    new PhongKham("pk_4", "Đầu mặt cổ", true, true, dichVuKham),
+                    new PhongKham("pk_5", "Tiết niệu", true, true, dichVuKham),
+                    new PhongKham("pk_6", "Gan mật", true, true, dichVuKham),
+                    new PhongKham("pk_7", "Nội", true, true, dichVuKham),
+                    new PhongKham("pk_8", "Ngoại thần kinh", true, true, dichVuKham),
+                    new PhongKham("pk_9", "Lồng ngực", true, true, dichVuKham),
+                    new PhongKham("pk_10", "Chuyên khoa", true, true, dichVuKham),
+                    new PhongKham("pk_11", "Tổng hợp", true, true, dichVuKham),
+                    new PhongKham("pk_12", "Cơ xương khớp", true, true, dichVuKham),
+                    new PhongKham("pk_13", "Siêu âm", true, true, dichVuKhamRepo.findById(1).get()),
+                    new PhongKham("pk_14", "Nội soi", true, true, dichVuKhamRepo.findById(6).get())
             );
+            phongKhams = phongKhamRepo.saveAll(phongKhams);
 
             List<PhongKhamChiTiet> phongKhamChiTietsPk1 = List.of(
                     new PhongKhamChiTiet("pkct1","1_pk1_ct01",70,true, phongKhams.get(0), coSoBenhVien1),
@@ -320,6 +383,20 @@ public class DataInitializer implements CommandLineRunner {
             phongKhams.get(11).setPhongKhamChiTiets(phongKhamChiTietsPk12);
             phongKhamChiTietsAddALl.addAll(phongKhamChiTietsPk12);
 
+            List<PhongKhamChiTiet> phongKhamChiTietsPk13 = List.of(
+                    new PhongKhamChiTiet("pkct20","1_pk13_ct01",70,true, phongKhams.get(12),coSoBenhVien1),
+                    new PhongKhamChiTiet("pkct21","1_pk13_ct02",70,true, phongKhams.get(12),coSoBenhVien1)
+            );
+            phongKhams.get(12).setPhongKhamChiTiets(phongKhamChiTietsPk13);
+            phongKhamChiTietsAddALl.addAll(phongKhamChiTietsPk13);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk14 = List.of(
+                    new PhongKhamChiTiet("pkct22","1_pk14_ct01",70,true, phongKhams.get(13),coSoBenhVien1),
+                    new PhongKhamChiTiet("pkct23","1_pk14_ct02",70,true, phongKhams.get(13),coSoBenhVien1)
+            );
+            phongKhams.get(13).setPhongKhamChiTiets(phongKhamChiTietsPk14);
+            phongKhamChiTietsAddALl.addAll(phongKhamChiTietsPk14);
+
             coSoBenhVien1.setPhongKhamChiTiets(phongKhamChiTietsAddALl);
             phongKhamRepo.saveAll(phongKhams);
             coSoBenhVienRepo.save(coSoBenhVien1);
@@ -327,18 +404,36 @@ public class DataInitializer implements CommandLineRunner {
         }
         if (phanVungCoTheRepo.count() == 0){
             List<PhanVungCoThe> phanVungCoThes = List.of(
-                    new PhanVungCoThe("pv_1", "Đầu", true, null),
-                    new PhanVungCoThe("pv_2", "Da", true, phongKhamRepo.findById("pk_4").get()),
-                    new PhanVungCoThe("pv_3", "Cổ", true, null),
-                    new PhanVungCoThe("pv_4", "Ngực", true, null),
-                    new PhanVungCoThe("pv_5", "Tay", true, phongKhamRepo.findById("pk_10").get()),
-                    new PhanVungCoThe("pv_6", "Bụng", true, null),
-                    new PhanVungCoThe("pv_7", "Xương chậu", true, null),
-                    new PhanVungCoThe("pv_8", "Lưng", true, null),
-                    new PhanVungCoThe("pv_9", "Mông", true, phongKhamRepo.findById("pk_12").get()),
-                    new PhanVungCoThe("pv_10", "Chân", true, phongKhamRepo.findById("pk_12").get())
+                    new PhanVungCoThe("pv_1", "Đầu", true),
+                    new PhanVungCoThe("pv_2", "Da", true),
+                    new PhanVungCoThe("pv_3", "Cổ", true),
+                    new PhanVungCoThe("pv_4", "Ngực", true),
+                    new PhanVungCoThe("pv_5", "Tay", true),
+                    new PhanVungCoThe("pv_6", "Bụng", true),
+                    new PhanVungCoThe("pv_7", "Xương chậu", true),
+                    new PhanVungCoThe("pv_8", "Lưng", true),
+                    new PhanVungCoThe("pv_9", "Mông", true),
+                    new PhanVungCoThe("pv_10", "Chân", true)
             );
             phanVungCoThes = phanVungCoTheRepo.saveAll(phanVungCoThes);
+
+//            List<PhanVungCoThe> phanVungCoThes = phanVungCoTheRepo.findAllAndOrder();
+            List<PhongKham> phongKhams = phongKhamRepo.findAllAndOrder();
+            List<ChanDoanBangPhanVung> chanDoanBangPhanVungs = List.of(
+                    new ChanDoanBangPhanVung(UUID.randomUUID().toString(),phanVungCoThes.get(4),phongKhams.get(9)),
+                    new ChanDoanBangPhanVung(UUID.randomUUID().toString(),phanVungCoThes.get(4),phongKhams.get(11)),
+
+                    new ChanDoanBangPhanVung(UUID.randomUUID().toString(),phanVungCoThes.get(9),phongKhams.get(9)),
+                    new ChanDoanBangPhanVung(UUID.randomUUID().toString(),phanVungCoThes.get(9),phongKhams.get(11)),
+
+                    new ChanDoanBangPhanVung(UUID.randomUUID().toString(),phanVungCoThes.get(8),phongKhams.get(9)),
+                    new ChanDoanBangPhanVung(UUID.randomUUID().toString(),phanVungCoThes.get(8),phongKhams.get(11)),
+
+                    new ChanDoanBangPhanVung(UUID.randomUUID().toString(),phanVungCoThes.get(1),phongKhams.get(6)),
+                    new ChanDoanBangPhanVung(UUID.randomUUID().toString(),phanVungCoThes.get(1),phongKhams.get(9)),
+                    new ChanDoanBangPhanVung(UUID.randomUUID().toString(),phanVungCoThes.get(1),phongKhams.get(10))
+            );
+            chanDoanBangPhanVungRepo.saveAll(chanDoanBangPhanVungs);
 
             List<BoPhanCoThe> boPhanCoThes1 = List.of(
                     new BoPhanCoThe("bp_1", "Sau đầu", true, phanVungCoThes.get(0),null),
@@ -476,170 +571,465 @@ public class DataInitializer implements CommandLineRunner {
                     new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(19), boPhanCoThes.get(25))
             );
             trieuChungCuaBoPhanRepo.saveAll(trieuChungCuaBoPhans);
-            List<PhanVungCoThe> phanVungCoThes = phanVungCoTheRepo.findAllAndOrder();
+
             List<PhongKham> phongKhams = phongKhamRepo.findAllAndOrder();
-            List<ChanDoan> chanDoans = List.of(
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),phanVungCoThes.get(4), null, null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11),phanVungCoThes.get(4), null, null),
+            List<ChanDoanBangBoPhan> chanDoanBangBoPhans = List.of(
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(1), phongKhams.get(3)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(1), phongKhams.get(9)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(1), phongKhams.get(10)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),phanVungCoThes.get(9), null, null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11),phanVungCoThes.get(9), null, null),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(4), phongKhams.get(3)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(4), phongKhams.get(9)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(4), phongKhams.get(10)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),phanVungCoThes.get(8), null, null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11),phanVungCoThes.get(8), null, null),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(5), phongKhams.get(3)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(5), phongKhams.get(9)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(5), phongKhams.get(10)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6),phanVungCoThes.get(1), null, null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),phanVungCoThes.get(1), null, null),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(6), phongKhams.get(3)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(6), phongKhams.get(9)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(6), phongKhams.get(10)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(0), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(0), trieuChungs.get(1)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(0), trieuChungs.get(2)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(0), trieuChungs.get(3)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(0), trieuChungs.get(0)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(0), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(0), trieuChungs.get(1)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(0), trieuChungs.get(2)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(0), trieuChungs.get(3)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(0), trieuChungs.get(0)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(7), phongKhams.get(3)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(7), phongKhams.get(9)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(7), phongKhams.get(10)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(1), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(1), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10),null, boPhanCoThes.get(1), null),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(8), phongKhams.get(3)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(8), phongKhams.get(9)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(8), phongKhams.get(10)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(2), trieuChungs.get(4)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(2), trieuChungs.get(10)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(2), trieuChungs.get(11)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(2), trieuChungs.get(12)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(2), trieuChungs.get(13)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(4)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(10)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(11)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(12)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(13)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(10), phongKhams.get(8)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(10), phongKhams.get(10)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(2), trieuChungs.get(3)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(2), trieuChungs.get(5)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(3)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(5)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(12), phongKhams.get(8)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(12), phongKhams.get(9)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(3), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(3), trieuChungs.get(4)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(3), trieuChungs.get(5)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(3), trieuChungs.get(6)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(3), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(3), trieuChungs.get(4)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(3), trieuChungs.get(5)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(3), trieuChungs.get(6)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(13), phongKhams.get(1)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(4), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(4), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(4), null),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(15), phongKhams.get(4)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(15), phongKhams.get(6)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(15), phongKhams.get(10)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(4), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(4), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(4), null),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(16), phongKhams.get(0)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(5), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(5), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(5), null),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(17), phongKhams.get(10)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(17), phongKhams.get(11)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(6), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(6), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(6), null),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(18), phongKhams.get(0)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(7), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(7), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(7), null),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(19), phongKhams.get(4)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(19), phongKhams.get(6)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(19), phongKhams.get(10)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(8), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(8), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(8), null),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(20), phongKhams.get(0)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(9), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(9), trieuChungs.get(3)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(9), trieuChungs.get(7)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(9), trieuChungs.get(8)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(9), trieuChungs.get(9)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(9), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(9), trieuChungs.get(3)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(9), trieuChungs.get(7)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(9), trieuChungs.get(8)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(9), trieuChungs.get(9)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(21), phongKhams.get(4)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(21), phongKhams.get(6)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(21), phongKhams.get(10)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(8), null, boPhanCoThes.get(10), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(10), null),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(22), phongKhams.get(0)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(2), null, boPhanCoThes.get(11), trieuChungs.get(14)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(11), trieuChungs.get(14)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(26), phongKhams.get(9)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(26), phongKhams.get(11)),
 
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(8), null, boPhanCoThes.get(11), trieuChungs.get(15)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(11), trieuChungs.get(16)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(8), null, boPhanCoThes.get(11), trieuChungs.get(15)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(11), trieuChungs.get(16)),
-
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(1), null, boPhanCoThes.get(13), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(8), null, boPhanCoThes.get(12), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(12), null),
-
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(0), null, boPhanCoThes.get(16), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(4), null, boPhanCoThes.get(15), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6), null, boPhanCoThes.get(15), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(15), null),
-
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(0), null, boPhanCoThes.get(18), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(17), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11), null, boPhanCoThes.get(17), null),
-
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(0), null, boPhanCoThes.get(20), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(4), null, boPhanCoThes.get(19), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6), null, boPhanCoThes.get(19), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(19), null),
-
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(0), null, boPhanCoThes.get(22), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(4), null, boPhanCoThes.get(21), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6), null, boPhanCoThes.get(21), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(21), null),
-
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11), null, boPhanCoThes.get(23), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(23), trieuChungs.get(3)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(23), trieuChungs.get(7)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(23), trieuChungs.get(8)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(23), trieuChungs.get(9)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(23), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(23), trieuChungs.get(3)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(23), trieuChungs.get(7)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(23), trieuChungs.get(8)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(23), trieuChungs.get(9)),
-
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11), null, boPhanCoThes.get(24), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(24), trieuChungs.get(3)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(24), trieuChungs.get(7)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(24), trieuChungs.get(8)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(24), trieuChungs.get(9)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(24), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(24), trieuChungs.get(3)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(24), trieuChungs.get(7)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(24), trieuChungs.get(8)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(24), trieuChungs.get(9)),
-
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11), null, boPhanCoThes.get(25), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(25), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(5), null, boPhanCoThes.get(25), trieuChungs.get(17)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(5), null, boPhanCoThes.get(25), trieuChungs.get(18)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(5), null, boPhanCoThes.get(25), trieuChungs.get(19)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6), null, boPhanCoThes.get(25), trieuChungs.get(17)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6), null, boPhanCoThes.get(25), trieuChungs.get(18)),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6), null, boPhanCoThes.get(25), trieuChungs.get(19)),
-
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11), null, boPhanCoThes.get(26), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(26), null),
-
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11), null, boPhanCoThes.get(27), null),
-                    new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(27), null)
-
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(27), phongKhams.get(9)),
+                    new ChanDoanBangBoPhan(UUID.randomUUID().toString(), false, boPhanCoThes.get(27), phongKhams.get(11))
                     );
-            chanDoanRepo.saveAll(chanDoans);
+
         }
+        if(trangThaiKhamSoBoRepo.count()==0){
+            List<TrangThaiKham> trangThaiKhams = List.of(
+                    new TrangThaiKham("Đang khám"),
+                    new TrangThaiKham("Cần tái khám"),
+                    new TrangThaiKham("Đã hủy"),
+                    new TrangThaiKham("Đã khám")
+            );
+            trangThaiKhamSoBoRepo.saveAll(trangThaiKhams);
+        }
+        if(accountRepo.count()==0){
+            TaiKhoan taiKhoan = new TaiKhoan();
+            taiKhoan.setAccountID(UUID.randomUUID().toString());
+            taiKhoan.setRole(roleRepo.findByRoleId(1));
+            taiKhoan.setGioiTinh(genderRepo.findByGioiTinhID(1));
+            Date date = new Date();
+            date.setDate(22);
+            date.setMonth(12);
+            date.setYear(2002);
+            taiKhoan.setNgaySinh(date);
+            taiKhoan.setTen("Nguyễn Quang Hùng");
+            taiKhoan.setDanToc(danTocRepository.findByDanTocID(1));
+            taiKhoan.setCccdCmt("001202002242");
+            taiKhoan.setDiaChi("Ha Noi");
+            taiKhoan.setEmail("abcGamil@gmail.com");
+            taiKhoan.setSdt("0903332054");
+            try{
+                taiKhoan.setMatKhau(decodeEncodeUtil.encryptAES("12345Aa!"));
+            }catch (Exception e){
+                log.error("Exception", e);
+            }
+            taiKhoan = accountRepo.save(taiKhoan);
+            SoKham soKham = new SoKham();
+            soKham.setSoKhamID(UUID.randomUUID().toString());
+            soKham.setTaiKhoan(taiKhoan);
+            soKham.setBhyt("012345678910");
+            soKham = soKhamRepo.save(soKham);
+
+            TaiKhoan bacsi = new TaiKhoan();
+            bacsi.setAccountID(UUID.randomUUID().toString());
+            bacsi.setRole(roleRepo.findByRoleId(2));
+            bacsi.setGioiTinh(genderRepo.findByGioiTinhID(1));
+            Date birth = new Date();
+            birth.setDate(22);
+            birth.setMonth(12);
+            birth.setYear(1982);
+            bacsi.setNgaySinh(birth);
+            bacsi.setTen("Nguyễn Huy Hùng");
+            bacsi.setDanToc(danTocRepository.findByDanTocID(1));
+            bacsi.setCccdCmt("001202002256");
+            bacsi.setDiaChi("Ha Noi");
+            bacsi.setEmail("bacsiGamil@gmail.com");
+            bacsi.setSdt("0903332075");
+            try{
+                bacsi.setMatKhau(decodeEncodeUtil.encryptAES("12345Aa!"));
+            }catch (Exception e){
+                log.error("Exception", e);
+            }
+            bacsi = accountRepo.save(bacsi);
+
+            BacSi bacSiAtCoSo = new BacSi();
+            bacSiAtCoSo.setBacSiID(UUID.randomUUID().toString());
+            bacSiAtCoSo.setTaiKhoan(bacsi);
+            bacSiAtCoSo.setCoSoBenhVien(coSoBenhVienRepo.findById(1).get());
+            bacSiAtCoSo = bacSiRepo.save(bacSiAtCoSo);
+
+            LichSuKham lichSuKham = new LichSuKham();
+            lichSuKham.setBacSi(bacSiAtCoSo);
+            lichSuKham.setLichSuKhamID(UUID.randomUUID().toString());
+            lichSuKham.setSoKham(soKham);
+            LocalDateTime localDateTaiKhamHuyStart1 = LocalDateTime.of(2024,12,22,8,30); // Example LocalDate
+            lichSuKham.setNgayKham(localDateTaiKhamHuyStart1);
+            LocalDateTime localDateTaiKhamHuyEnd1 = LocalDateTime.of(2024,12,22,8,50); // Example LocalDate
+            lichSuKham.setNgayKetLuan(localDateTaiKhamHuyEnd1);
+            lichSuKham.setCoSoBenhVien(coSoBenhVienRepo.findById(1).get());
+            lichSuKham.setTrangThaiKham(trangThaiKhamSoBoRepo.findById(3).get());
+            lichSuKham = lichSuKhamRepo.save(lichSuKham);
+
+            PhongKhamChiTiet phongKhamChiTiet  = phongKhamChiTietRepo.findById("pkct1").get();
+            DichVuKham dichVuKhamTestData = phongKhamChiTiet.getPhongKham().getDichVuKham();
+            LichSuKhamChiTiet lichSuKhamChiTiet = new LichSuKhamChiTiet();
+            lichSuKhamChiTiet.setNgayKham(localDateTaiKhamHuyStart1);
+            lichSuKhamChiTiet.setLichSuKham(lichSuKham);
+            lichSuKhamChiTiet.setGia(dichVuKhamTestData.getGia());
+            lichSuKhamChiTiet.setTenDichVuKham(dichVuKhamTestData.getTenLoai());
+            lichSuKhamChiTiet.setPhongKhamChiTiet(phongKhamChiTiet);
+            lichSuKhamChiTiet.setLichSuKhamChiTietID(UUID.randomUUID().toString());
+            lichSuKhamChiTietRepo.save(lichSuKhamChiTiet);
+
+            lichSuKham.setTongThu(lichSuKhamChiTiet.getGia());
+            lichSuKhamRepo.save(lichSuKham);
+
+            LichSuKham lichSuKhamTaiKham = new LichSuKham();
+            lichSuKhamTaiKham.setBacSi(bacSiAtCoSo);
+            lichSuKhamTaiKham.setLichSuKhamID(UUID.randomUUID().toString());
+            lichSuKhamTaiKham.setSoKham(soKham);
+
+            LocalDateTime localDateTaiKhamStart1 = LocalDateTime.of(2024,12,24,8,30); // Example LocalDate
+            lichSuKhamTaiKham.setNgayKham(localDateTaiKhamStart1);
+
+            LocalDateTime localDateTaiKhamEnd1 = LocalDateTime.of(2024,12,24,14,50); // Example LocalDate
+            lichSuKhamTaiKham.setNgayKetLuan(localDateTaiKhamEnd1);
+            lichSuKhamTaiKham.setKetLuan("Cần tái khám");
+            lichSuKhamTaiKham.setGhiChu("Ăn đủ bữa");
+            lichSuKhamTaiKham.setCoSoBenhVien(coSoBenhVienRepo.findById(1).get());
+            lichSuKhamTaiKham.setTrangThaiKham(trangThaiKhamSoBoRepo.findById(2).get());
+            lichSuKhamTaiKham = lichSuKhamRepo.save(lichSuKhamTaiKham);
+
+            List<LichSuKhamChiTiet> lichSuKhamChiTiets = new ArrayList<>();
+            PhongKhamChiTiet phongKhamChiTietTaiKhamSoBo  = phongKhamChiTietRepo.findById("pkct1").get();
+            DichVuKham dichVuKhamTestDataTaiKham = phongKhamChiTietTaiKhamSoBo.getPhongKham().getDichVuKham();
+            LichSuKhamChiTiet lichSuKhamChiTietTaiKham = new LichSuKhamChiTiet();
+            lichSuKhamChiTietTaiKham.setLichSuKhamChiTietID(UUID.randomUUID().toString());
+            lichSuKhamChiTietTaiKham.setLichSuKham(lichSuKhamTaiKham);
+            lichSuKhamChiTietTaiKham.setPhongKhamChiTiet(phongKhamChiTietTaiKhamSoBo);
+            lichSuKhamChiTietTaiKham.setGia(dichVuKhamTestDataTaiKham.getGia());
+            lichSuKhamChiTietTaiKham.setTenDichVuKham(dichVuKhamTestDataTaiKham.getTenLoai());
+
+            LocalDateTime localDateTaiKhamStart2 = LocalDateTime.of(2024,12,24,8,30); // Example LocalDate
+            lichSuKhamChiTietTaiKham.setNgayKham(localDateTaiKhamStart2);
+            LocalDateTime localDateTaiKhamEnd2 = LocalDateTime.of(2024,12,24,9,0); // Example LocalDate
+            lichSuKhamChiTietTaiKham.setNgayKetLuan(localDateTaiKhamEnd2);
+            lichSuKhamChiTiets.add(lichSuKhamChiTietTaiKham);
+
+            PhongKhamChiTiet phongKhamChiTietNoiSoi  = phongKhamChiTietRepo.findById("pkct22").get();
+            DichVuKham dichVuKhamTestDataTaiKhamNoiSoi = phongKhamChiTietNoiSoi.getPhongKham().getDichVuKham();
+            LichSuKhamChiTiet lichSuKhamChiTietTaiKham1 = new LichSuKhamChiTiet();
+            lichSuKhamChiTietTaiKham1.setLichSuKhamChiTietID(UUID.randomUUID().toString());
+            lichSuKhamChiTietTaiKham1.setLichSuKham(lichSuKhamTaiKham);
+            lichSuKhamChiTietTaiKham1.setPhongKhamChiTiet(phongKhamChiTietNoiSoi);
+            lichSuKhamChiTietTaiKham1.setGia(dichVuKhamTestDataTaiKhamNoiSoi.getGia());
+            lichSuKhamChiTietTaiKham1.setTenDichVuKham(dichVuKhamTestDataTaiKhamNoiSoi.getTenLoai());
+            LocalDateTime localDateTaiKhamStart3 = LocalDateTime.of(2024,12,24,10,0); // Example LocalDate
+            lichSuKhamChiTietTaiKham1.setNgayKham(localDateTaiKhamStart3);
+            LocalDateTime localDateTaiKhamEnd3 = LocalDateTime.of(2024,12,24,11,0); // Example LocalDate
+            lichSuKhamChiTietTaiKham1.setNgayKetLuan(localDateTaiKhamEnd3);
+            lichSuKhamChiTiets.add(lichSuKhamChiTietTaiKham1);
+
+            PhongKhamChiTiet phongKhamChiTietSieuAm  = phongKhamChiTietRepo.findById("pkct20").get();
+            DichVuKham dichVuKhamTestDataSieuAm = phongKhamChiTietSieuAm.getPhongKham().getDichVuKham();
+            LichSuKhamChiTiet lichSuKhamChiTietTaiKham2 = new LichSuKhamChiTiet();
+            lichSuKhamChiTietTaiKham2.setLichSuKhamChiTietID(UUID.randomUUID().toString());
+            lichSuKhamChiTietTaiKham2.setLichSuKham(lichSuKhamTaiKham);
+            lichSuKhamChiTietTaiKham2.setPhongKhamChiTiet(phongKhamChiTietSieuAm);
+            lichSuKhamChiTietTaiKham2.setGia(dichVuKhamTestDataSieuAm.getGia());
+            lichSuKhamChiTietTaiKham2.setTenDichVuKham(dichVuKhamTestDataSieuAm.getTenLoai());
+            LocalDateTime localDateTaiKhamStart4 = LocalDateTime.of(2024,12,24,12,0); // Example LocalDate
+            lichSuKhamChiTietTaiKham2.setNgayKham(localDateTaiKhamStart4);
+            LocalDateTime localDateTaiKhamEnd4 = LocalDateTime.of(2024,12,24,13,0); // Example LocalDate
+            lichSuKhamChiTietTaiKham2.setNgayKetLuan(localDateTaiKhamEnd4);
+            lichSuKhamChiTiets.add(lichSuKhamChiTietTaiKham2);
+
+            lichSuKhamChiTietRepo.saveAll(lichSuKhamChiTiets);
+            lichSuKhamTaiKham.setTongThu(lichSuKhamChiTiets.stream()
+                    .map(LichSuKhamChiTiet::getGia) // Extract the numeric values
+                    .reduce(0.0, Double::sum));
+            lichSuKhamRepo.save(lichSuKhamTaiKham);
+
+
+            LichSuKham lichSuKhamDaKham = new LichSuKham();
+            lichSuKhamDaKham.setBacSi(bacSiAtCoSo);
+            lichSuKhamDaKham.setLichSuKhamID(UUID.randomUUID().toString());
+            lichSuKhamDaKham.setSoKham(soKham);
+
+            LocalDateTime localDateDaKhamStart1 = LocalDateTime.of(2024,12,26,8,30); // Example LocalDate
+            lichSuKhamDaKham.setNgayKham(localDateDaKhamStart1);
+            LocalDateTime localDateDaKhamEnd1 = LocalDateTime.of(2024,12,26,14,50); // Example LocalDate
+            lichSuKhamDaKham.setNgayKetLuan(localDateDaKhamEnd1);
+            lichSuKhamDaKham.setKetLuan("Đã khám");
+            lichSuKhamDaKham.setGhiChu("Ngủ đủ giấc");
+            lichSuKhamDaKham.setCoSoBenhVien(coSoBenhVienRepo.findById(1).get());
+            lichSuKhamDaKham.setTrangThaiKham(trangThaiKhamSoBoRepo.findById(4).get());
+            lichSuKhamDaKham = lichSuKhamRepo.save(lichSuKhamDaKham);
+
+            List<LichSuKhamChiTiet> lichSuKhamChiTietsDaXong = new ArrayList<>();
+            PhongKhamChiTiet phongKhamChiTietDaKhamSoBo  = phongKhamChiTietRepo.findById("pkct1").get();
+            DichVuKham dichVuKhamTestDataDaKham = phongKhamChiTietDaKhamSoBo.getPhongKham().getDichVuKham();
+            LichSuKhamChiTiet lichSuKhamChiTietDaKham = new LichSuKhamChiTiet();
+            lichSuKhamChiTietDaKham.setLichSuKhamChiTietID(UUID.randomUUID().toString());
+            lichSuKhamChiTietDaKham.setLichSuKham(lichSuKhamDaKham);
+            lichSuKhamChiTietDaKham.setPhongKhamChiTiet(phongKhamChiTietDaKhamSoBo);
+            lichSuKhamChiTietDaKham.setGia(dichVuKhamTestDataDaKham.getGia());
+            lichSuKhamChiTietDaKham.setTenDichVuKham(dichVuKhamTestDataDaKham.getTenLoai());
+
+            LocalDateTime localDateDaKhamStart2 = LocalDateTime.of(2024,12,26,8,30); // Example LocalDate
+            lichSuKhamChiTietDaKham.setNgayKham(localDateDaKhamStart2);
+            LocalDateTime localDateDaKhamEnd2 = LocalDateTime.of(2024,12,26,9,0); // Example LocalDate
+            lichSuKhamChiTietDaKham.setNgayKetLuan(localDateDaKhamEnd2);
+            lichSuKhamChiTietsDaXong.add(lichSuKhamChiTietDaKham);
+
+            PhongKhamChiTiet phongKhamChiTietDaKhamNoiSoi  = phongKhamChiTietRepo.findById("pkct22").get();
+            DichVuKham dichVuKhamTestDataDaKhamNoiSoi = phongKhamChiTietDaKhamNoiSoi.getPhongKham().getDichVuKham();
+            LichSuKhamChiTiet lichSuKhamChiTietDaKham1 = new LichSuKhamChiTiet();
+            lichSuKhamChiTietDaKham1.setLichSuKhamChiTietID(UUID.randomUUID().toString());
+            lichSuKhamChiTietDaKham1.setLichSuKham(lichSuKhamDaKham);
+            lichSuKhamChiTietDaKham1.setPhongKhamChiTiet(phongKhamChiTietNoiSoi);
+            lichSuKhamChiTietDaKham1.setGia(dichVuKhamTestDataDaKhamNoiSoi.getGia());
+            lichSuKhamChiTietDaKham1.setTenDichVuKham(dichVuKhamTestDataDaKhamNoiSoi.getTenLoai());
+            LocalDateTime localDateDaKhamStart3 = LocalDateTime.of(2024,12,26,10, 0); // Example LocalDate
+            lichSuKhamChiTietDaKham1.setNgayKham(localDateDaKhamStart3);
+            LocalDateTime localDateDaKhamEnd3 = LocalDateTime.of(2024,12,26,11,0); // Example LocalDate
+            lichSuKhamChiTietDaKham1.setNgayKetLuan(localDateDaKhamEnd3);
+            lichSuKhamChiTietsDaXong.add(lichSuKhamChiTietDaKham1);
+
+            PhongKhamChiTiet phongKhamChiTietDaKhamSieuAm  = phongKhamChiTietRepo.findById("pkct20").get();
+            DichVuKham dichVuKhamTestDataDaKhamSieuAm = phongKhamChiTietDaKhamSieuAm.getPhongKham().getDichVuKham();
+            LichSuKhamChiTiet lichSuKhamChiTietDaKham2 = new LichSuKhamChiTiet();
+            lichSuKhamChiTietDaKham2.setLichSuKhamChiTietID(UUID.randomUUID().toString());
+            lichSuKhamChiTietDaKham2.setLichSuKham(lichSuKhamDaKham);
+            lichSuKhamChiTietDaKham2.setPhongKhamChiTiet(phongKhamChiTietSieuAm);
+            lichSuKhamChiTietDaKham2.setGia(dichVuKhamTestDataDaKhamSieuAm.getGia());
+            lichSuKhamChiTietDaKham2.setTenDichVuKham(dichVuKhamTestDataDaKhamSieuAm.getTenLoai());
+            LocalDateTime localDateDaKhamStart4 = LocalDateTime.of(2024,12,26,12, 0); // Example LocalDate
+            lichSuKhamChiTietDaKham2.setNgayKham(localDateDaKhamStart4);
+            LocalDateTime localDateDaKhamEnd4 = LocalDateTime.of(2024,12,26,13, 0); // Example LocalDate
+            lichSuKhamChiTietDaKham2.setNgayKetLuan(localDateDaKhamEnd4);
+            lichSuKhamChiTietsDaXong.add(lichSuKhamChiTietDaKham2);
+            lichSuKhamChiTietRepo.saveAll(lichSuKhamChiTietsDaXong);
+
+            LichSuSuDungThuoc lichSuSuDungThuoc = new LichSuSuDungThuoc();
+            lichSuSuDungThuoc.setTenThuoc("Thuốc A");
+            lichSuSuDungThuoc.setHuongDanSuDung("Ngày 2 lần sau ăn trưa tối");
+            lichSuSuDungThuoc.setLichSuSuDungThuocID(UUID.randomUUID().toString());
+            lichSuSuDungThuoc.setLichSuKham(lichSuKhamDaKham);
+            lichSuSuDungThuoc.setDonVi("Viên");
+            lichSuSuDungThuoc.setLieuLuong(2.0);
+            lichSuSuDungThuocRepo.save(lichSuSuDungThuoc);
+
+            lichSuKhamDaKham.setTongThu(lichSuKhamChiTietsDaXong.stream()
+                    .map(LichSuKhamChiTiet::getGia) // Extract the numeric values
+                    .reduce(0.0, Double::sum));
+            lichSuKhamRepo.save(lichSuKhamDaKham);
+        }
+//        List<ChanDoan> chanDoans = List.of(
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),phanVungCoThes.get(4), null, null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11),phanVungCoThes.get(4), null, null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),phanVungCoThes.get(9), null, null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11),phanVungCoThes.get(9), null, null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),phanVungCoThes.get(8), null, null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11),phanVungCoThes.get(8), null, null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6),phanVungCoThes.get(1), null, null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),phanVungCoThes.get(1), null, null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(0), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(0), trieuChungs.get(1)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(0), trieuChungs.get(2)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(0), trieuChungs.get(3)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(0), trieuChungs.get(0)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(0), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(0), trieuChungs.get(1)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(0), trieuChungs.get(2)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(0), trieuChungs.get(3)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(0), trieuChungs.get(0)),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(1), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(1), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10),null, boPhanCoThes.get(1), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(2), trieuChungs.get(4)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(2), trieuChungs.get(10)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(2), trieuChungs.get(11)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(2), trieuChungs.get(12)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(2), trieuChungs.get(13)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(4)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(10)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(11)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(12)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(13)),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(2), trieuChungs.get(3)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(2), trieuChungs.get(5)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(3)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(2), trieuChungs.get(5)),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3),null, boPhanCoThes.get(3), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(3), trieuChungs.get(4)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(3), trieuChungs.get(5)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7),null, boPhanCoThes.get(3), trieuChungs.get(6)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(3), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(3), trieuChungs.get(4)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(3), trieuChungs.get(5)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9),null, boPhanCoThes.get(3), trieuChungs.get(6)),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(4), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(4), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(4), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(4), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(4), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(4), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(5), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(5), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(5), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(6), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(6), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(6), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(7), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(7), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(7), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(8), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(8), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(8), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(3), null, boPhanCoThes.get(9), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(9), trieuChungs.get(3)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(9), trieuChungs.get(7)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(9), trieuChungs.get(8)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(9), trieuChungs.get(9)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(9), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(9), trieuChungs.get(3)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(9), trieuChungs.get(7)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(9), trieuChungs.get(8)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(9), trieuChungs.get(9)),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(8), null, boPhanCoThes.get(10), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(10), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(2), null, boPhanCoThes.get(11), trieuChungs.get(14)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(11), trieuChungs.get(14)),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(8), null, boPhanCoThes.get(11), trieuChungs.get(15)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(11), trieuChungs.get(16)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(8), null, boPhanCoThes.get(11), trieuChungs.get(15)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(11), trieuChungs.get(16)),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(1), null, boPhanCoThes.get(13), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(8), null, boPhanCoThes.get(12), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(12), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(0), null, boPhanCoThes.get(16), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(4), null, boPhanCoThes.get(15), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6), null, boPhanCoThes.get(15), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(15), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(0), null, boPhanCoThes.get(18), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(17), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11), null, boPhanCoThes.get(17), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(0), null, boPhanCoThes.get(20), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(4), null, boPhanCoThes.get(19), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6), null, boPhanCoThes.get(19), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(19), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(0), null, boPhanCoThes.get(22), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(4), null, boPhanCoThes.get(21), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6), null, boPhanCoThes.get(21), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(10), null, boPhanCoThes.get(21), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11), null, boPhanCoThes.get(23), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(23), trieuChungs.get(3)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(23), trieuChungs.get(7)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(23), trieuChungs.get(8)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(23), trieuChungs.get(9)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(23), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(23), trieuChungs.get(3)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(23), trieuChungs.get(7)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(23), trieuChungs.get(8)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(23), trieuChungs.get(9)),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11), null, boPhanCoThes.get(24), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(24), trieuChungs.get(3)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(24), trieuChungs.get(7)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(24), trieuChungs.get(8)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(7), null, boPhanCoThes.get(24), trieuChungs.get(9)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(24), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(24), trieuChungs.get(3)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(24), trieuChungs.get(7)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(24), trieuChungs.get(8)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(24), trieuChungs.get(9)),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11), null, boPhanCoThes.get(25), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(25), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(5), null, boPhanCoThes.get(25), trieuChungs.get(17)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(5), null, boPhanCoThes.get(25), trieuChungs.get(18)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(5), null, boPhanCoThes.get(25), trieuChungs.get(19)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6), null, boPhanCoThes.get(25), trieuChungs.get(17)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6), null, boPhanCoThes.get(25), trieuChungs.get(18)),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(6), null, boPhanCoThes.get(25), trieuChungs.get(19)),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11), null, boPhanCoThes.get(26), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(26), null),
+//
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(11), null, boPhanCoThes.get(27), null),
+//                new ChanDoan(UUID.randomUUID().toString(), phongKhams.get(9), null, boPhanCoThes.get(27), null)
+//
+//        );
+//        chanDoanRepo.saveAll(chanDoans);
 //        new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(0), boPhanCoThes1.get(0)),
 //                new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(0), boPhanCoThes1.get(2)),
 //                new TrieuChungCuaBoPhan(UUID.randomUUID().toString(),trieuChungs.get(1), boPhanCoThes1.get(0)),

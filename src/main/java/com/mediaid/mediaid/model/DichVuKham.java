@@ -17,10 +17,17 @@ public class DichVuKham {
 
     private String tenLoai;
     private Double gia;
-    private String status;
+    private boolean status;
+
+    public DichVuKham(String tenLoai, Double gia, boolean status, MauLoaiKham mauLoaiKham) {
+        this.tenLoai = tenLoai;
+        this.gia = gia;
+        this.status = status;
+        this.mauLoaiKham = mauLoaiKham;
+    }
 
     @OneToMany(mappedBy = "dichVuKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<LichSuKhamChiTiet> lichSuKhamChiTiets;
+    private List<PhongKham> phongKhams;
 
     @ManyToOne
     @JoinColumn(name = "mauLoaiKhamID", nullable = false)

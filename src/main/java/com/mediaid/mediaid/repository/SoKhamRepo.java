@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SoKhamRepo extends JpaRepository<SoKham, String> {
-    SoKham findBySoKhamID(String id);
     @Query(nativeQuery = true, value = "SELECT * FROM mediate_db.so_kham where accountid = ?1;")
     SoKham findSoKhamByAccountID(String id);
 

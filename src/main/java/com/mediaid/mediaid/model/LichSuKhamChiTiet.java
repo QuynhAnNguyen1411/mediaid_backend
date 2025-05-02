@@ -2,7 +2,8 @@ package com.mediaid.mediaid.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,14 +19,13 @@ public class LichSuKhamChiTiet {
     private LichSuKham lichSuKham;
 
     @ManyToOne
-    @JoinColumn(name = "dichVuKhamID", nullable = false)
-    private DichVuKham dichVuKham;
-
-    @ManyToOne
     @JoinColumn(name = "phongKhamChiTietID", nullable = false)
     private PhongKhamChiTiet phongKhamChiTiet;
 
-    private Date ngayKham;
-    private Double gia;
+    private LocalDateTime ngayKham;
+    private LocalDateTime ngayKetLuan;
+    private String anhKetQua;
+    private String ghiChu;
+    private double gia;
     private String tenDichVuKham;
 }
