@@ -2,6 +2,7 @@ package com.mediaid.mediaid.util;
 
 import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -729,6 +730,7 @@ public class DataInitializer implements CommandLineRunner {
             lichSuKham = lichSuKhamRepo.save(lichSuKham);
 
             PhongKhamChiTiet phongKhamChiTiet  = phongKhamChiTietRepo.findById("pkct1").get();
+
             DichVuKham dichVuKhamTestData = phongKhamChiTiet.getPhongKham().getDichVuKham();
             LichSuKhamChiTiet lichSuKhamChiTiet = new LichSuKhamChiTiet();
             lichSuKhamChiTiet.setNgayKham(localDateTaiKhamHuyStart1);
