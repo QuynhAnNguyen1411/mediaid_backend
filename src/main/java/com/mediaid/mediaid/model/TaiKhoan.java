@@ -29,6 +29,9 @@ public class TaiKhoan {
     @JoinColumn(name = "gioiTinhID", nullable = false)
     private GioiTinh gioiTinh;
 
+    @OneToOne(mappedBy = "taiKhoan", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private SoKham soKham;
+
     private String ten;
     private Date ngaySinh;
     @Column(unique = true, nullable = false)

@@ -21,4 +21,8 @@ public class LichSuKhamController {
     public ResponseEntity<?> layDanhSachLichSuKhamChiTiet(@RequestParam String lichSuKhamID) {
         return lichSuKhamService.layDanhSachLichSuKhamChiTiet(lichSuKhamID);
     }
+    @GetMapping("/layLichSuKhamChiTiet")
+    public ResponseEntity<?> layLichSuKhamChiTiet(@RequestParam String lichSuKhamChiTietID) {
+        return lichSuKhamService.layLichSuKhamChiTiet(lichSuKhamChiTietID);
+    }
 }

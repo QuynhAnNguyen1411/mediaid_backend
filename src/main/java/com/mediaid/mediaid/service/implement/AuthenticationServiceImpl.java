@@ -143,6 +143,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 String token = JwtHandler.generateJWT(taiKhoan.getAccountID());
                 HashMap<String, String> response = CommonUtil.returnMessage("token", token);
                 response.put("accountID", taiKhoan.getAccountID());
+                response.put("soKhamID", taiKhoan.getSoKham().getSoKhamID());
                 log.info("Login successfully");
                 return ResponseEntity.ok().body(response);
             }
