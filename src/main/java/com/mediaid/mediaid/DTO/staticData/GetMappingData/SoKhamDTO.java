@@ -16,6 +16,7 @@ public class SoKhamDTO {
     private String accountName;
     private String cmndCmt;
     private String bhyt;
+    private String diaChi;
     private String sdt;
     private String email;
     private Date ngaySinh;

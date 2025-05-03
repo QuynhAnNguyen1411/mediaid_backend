@@ -368,6 +368,7 @@ public class SoKhamServiceImpl implements SoKhamService {
             soKhamDTO.setAccountName(taiKhoan.getTen());
             soKhamDTO.setCmndCmt(taiKhoan.getCccdCmt());
             soKhamDTO.setBhyt(soKham.getBhyt());
+            soKhamDTO.setDiaChi(taiKhoan.getDiaChi());
             soKhamDTO.setSdt(taiKhoan.getSdt());
             soKhamDTO.setEmail(taiKhoan.getEmail());
             soKhamDTO.setNgaySinh(taiKhoan.getNgaySinh());
