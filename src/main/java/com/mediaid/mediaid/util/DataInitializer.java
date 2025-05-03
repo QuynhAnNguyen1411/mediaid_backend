@@ -6,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +46,7 @@ public class DataInitializer implements CommandLineRunner {
     private final LichSuKhamChiTietRepo lichSuKhamChiTietRepo;
     private final PhongKhamChiTietRepo phongKhamChiTietRepo;
     private final LichSuSuDungThuocRepo lichSuSuDungThuocRepo;
+    private final NguoiGiamHoRepo nguoiGiamHoRepo;
 
 
     public DataInitializer(DanTocRepo danTocRepository, GenderRepo genderRepo, RoleRepo roleRepo, LyDoPhauThuatRepo lyDoPhauThuatRepo,
@@ -55,7 +58,7 @@ public class DataInitializer implements CommandLineRunner {
                            DichVuKhamRepo dichVuKhamRepo, TrangThaiKhamSoBoRepo trangThaiKhamSoBoRepo, AccountRepo accountRepo,
                            BacSiRepo bacSiRepo, DecodeEncodeUtil decodeEncodeUtil, SoKhamRepo soKhamRepo, LichSuKhamRepo lichSuKhamRepo,
                            LichSuKhamChiTietRepo lichSuKhamChiTietRepo, PhongKhamChiTietRepo phongKhamChiTietRepo,
-                           LichSuSuDungThuocRepo lichSuSuDungThuocRepo) {
+                           LichSuSuDungThuocRepo lichSuSuDungThuocRepo, NguoiGiamHoRepo nguoiGiamHoRepo) {
         this.danTocRepository = danTocRepository;
         this.genderRepo = genderRepo;
         this.roleRepo = roleRepo;
@@ -84,6 +87,7 @@ public class DataInitializer implements CommandLineRunner {
         this.lichSuKhamChiTietRepo = lichSuKhamChiTietRepo;
         this.phongKhamChiTietRepo = phongKhamChiTietRepo;
         this.lichSuSuDungThuocRepo = lichSuSuDungThuocRepo;
+        this.nguoiGiamHoRepo = nguoiGiamHoRepo;
     }
 
     @Override
@@ -668,20 +672,30 @@ public class DataInitializer implements CommandLineRunner {
                 log.error("Exception", e);
             }
             taiKhoan = accountRepo.save(taiKhoan);
+
             SoKham soKham = new SoKham();
             soKham.setSoKhamID(UUID.randomUUID().toString());
             soKham.setTaiKhoan(taiKhoan);
             soKham.setBhyt("012345678910");
             soKham = soKhamRepo.save(soKham);
 
+            NguoiGiamHo nguoiGiamHo = new NguoiGiamHo();
+            nguoiGiamHo.setGiamHoID(UUID.randomUUID().toString());
+            nguoiGiamHo.setTen("Nguyễn Duy Hoàn");
+            nguoiGiamHo.setSdt("0902341777");
+            nguoiGiamHo.setCccdCmt("123456789098");
+            nguoiGiamHo.setMoiQuanHe("Chú");
+            nguoiGiamHo.setSoKham(soKham);
+            nguoiGiamHoRepo.save(nguoiGiamHo);
+
+
             TaiKhoan bacsi = new TaiKhoan();
             bacsi.setAccountID(UUID.randomUUID().toString());
             bacsi.setRole(roleRepo.findByRoleId(2));
             bacsi.setGioiTinh(genderRepo.findByGioiTinhID(1));
-            Date birth = new Date();
-            birth.setDate(22);
-            birth.setMonth(12);
-            birth.setYear(1982);
+
+            LocalDate localDate = LocalDate.of(1982,12,22);
+            Date birth = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             bacsi.setNgaySinh(birth);
             bacsi.setTen("Nguyễn Huy Hùng");
             bacsi.setDanToc(danTocRepository.findByDanTocID(1));
