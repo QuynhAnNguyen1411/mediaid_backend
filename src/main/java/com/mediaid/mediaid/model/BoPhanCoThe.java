@@ -35,10 +35,10 @@ public class BoPhanCoThe {
     @OneToMany(mappedBy = "boPhanCoThe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ChanDoanBangBoPhan> chanDoanBangBoPhans;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "phanVungCoTheID")
     private PhanVungCoThe phanVungCoThe;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "GioiTinhID")
     private GioiTinh gioiTinh;
 }

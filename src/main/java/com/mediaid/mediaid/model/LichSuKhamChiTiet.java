@@ -14,11 +14,11 @@ public class LichSuKhamChiTiet {
     @Id
     private String lichSuKhamChiTietID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lichSuKhamID", nullable = false)
     private LichSuKham lichSuKham;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "phongKhamChiTietID", nullable = false)
     private PhongKhamChiTiet phongKhamChiTiet;
 

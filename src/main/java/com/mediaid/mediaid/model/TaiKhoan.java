@@ -17,15 +17,15 @@ public class TaiKhoan {
     @Id
     private String accountID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleId", nullable = false)
     private Role role;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "danTocID", nullable = false)
     private DanToc danToc;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gioiTinhID", nullable = false)
     private GioiTinh gioiTinh;
 

@@ -15,7 +15,7 @@ public class LichSuSuDungThuocDTO {
     private String lich_su_su_dung_thuocid;
     private String ten_thuoc;
     private String huong_dan_su_dung;
-    private String lieu_luong;
+    private Double lieu_luong;
     private String don_vi;
     private String lich_su_khamid;
 }

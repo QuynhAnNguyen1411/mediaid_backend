@@ -1,10 +1,7 @@
 package com.mediaid.mediaid.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +16,10 @@ public class ChanDoanBangBoPhan {
     @Id
     private String chanDoanBPID;
     private boolean coTrieuChung;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "boPhanID", nullable = false)
     private BoPhanCoThe boPhanCoThe;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "phongKhamID", nullable = false)
     private PhongKham phongKham;
 

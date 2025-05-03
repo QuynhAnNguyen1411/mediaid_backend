@@ -15,7 +15,7 @@ public class NguoiGiamHo {
     @Id
     private String giamHoID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "soKhamID", nullable = false)
     private SoKham soKham;
 

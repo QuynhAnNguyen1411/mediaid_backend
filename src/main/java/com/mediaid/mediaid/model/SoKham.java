@@ -17,7 +17,7 @@ public class SoKham {
     @Id
     private String soKhamID;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountID")
     private TaiKhoan taiKhoan;
 

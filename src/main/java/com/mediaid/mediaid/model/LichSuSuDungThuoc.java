@@ -12,7 +12,7 @@ public class LichSuSuDungThuoc {
     @Id
     private String lichSuSuDungThuocID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lichSuKhamID")
     private LichSuKham lichSuKham;
 

@@ -13,11 +13,11 @@ public class BacSi {
     @Id
     private String bacSiID;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountID", nullable = false)
     private TaiKhoan taiKhoan;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coSoID", nullable = false)
     private CoSoBenhVien coSoBenhVien;
 }

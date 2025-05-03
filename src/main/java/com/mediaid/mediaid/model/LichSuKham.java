@@ -15,19 +15,19 @@ public class LichSuKham {
     @Id
     private String lichSuKhamID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "soKhamID", nullable = false)
     private SoKham soKham;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bacSiID")
     private BacSi bacSi;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trangThaiKhamID")
     private TrangThaiKham trangThaiKham;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coSoID")
     private CoSoBenhVien coSoBenhVien;
 

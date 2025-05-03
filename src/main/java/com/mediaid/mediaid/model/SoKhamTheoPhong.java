@@ -22,7 +22,7 @@ public class SoKhamTheoPhong {
     private Date date;
     private String tinhTrangKham;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "phongKhamChiTietID")
     private PhongKhamChiTiet phongKhamChiTiet;
 

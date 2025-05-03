@@ -17,9 +17,9 @@ public class LichSuKhamController {
     public ResponseEntity<?> layDanhSachLichSuKham(@RequestParam String soKhamID) {
         return lichSuKhamService.layDanhSachLichSuKham(soKhamID);
     }
-    @GetMapping("/layDanhSachLichSuKhamChiTiet")
-    public ResponseEntity<?> layDanhSachLichSuKhamChiTiet(@RequestParam String lichSuKhamID) {
-        return lichSuKhamService.layDanhSachLichSuKhamChiTiet(lichSuKhamID);
+    @GetMapping("/layLichSuKham")
+    public ResponseEntity<?> layLichSuKham(@RequestParam String lichSuKhamID) {
+        return lichSuKhamService.layLichSuKham(lichSuKhamID);
     }
     @GetMapping("/layLichSuKhamChiTiet")
     public ResponseEntity<?> layLichSuKhamChiTiet(@RequestParam String lichSuKhamChiTietID) {

@@ -29,7 +29,7 @@ public class DichVuKham {
     @OneToMany(mappedBy = "dichVuKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PhongKham> phongKhams;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mauLoaiKhamID", nullable = false)
     private MauLoaiKham mauLoaiKham;
 }

@@ -14,11 +14,11 @@ public class ThoiQuenLoiSong {
     @Id
     private String thoiQuenLoiSongID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "thoiQuenID", nullable = false)
     private ThoiQuen thoiQuen;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "loiSongNguoiBenhID", nullable = false)
     private LoiSongNguoiBenh loiSongNguoiBenh;
 }

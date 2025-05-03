@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface LichSuSuDungThuocRepo extends JpaRepository<LichSuSuDungThuoc, String> {
     @Query("SELECT new com.mediaid.mediaid.DTO.lichSuKham.LichSuSuDungThuocDTO(" +
-            "a.lichSuKhamChiTietID, a.tenThuoc, a.huongDanSuDung, a.lieuLuong, a.donVi, b.lichSuKhamID) " +
+            "a.lichSuSuDungThuocID, a.tenThuoc, a.huongDanSuDung, a.lieuLuong, a.donVi, b.lichSuKhamID) " +
             "from LichSuSuDungThuoc a " +
             "inner join a.lichSuKham b " +
             "where b.lichSuKhamID = ?1 ")

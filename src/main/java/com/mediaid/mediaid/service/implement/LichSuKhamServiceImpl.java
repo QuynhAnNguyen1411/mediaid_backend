@@ -38,11 +38,11 @@ public class LichSuKhamServiceImpl implements LichSuKhamService {
     }
 
     @Override
-    public ResponseEntity<?> layDanhSachLichSuKhamChiTiet(String lichSuKhamID) {
+    public ResponseEntity<?> layLichSuKham(String lichSuKhamID) {
         if(CommonUtil.isNullOrEmpty(lichSuKhamID)){
             return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid lichSuKhamID"));
         }
-        LichSuKhamUsingIDDTO lichSuKhamUsingIDDTO = new LichSuKhamUsingIDDTO();
+        LichSuKhamDTO lichSuKhamDTO = new LichSuKhamDTO();
         try {
             Optional<LichSuKham> query = lichSuKhamRepo.findById(lichSuKhamID);
             if (query.isEmpty()){
@@ -51,15 +51,15 @@ public class LichSuKhamServiceImpl implements LichSuKhamService {
             LichSuKham lichSuKham = query.get();
             List<LichSuKhamChiTietDTO> lichSuKhamChiTietDTOS = lichSuKhamChiTietRepo.findByLichSuKhamID(lichSuKhamID);
             List<LichSuSuDungThuocDTO> lichSuSuDungThuocDTOS = lichSuSuDungThuocRepo.findByLichSuKhamID(lichSuKhamID);
-            lichSuKhamUsingIDDTO.setLichSuKhamChiTietDTOS(lichSuKhamChiTietDTOS);
-            lichSuKhamUsingIDDTO.setLichSuSuDungThuocDTOList(lichSuSuDungThuocDTOS);
-            lichSuKhamUsingIDDTO.setNgay_kham(lichSuKham.getNgayKham());
-            lichSuKhamUsingIDDTO.setLich_su_khamid(lichSuKhamID);
-            lichSuKhamUsingIDDTO.setCoSo(lichSuKham.getCoSoBenhVien().getTen());
-            lichSuKhamUsingIDDTO.setKet_luan(lichSuKham.getKetLuan());
-            lichSuKhamUsingIDDTO.setTrang_thai(lichSuKham.getTrangThaiKham().getTrangThai());
+            lichSuKhamDTO.setLichSuKhamChiTietDTOS(lichSuKhamChiTietDTOS);
+            lichSuKhamDTO.setLichSuSuDungThuocDTOList(lichSuSuDungThuocDTOS);
+            lichSuKhamDTO.setNgay_kham(lichSuKham.getNgayKham());
+            lichSuKhamDTO.setLich_su_khamid(lichSuKhamID);
+            lichSuKhamDTO.setCoSo(lichSuKham.getCoSoBenhVien().getTen());
+            lichSuKhamDTO.setKet_luan(lichSuKham.getKetLuan());
+            lichSuKhamDTO.setTrang_thai(lichSuKham.getTrangThaiKham().getTrangThai());
 
-            return ResponseEntity.ok().body(lichSuKhamChiTietDTOS);
+            return ResponseEntity.ok().body(lichSuKhamDTO);
         }catch (Exception e){
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal server error"));
         }
@@ -70,7 +70,7 @@ public class LichSuKhamServiceImpl implements LichSuKhamService {
         if(CommonUtil.isNullOrEmpty(lichSuKhamChiTietID)){
             return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid lichSuKhamChiTietID"));
         }
-        LichSuKhamChiTietUsingIDDTO lichSuKhamChiTietDTO;
+        LichSuKhamChiTietDTO lichSuKhamChiTietDTO;
         try {
             lichSuKhamChiTietDTO = lichSuKhamChiTietRepo.findByLichSuKhamChiTietID(lichSuKhamChiTietID);
             return ResponseEntity.ok().body(lichSuKhamChiTietDTO);

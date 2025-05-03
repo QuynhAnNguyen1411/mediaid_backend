@@ -16,11 +16,11 @@ public class LoiSongNguoiBenh {
     @Id
     private String loiSongNguoiBenhID;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "soKhamID", nullable = false)
     private SoKham soKham;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "moiTruongID")
     private MoiTruong moiTruong;
 

@@ -39,11 +39,11 @@ public class PhongKhamChiTiet {
     @OneToMany(mappedBy = "phongKhamChiTiet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LichSuKhamChiTiet> lichSuKhamChiTiets;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PhongKhamID",nullable = false)
     private PhongKham phongKham;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coSoBenhVienID")
     private CoSoBenhVien coSoBenhVien;
 
