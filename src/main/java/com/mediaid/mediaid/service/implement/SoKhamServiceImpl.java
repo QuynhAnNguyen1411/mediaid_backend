@@ -356,13 +356,29 @@ public class SoKhamServiceImpl implements SoKhamService {
             log.warn("Invalid accountID");
             return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Internal accountID"));
         }
-        SoKhamDTO soKhamDTO;
+        SoKhamDTO soKhamDTO = new SoKhamDTO();
         try {
-            soKhamDTO = soKhamRepo.findByAccountID(accountID);
-            if (CommonUtil.isNullOrEmpty(soKhamDTO)) {
+            SoKham soKham = soKhamRepo.findByAccountID(accountID);
+            if (CommonUtil.isNullOrEmpty(soKham)) {
                 log.warn("Invalid accountID");
                 return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Internal accountID"));
             }
+            soKhamDTO.setSoKhamID(soKham.getSoKhamID());
+            TaiKhoan taiKhoan = soKham.getTaiKhoan();
+            soKhamDTO.setAccountName(taiKhoan.getTen());
+            soKhamDTO.setCmndCmt(taiKhoan.getCccdCmt());
+            soKhamDTO.setBhyt(soKham.getBhyt());
+            soKhamDTO.setSdt(taiKhoan.getSdt());
+            soKhamDTO.setEmail(taiKhoan.getEmail());
+            soKhamDTO.setNgaySinh(taiKhoan.getNgaySinh());
+            soKhamDTO.setGioiTinhID(taiKhoan.getGioiTinh().getGioiTinhID());
+            soKhamDTO.setDanTocID(taiKhoan.getDanToc().getDanTocID());
+            NguoiGiamHo nguoiGiamHo = soKham.getNguoiGiamHos();
+            soKhamDTO.setTenNguoiGiamHo(nguoiGiamHo.getGiamHoID());
+            soKhamDTO.setCccdCmtNguoiGiamHo(nguoiGiamHo.getCccdCmt());
+            soKhamDTO.setMoiQuanHe(nguoiGiamHo.getMoiQuanHe());
+            soKhamDTO.setSdtNguoiGiamHo(nguoiGiamHo.getSdt());
+
             return ResponseEntity.ok(soKhamDTO);
         } catch (Exception e) {
             log.error("Exception", e);
