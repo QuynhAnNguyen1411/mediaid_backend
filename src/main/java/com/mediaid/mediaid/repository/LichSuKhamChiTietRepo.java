@@ -20,7 +20,7 @@ public interface LichSuKhamChiTietRepo extends JpaRepository<LichSuKhamChiTiet, 
             "inner join d.mauLoaiKham f " +
             "inner join b.coSoBenhVien e " +
             "where a.lichSuKham.lichSuKhamID = ?1 " +
-            "order by a.ngayKham desc ")
+            "order by a.ngayKham asc ")
     List<LichSuKhamChiTietDTO> findByLichSuKhamID(String lichSuKhamID);
 
     @Query("SELECT new com.mediaid.mediaid.DTO.lichSuKham.LichSuKhamChiTietDTO(" +

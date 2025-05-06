@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -16,10 +17,9 @@ import java.util.Date;
 public class SoKhamTheoPhong {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int soKhamTheoPhongID;
+    private String soKhamTheoPhongID;
     private int soKhamTheoPhong;
-    private Date date;
+    private LocalDate date;
     private String tinhTrangKham;
 
     @ManyToOne(fetch = FetchType.LAZY)

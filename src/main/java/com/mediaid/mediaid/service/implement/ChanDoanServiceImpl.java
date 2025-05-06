@@ -8,17 +8,15 @@ import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
 import com.mediaid.mediaid.service.abstracts.ChanDoanService;
 import com.mediaid.mediaid.util.CommonUtil;
-import com.mediaid.mediaid.util.ValidationUtil;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -31,6 +29,20 @@ public class ChanDoanServiceImpl implements ChanDoanService {
     TrieuChungRepo trieuChungRepo;
     @Autowired
     AccountRepo accountRepo;
+    @Autowired
+    PhongKhamChiTietRepo phongKhamChiTietRepo;
+    @Autowired
+    ChanDoanBangBoPhanVaTrieuChungRepo chanDoanBangBoPhanVaTrieuChungRepo;
+    @Autowired
+    SoKhamTheoPhongRepo soKhamTheoPhongRepo;
+    @Autowired
+    CoSoBenhVienRepo coSoBenhVienRepo;
+    @Autowired
+    TrangThaiKhamSoBoRepo trangThaiKhamSoBoRepo;
+    @Autowired
+    LichSuKhamRepo lichSuKhamRepo;
+    @Autowired
+    LichSuKhamChiTietRepo lichSuKhamChiTietRepo;
 
     @Override
     public ResponseEntity<?> layDanhSachBoPhanVaTrieuChung(String accountID) {
@@ -77,13 +89,126 @@ public class ChanDoanServiceImpl implements ChanDoanService {
     }
 
     @Override
-    public ResponseEntity<?> chanDoan(ChanDoanDTO chanDoanDTO, BindingResult bindingResult) {
-        HashMap<String,String> errors = ValidationUtil.validationCheckBindingResult(bindingResult);
-        if (!CommonUtil.isNullOrEmpty(errors)){
-            log.warn(errors.toString());
-            return ResponseEntity.badRequest().body(errors);
+    @Transactional
+    public ResponseEntity<?> chanDoan(ChanDoanDTO chanDoanDTO) {
+        List<PhongKhamChiTiet> phongKhamChiTiets = new ArrayList<>();
+        if(!CommonUtil.isNullOrEmpty(chanDoanDTO.getPhanVungID())){
+            phongKhamChiTiets = phongKhamChiTietRepo.findbyPhanVungID(chanDoanDTO.getPhanVungID());
+        } else if(!CommonUtil.isNullOrEmpty(chanDoanDTO.getBoPhanID()) && CommonUtil.isNullOrEmpty(chanDoanDTO.getTrieuChungID())){
+            phongKhamChiTiets = phongKhamChiTietRepo.findbyBoPhanID(chanDoanDTO.getBoPhanID());
+        } else if(!CommonUtil.isNullOrEmpty(chanDoanDTO.getTrieuChungID()) && !CommonUtil.isNullOrEmpty(chanDoanDTO.getTrieuChungID())){
+            List<ChanDoanBangBoPhanVaTrieuChung> chanDoanBangBoPhanVaTrieuChungs = chanDoanBangBoPhanVaTrieuChungRepo.findByBoPhanIDAndTrieuChungIDList(chanDoanDTO.getBoPhanID(), chanDoanDTO.getTrieuChungID());
+            Map<String, Integer> stringIntegerMap = new HashMap<>();
+            String key;
+            int maxEsi = 0;
+            for (ChanDoanBangBoPhanVaTrieuChung chanDoanBangBoPhanVaTrieuChung: chanDoanBangBoPhanVaTrieuChungs){
+                key = chanDoanBangBoPhanVaTrieuChung.getPhongKham().getPhongKhamID();
+                Integer esi = stringIntegerMap.get(key);
+                if(CommonUtil.isNullOrEmpty(esi)){
+                    stringIntegerMap.put(key, chanDoanBangBoPhanVaTrieuChung.getESI());
+                    maxEsi = chanDoanBangBoPhanVaTrieuChung.getESI();
+                } else {
+                    int esiPlus = esi + chanDoanBangBoPhanVaTrieuChung.getESI();
+                    stringIntegerMap.replace(key,esiPlus);
+                    if(esiPlus > maxEsi) {
+                        maxEsi = esiPlus;
+                    }
+                }
+            }
+            List<String> strings = new ArrayList<>();
+            for (Map.Entry<String, Integer> stringIntegerEntry: stringIntegerMap.entrySet()){
+                if (stringIntegerEntry.getValue() == maxEsi){
+                    strings.add(stringIntegerEntry.getKey());
+                }
+            }
+            if(strings.size()>1){
+                phongKhamChiTiets = phongKhamChiTietRepo.findbyBoPhanID(chanDoanDTO.getBoPhanID());
+            } else {
+                List<PhongKhamChiTiet> phongKhamChiTietListSoBo = phongKhamChiTietRepo.findPhongKhamHoTrobyBoPhanID(chanDoanDTO.getBoPhanID(), true);
+                List<PhongKhamChiTiet> phongKhamChiTietListChanDoan = phongKhamChiTietRepo.findByphonngKhamID(strings.get(0));
+
+                phongKhamChiTiets.addAll(phongKhamChiTietListSoBo);
+                phongKhamChiTiets.addAll(phongKhamChiTietListChanDoan);
+            }
+        } else {
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid chanDoan combo input"));
+        }
+        if(CommonUtil.isNullOrEmpty(phongKhamChiTiets)){
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "0 phong kham found match the combo input"));
+        }
+        int smallestNumber=0;
+        PhongKhamChiTiet available = null;
+        for (PhongKhamChiTiet phongKhamChiTiet: phongKhamChiTiets){
+            Integer soKhamHienTai = soKhamTheoPhongRepo.findLastestNumberOfPhongKhamChiTiet(phongKhamChiTiet.getPhongKhamChiTietID(), LocalDate.now());
+            if(CommonUtil.isNullOrEmpty(soKhamHienTai)){
+                smallestNumber = 0;
+                available = phongKhamChiTiet;
+                break;
+            }
+            if(smallestNumber==0){
+                smallestNumber = soKhamHienTai;
+                available = phongKhamChiTiet;
+                continue;
+            }
+            if(soKhamHienTai >= phongKhamChiTiet.getGioiHanLaySo()){
+                continue;
+            }
+            if(soKhamHienTai<smallestNumber){
+                smallestNumber = soKhamHienTai;
+                available = phongKhamChiTiet;
+            }
+        }
+        if(available == null){
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "No phong kham available for now"));
+        }
+        SoKhamTheoPhong soKhamTheoPhong = new SoKhamTheoPhong(UUID.randomUUID().toString(),smallestNumber+1, LocalDate.now(),"Chua Kham", available);
+        soKhamTheoPhongRepo.save(soKhamTheoPhong);
+
+        TaiKhoan taiKhoan = accountRepo.findByAccountID(chanDoanDTO.getAccountID());
+        if(taiKhoan == null){
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid accountID"));
+        }
+        Optional<CoSoBenhVien> coSoBenhVien = coSoBenhVienRepo.findById(chanDoanDTO.getCoSoID());
+        if(coSoBenhVien.isEmpty()){
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid coSoID"));
+        }
+        Optional<TrangThaiKham> trangThaiKham = trangThaiKhamSoBoRepo.findById(1);
+        if(trangThaiKham.isEmpty()){
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "TrangThaiKham not found"));
         }
 
-        return null;
+
+        LichSuKham lichSuKham = new LichSuKham();
+        lichSuKham.setLichSuKhamID(UUID.randomUUID().toString());
+        lichSuKham.setSoKham(taiKhoan.getSoKham());
+        lichSuKham.setNgayKham(LocalDateTime.now());
+        lichSuKham.setCoSoBenhVien(coSoBenhVien.get());
+        lichSuKham.setTrangThaiKham(trangThaiKham.get());
+        try{
+            lichSuKham = lichSuKhamRepo.save(lichSuKham);
+        }catch (Exception e){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Save lichSuKham fail"));
+        }
+
+
+        DichVuKham dichVuKhamTestData = available.getPhongKham().getDichVuKham();
+        LichSuKhamChiTiet lichSuKhamChiTiet = new LichSuKhamChiTiet();
+        lichSuKhamChiTiet.setNgayKham(LocalDateTime.now());
+        lichSuKhamChiTiet.setLichSuKham(lichSuKham);
+        lichSuKhamChiTiet.setGia(dichVuKhamTestData.getGia());
+        lichSuKhamChiTiet.setTenDichVuKham(dichVuKhamTestData.getTenLoai());
+        lichSuKhamChiTiet.setPhongKhamChiTiet(available);
+        lichSuKhamChiTiet.setLichSuKhamChiTietID(UUID.randomUUID().toString());
+        lichSuKhamChiTietRepo.save(lichSuKhamChiTiet);
+        try{
+            lichSuKhamChiTietRepo.save(lichSuKhamChiTiet);
+            lichSuKham.setTongThu(lichSuKhamChiTiet.getGia());
+            lichSuKhamRepo.save(lichSuKham);
+        }catch (Exception e){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Save lichSuKham fail"));
+        }
+        return ResponseEntity.ok(CommonUtil.returnMessage("message", "Add new soKham successfully"));
     }
 }

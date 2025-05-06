@@ -33,7 +33,8 @@ public class PhongKham {
     private List<ChanDoanBangPhanVung> chanDoanBangPhanVungs;
     @OneToMany(mappedBy = "phongKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ChanDoanBangBoPhan> chanDoanBangBoPhans;
-
+    @OneToMany(mappedBy = "phongKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ChanDoanBangBoPhanVaTrieuChung> chanDoanBangBoPhanVaTrieuChungs;
     @ManyToOne
     @JoinColumn(name = "dichVuKhamID", nullable = false)
     private DichVuKham dichVuKham;

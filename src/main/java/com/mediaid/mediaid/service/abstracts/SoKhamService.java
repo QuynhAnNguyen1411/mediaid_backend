@@ -17,4 +17,5 @@ public interface SoKhamService {
     ResponseEntity<?> getDanhSachTieuSuTheoLoai(String accountID, String type);
     ResponseEntity<?> deleteTieuSuTheoLoai(String tieuSuID, String type);
     ResponseEntity<?> getTieuSuLoiSong(String accountID);
+    ResponseEntity<?> getAllCoSoBenhVien();
 }

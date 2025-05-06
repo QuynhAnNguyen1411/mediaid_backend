@@ -48,6 +48,10 @@ public class SoKhamController {
     public ResponseEntity<?> layDanhSachTieuSuPreview(@RequestParam String accountID, @RequestParam String type) {
         return soKhamService.getDanhSachTieuSuTheoLoai(accountID, type);
     }
+    @GetMapping("/layCoSoKhamBenh")
+    public ResponseEntity<?> layDanhSachTieuSuPreview() {
+        return soKhamService.getAllCoSoBenhVien();
+    }
     @DeleteMapping("/xoaTieuSuYTe")
     public ResponseEntity<?> xoaTieuSuYTe(@RequestParam String tieuSuYTeID, @RequestParam String type) {
         return soKhamService.deleteTieuSuTheoLoai(tieuSuYTeID, type);

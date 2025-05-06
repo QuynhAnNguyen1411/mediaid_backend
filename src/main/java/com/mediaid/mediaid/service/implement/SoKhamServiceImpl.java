@@ -2,6 +2,7 @@ package com.mediaid.mediaid.service.implement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.*;
+import com.mediaid.mediaid.DTO.staticData.GetMappingData.CoSoBenhVienDTO;
 import com.mediaid.mediaid.DTO.staticData.GetMappingData.SoKhamDTO;
 import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +53,8 @@ public class SoKhamServiceImpl implements SoKhamService {
     ThoiQuenLoiSongRepo thoiQuenLoiSongRepo;
     @Autowired
     ThoiQuenRepo thoiQuenRepo;
+    @Autowired
+    CoSoBenhVienRepo coSoBenhVienRepo;
 
     @Override
     public ResponseEntity<?> capNhatTieuSuBenhTat(TieuSuBenhTatDTO tieuSuBenhTatDTO, BindingResult bindingResult) {
@@ -375,7 +379,7 @@ public class SoKhamServiceImpl implements SoKhamService {
             soKhamDTO.setGioiTinhID(taiKhoan.getGioiTinh().getGioiTinhID());
             soKhamDTO.setDanTocID(taiKhoan.getDanToc().getDanTocID());
             NguoiGiamHo nguoiGiamHo = soKham.getNguoiGiamHos();
-            soKhamDTO.setTenNguoiGiamHo(nguoiGiamHo.getGiamHoID());
+            soKhamDTO.setTenNguoiGiamHo(nguoiGiamHo.getTen());
             soKhamDTO.setCccdCmtNguoiGiamHo(nguoiGiamHo.getCccdCmt());
             soKhamDTO.setMoiQuanHe(nguoiGiamHo.getMoiQuanHe());
             soKhamDTO.setSdtNguoiGiamHo(nguoiGiamHo.getSdt());
@@ -454,6 +458,24 @@ public class SoKhamServiceImpl implements SoKhamService {
             List<Integer> thoiQuenIDs = thoiQuenLoiSongRepo.findIDByLoiSongNguoiBenhIds(tieuSuLoiSongDTO.getLoiSongNguoiBenhID());
             tieuSuLoiSongDTO.setThoiQuenLoiSongs(thoiQuenIDs);
             return ResponseEntity.ok(tieuSuLoiSongDTO);
+        }catch (Exception e){
+            log.error("Exception", e);
+            return ResponseEntity.internalServerError().body("Internal error from server");
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getAllCoSoBenhVien() {
+        try {
+            List<CoSoBenhVien> coSoBenhViens = coSoBenhVienRepo.findAll();
+            if(CommonUtil.isNullOrEmpty(coSoBenhViens)){
+                return ResponseEntity.internalServerError().body("Internal error from server, coSoKhambenh not found");
+            }
+            List<CoSoBenhVienDTO> coSoBenhVienDTOS = new ArrayList<>();
+            for(CoSoBenhVien coSoBenhVien: coSoBenhViens){
+                coSoBenhVienDTOS.add(new CoSoBenhVienDTO(coSoBenhVien.getCoSoID(), coSoBenhVien.getTen(), coSoBenhVien.getDiaChi()));
+            }
+            return ResponseEntity.ok(coSoBenhVienDTOS);
         }catch (Exception e){
             log.error("Exception", e);
             return ResponseEntity.internalServerError().body("Internal error from server");
