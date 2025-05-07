@@ -23,6 +23,7 @@ public class LichSuKhamChiTiet {
     private PhongKhamChiTiet phongKhamChiTiet;
 
     private LocalDateTime ngayKham;
+    private int soKhamThuTu;
     private LocalDateTime ngayKetLuan;
     private String anhKetQua;
     private String ghiChu;

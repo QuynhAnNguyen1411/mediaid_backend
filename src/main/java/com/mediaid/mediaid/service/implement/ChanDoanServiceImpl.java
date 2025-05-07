@@ -196,6 +196,7 @@ public class ChanDoanServiceImpl implements ChanDoanService {
         LichSuKhamChiTiet lichSuKhamChiTiet = new LichSuKhamChiTiet();
         lichSuKhamChiTiet.setNgayKham(LocalDateTime.now());
         lichSuKhamChiTiet.setLichSuKham(lichSuKham);
+        lichSuKhamChiTiet.setSoKhamThuTu(smallestNumber+1);
         lichSuKhamChiTiet.setGia(dichVuKhamTestData.getGia());
         lichSuKhamChiTiet.setTenDichVuKham(dichVuKhamTestData.getTenLoai());
         lichSuKhamChiTiet.setPhongKhamChiTiet(available);
