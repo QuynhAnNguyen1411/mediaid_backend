@@ -91,6 +91,13 @@ public class ChanDoanServiceImpl implements ChanDoanService {
     @Override
     @Transactional
     public ResponseEntity<?> chanDoan(ChanDoanDTO chanDoanDTO) {
+        TaiKhoan taiKhoan = accountRepo.findByAccountID(chanDoanDTO.getAccountID());
+        if(taiKhoan == null){
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid accountID"));
+        }
+        if(lichSuKhamChiTietRepo.checkNumberOfLichSuKhamDangChoOnCurrentDay(taiKhoan.getSoKham().getSoKhamID(), LocalDate.now(), 1)>=2){
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "You already have 2 on progress schedules today"));
+        }
         List<PhongKhamChiTiet> phongKhamChiTiets = new ArrayList<>();
         if(!CommonUtil.isNullOrEmpty(chanDoanDTO.getPhanVungID())){
             phongKhamChiTiets = phongKhamChiTietRepo.findbyPhanVungID(chanDoanDTO.getPhanVungID());
@@ -161,13 +168,14 @@ public class ChanDoanServiceImpl implements ChanDoanService {
         if(available == null){
             return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "No phong kham available for now"));
         }
+
+        if(!CommonUtil.isNullOrEmpty(lichSuKhamChiTietRepo.checkIfUserHaveNumberAtThisRoom(taiKhoan.getSoKham().getSoKhamID(), available.getPhongKham().getPhongKhamID(), LocalDate.now()))){
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "You already have number at this room"));
+        }
+
         SoKhamTheoPhong soKhamTheoPhong = new SoKhamTheoPhong(UUID.randomUUID().toString(),smallestNumber+1, LocalDate.now(),"Chua Kham", available);
         soKhamTheoPhongRepo.save(soKhamTheoPhong);
 
-        TaiKhoan taiKhoan = accountRepo.findByAccountID(chanDoanDTO.getAccountID());
-        if(taiKhoan == null){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid accountID"));
-        }
         Optional<CoSoBenhVien> coSoBenhVien = coSoBenhVienRepo.findById(chanDoanDTO.getCoSoID());
         if(coSoBenhVien.isEmpty()){
             return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid coSoID"));
@@ -176,7 +184,6 @@ public class ChanDoanServiceImpl implements ChanDoanService {
         if(trangThaiKham.isEmpty()){
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "TrangThaiKham not found"));
         }
-
 
         LichSuKham lichSuKham = new LichSuKham();
         lichSuKham.setLichSuKhamID(UUID.randomUUID().toString());
@@ -190,7 +197,6 @@ public class ChanDoanServiceImpl implements ChanDoanService {
             log.error("Exception", e);
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Save lichSuKham fail"));
         }
-
 
         DichVuKham dichVuKhamTestData = available.getPhongKham().getDichVuKham();
         LichSuKhamChiTiet lichSuKhamChiTiet = new LichSuKhamChiTiet();

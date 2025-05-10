@@ -13,5 +13,4 @@ public interface SoKhamTheoPhongRepo extends JpaRepository<SoKhamTheoPhong, Stri
             "FROM mediate_db.so_kham_theo_phong " +
             "where phong_kham_chi_tietid = ?1 AND date = ?2;")
     Integer findLastestNumberOfPhongKhamChiTiet(String phongKhamChiTietID, LocalDate date);
-
 }

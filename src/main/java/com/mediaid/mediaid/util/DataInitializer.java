@@ -9,10 +9,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -837,7 +834,7 @@ public class DataInitializer implements CommandLineRunner {
             taiKhoan.setGioiTinh(genderRepo.findByGioiTinhID(1));
             Date date = new Date();
             date.setDate(22);
-            date.setMonth(12);
+            date.setMonth(Calendar.DECEMBER);
             date.setYear(2002);
             taiKhoan.setNgaySinh(date);
             taiKhoan.setTen("Nguyễn Quang Hùng");
@@ -914,6 +911,7 @@ public class DataInitializer implements CommandLineRunner {
             LichSuKhamChiTiet lichSuKhamChiTiet = new LichSuKhamChiTiet();
             lichSuKhamChiTiet.setNgayKham(localDateTaiKhamHuyStart1);
             lichSuKhamChiTiet.setLichSuKham(lichSuKham);
+            lichSuKhamChiTiet.setSoKhamThuTu(3);
             lichSuKhamChiTiet.setGia(dichVuKhamTestData.getGia());
             lichSuKhamChiTiet.setTenDichVuKham(dichVuKhamTestData.getTenLoai());
             lichSuKhamChiTiet.setPhongKhamChiTiet(phongKhamChiTiet);
@@ -945,6 +943,7 @@ public class DataInitializer implements CommandLineRunner {
             LichSuKhamChiTiet lichSuKhamChiTietTaiKham = new LichSuKhamChiTiet();
             lichSuKhamChiTietTaiKham.setLichSuKhamChiTietID(UUID.randomUUID().toString());
             lichSuKhamChiTietTaiKham.setLichSuKham(lichSuKhamTaiKham);
+            lichSuKhamChiTietTaiKham.setSoKhamThuTu(3);
             lichSuKhamChiTietTaiKham.setPhongKhamChiTiet(phongKhamChiTietTaiKhamSoBo);
             lichSuKhamChiTietTaiKham.setGia(dichVuKhamTestDataTaiKham.getGia());
             lichSuKhamChiTietTaiKham.setTenDichVuKham(dichVuKhamTestDataTaiKham.getTenLoai());
@@ -960,6 +959,7 @@ public class DataInitializer implements CommandLineRunner {
             LichSuKhamChiTiet lichSuKhamChiTietTaiKham1 = new LichSuKhamChiTiet();
             lichSuKhamChiTietTaiKham1.setLichSuKhamChiTietID(UUID.randomUUID().toString());
             lichSuKhamChiTietTaiKham1.setLichSuKham(lichSuKhamTaiKham);
+            lichSuKhamChiTietTaiKham1.setSoKhamThuTu(4);
             lichSuKhamChiTietTaiKham1.setPhongKhamChiTiet(phongKhamChiTietNoiSoi);
             lichSuKhamChiTietTaiKham1.setGia(dichVuKhamTestDataTaiKhamNoiSoi.getGia());
             lichSuKhamChiTietTaiKham1.setTenDichVuKham(dichVuKhamTestDataTaiKhamNoiSoi.getTenLoai());
@@ -974,6 +974,7 @@ public class DataInitializer implements CommandLineRunner {
             LichSuKhamChiTiet lichSuKhamChiTietTaiKham2 = new LichSuKhamChiTiet();
             lichSuKhamChiTietTaiKham2.setLichSuKhamChiTietID(UUID.randomUUID().toString());
             lichSuKhamChiTietTaiKham2.setLichSuKham(lichSuKhamTaiKham);
+            lichSuKhamChiTietTaiKham2.setSoKhamThuTu(5);
             lichSuKhamChiTietTaiKham2.setPhongKhamChiTiet(phongKhamChiTietSieuAm);
             lichSuKhamChiTietTaiKham2.setGia(dichVuKhamTestDataSieuAm.getGia());
             lichSuKhamChiTietTaiKham2.setTenDichVuKham(dichVuKhamTestDataSieuAm.getTenLoai());
@@ -1011,6 +1012,7 @@ public class DataInitializer implements CommandLineRunner {
             LichSuKhamChiTiet lichSuKhamChiTietDaKham = new LichSuKhamChiTiet();
             lichSuKhamChiTietDaKham.setLichSuKhamChiTietID(UUID.randomUUID().toString());
             lichSuKhamChiTietDaKham.setLichSuKham(lichSuKhamDaKham);
+            lichSuKhamChiTietDaKham.setSoKhamThuTu(5);
             lichSuKhamChiTietDaKham.setPhongKhamChiTiet(phongKhamChiTietDaKhamSoBo);
             lichSuKhamChiTietDaKham.setGia(dichVuKhamTestDataDaKham.getGia());
             lichSuKhamChiTietDaKham.setTenDichVuKham(dichVuKhamTestDataDaKham.getTenLoai());
@@ -1026,6 +1028,7 @@ public class DataInitializer implements CommandLineRunner {
             LichSuKhamChiTiet lichSuKhamChiTietDaKham1 = new LichSuKhamChiTiet();
             lichSuKhamChiTietDaKham1.setLichSuKhamChiTietID(UUID.randomUUID().toString());
             lichSuKhamChiTietDaKham1.setLichSuKham(lichSuKhamDaKham);
+            lichSuKhamChiTietDaKham1.setSoKhamThuTu(8);
             lichSuKhamChiTietDaKham1.setPhongKhamChiTiet(phongKhamChiTietNoiSoi);
             lichSuKhamChiTietDaKham1.setGia(dichVuKhamTestDataDaKhamNoiSoi.getGia());
             lichSuKhamChiTietDaKham1.setTenDichVuKham(dichVuKhamTestDataDaKhamNoiSoi.getTenLoai());
@@ -1040,6 +1043,7 @@ public class DataInitializer implements CommandLineRunner {
             LichSuKhamChiTiet lichSuKhamChiTietDaKham2 = new LichSuKhamChiTiet();
             lichSuKhamChiTietDaKham2.setLichSuKhamChiTietID(UUID.randomUUID().toString());
             lichSuKhamChiTietDaKham2.setLichSuKham(lichSuKhamDaKham);
+            lichSuKhamChiTietDaKham2.setSoKhamThuTu(10);
             lichSuKhamChiTietDaKham2.setPhongKhamChiTiet(phongKhamChiTietSieuAm);
             lichSuKhamChiTietDaKham2.setGia(dichVuKhamTestDataDaKhamSieuAm.getGia());
             lichSuKhamChiTietDaKham2.setTenDichVuKham(dichVuKhamTestDataDaKhamSieuAm.getTenLoai());

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -33,4 +34,15 @@ public interface LichSuKhamChiTietRepo extends JpaRepository<LichSuKhamChiTiet, 
             "inner join b.coSoBenhVien e " +
             "where a.lichSuKhamChiTietID = ?1 ")
     LichSuKhamChiTietDTO findByLichSuKhamChiTietID(String lichSuKhamChiTietID);
+
+    @Query(nativeQuery = true, value = "select a.* from mediate_db.lich_su_kham_chi_tiet a " +
+            "inner join mediate_db.lich_su_kham b on a.lich_su_khamid = b.lich_su_khamid " +
+            "inner join mediate_db.phong_kham_chi_tiet c on a.phong_kham_chi_tietid = c.phong_kham_chi_tietid " +
+            "where b.so_khamid= ?1 AND c.phong_khamid = ?2 AND DATE(a.ngay_kham) = ?3;")
+    List<LichSuKhamChiTiet> checkIfUserHaveNumberAtThisRoom(String soKhamID, String phongKhamID, LocalDate date);
+
+    @Query(nativeQuery = true, value = "select count(b.lich_su_khamid) from mediate_db.lich_su_kham_chi_tiet a " +
+            "inner join mediate_db.lich_su_kham b on a.lich_su_khamid = b.lich_su_khamid " +
+            "where b.so_khamid= ?1 AND DATE(a.ngay_kham) = ?2 AND b.trang_thai_khamid = ?3;")
+    Integer checkNumberOfLichSuKhamDangChoOnCurrentDay(String soKhamID, LocalDate date, int trangThaiKhamID);
 }
