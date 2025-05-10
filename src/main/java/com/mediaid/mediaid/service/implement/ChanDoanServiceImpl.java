@@ -47,7 +47,7 @@ public class ChanDoanServiceImpl implements ChanDoanService {
     @Override
     public ResponseEntity<?> layDanhSachBoPhanVaTrieuChung(String accountID) {
         List<PhanVungCoThe> phanVungCoTheList = phanVungCoTheRepo.findByStatus(true);
-        Map<String, DanhSachBoPhanVaTrieuChung> danhSachBoPhanHashMap = new HashMap<>();
+        List<DanhSachBoPhanVaTrieuChung> danhSachBoPhanHashMap = new ArrayList<>();
         TaiKhoan taiKhoan = accountRepo.findByAccountID(accountID);
         if (CommonUtil.isNullOrEmpty(taiKhoan)){
             return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message","Invalid accountID"));
@@ -83,7 +83,7 @@ public class ChanDoanServiceImpl implements ChanDoanService {
                 }
                 danhSachBoPhanVaTrieuChung.setDanhSachBoPhanList(danhSachBoPhans);
             }
-            danhSachBoPhanHashMap.put(phanVungCoThe.getPhanVungID(), danhSachBoPhanVaTrieuChung);
+            danhSachBoPhanHashMap.add(danhSachBoPhanVaTrieuChung);
         }
         return ResponseEntity.ok(danhSachBoPhanHashMap);
     }

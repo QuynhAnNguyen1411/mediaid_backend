@@ -15,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TieuSuThuocDTO {
-    @JsonProperty("")
+    @JsonProperty("drugsID")
     private String tieuSuThuocID;
     @NotNull
     @NotEmpty
@@ -24,16 +24,20 @@ public class TieuSuThuocDTO {
     @JsonProperty("soKhamID")
     private String soKhamID;
     @NotNull
-    @NotEmpty
+    @JsonProperty("usageStatusDrugs")
     private Integer tinhTrangSuDungID;
     @NotNull
+    @JsonProperty("drugsType")
     private Integer loaiSanPhamID;
     @NotNull
     @NotEmpty
+    @JsonProperty("drugsName")
     private String tenThuoc;
-    @NotNull
-    @NotEmpty
+    @JsonProperty("startDrugs")
     private String batDau;
+
+    @JsonProperty("endDrugs")
     private String ketThuc;
+    @JsonProperty("noteDrugs")
     private String ghiChu;
 }

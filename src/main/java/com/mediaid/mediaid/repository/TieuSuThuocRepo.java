@@ -1,6 +1,6 @@
 package com.mediaid.mediaid.repository;
 
-import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuPhauThuatDTO;
+import com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuThuocDTO;
 import com.mediaid.mediaid.model.TieuSuThuoc;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +15,7 @@ public interface TieuSuThuocRepo extends JpaRepository<TieuSuThuoc, String> {
             "a.tieuSuThuocID, c.accountID, b.soKhamID, d.tinhTrangSuDungID, e.loaiSanPhamID, a.tenThuoc, a.batDau, a.ketThuc, a.ghiChu) " +
             "FROM TieuSuThuoc a inner join a.soKham b inner join b.taiKhoan c inner join a.tinhTrangSuDung d inner join a.loaiSanPham e " +
             "where c.accountID = ?1")
-    List<TieuSuPhauThuatDTO> findPreviewByAccountID(String accounID);
+    List<TieuSuThuocDTO> findPreviewByAccountID(String accounID);
 }
 //    private String tieuSuThuocID;
 //    private String accountID;
