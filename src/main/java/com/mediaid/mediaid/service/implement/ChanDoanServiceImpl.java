@@ -100,9 +100,9 @@ public class ChanDoanServiceImpl implements ChanDoanService {
         }
         List<PhongKhamChiTiet> phongKhamChiTiets = new ArrayList<>();
         if(!CommonUtil.isNullOrEmpty(chanDoanDTO.getPhanVungID())){
-            phongKhamChiTiets = phongKhamChiTietRepo.findbyPhanVungID(chanDoanDTO.getPhanVungID());
+            phongKhamChiTiets = phongKhamChiTietRepo.findbyPhanVungID(chanDoanDTO.getPhanVungID(), chanDoanDTO.getCoSoID());
         } else if(!CommonUtil.isNullOrEmpty(chanDoanDTO.getBoPhanID()) && CommonUtil.isNullOrEmpty(chanDoanDTO.getTrieuChungID())){
-            phongKhamChiTiets = phongKhamChiTietRepo.findbyBoPhanID(chanDoanDTO.getBoPhanID());
+            phongKhamChiTiets = phongKhamChiTietRepo.findbyBoPhanID(chanDoanDTO.getBoPhanID(), chanDoanDTO.getCoSoID());
         } else if(!CommonUtil.isNullOrEmpty(chanDoanDTO.getTrieuChungID()) && !CommonUtil.isNullOrEmpty(chanDoanDTO.getTrieuChungID())){
             List<ChanDoanBangBoPhanVaTrieuChung> chanDoanBangBoPhanVaTrieuChungs = chanDoanBangBoPhanVaTrieuChungRepo.findByBoPhanIDAndTrieuChungIDList(chanDoanDTO.getBoPhanID(), chanDoanDTO.getTrieuChungID());
             Map<String, Integer> stringIntegerMap = new HashMap<>();
@@ -129,10 +129,10 @@ public class ChanDoanServiceImpl implements ChanDoanService {
                 }
             }
             if(strings.size()>1){
-                phongKhamChiTiets = phongKhamChiTietRepo.findbyBoPhanID(chanDoanDTO.getBoPhanID());
+                phongKhamChiTiets = phongKhamChiTietRepo.findbyBoPhanID(chanDoanDTO.getBoPhanID(), chanDoanDTO.getCoSoID());
             } else {
-                List<PhongKhamChiTiet> phongKhamChiTietListSoBo = phongKhamChiTietRepo.findPhongKhamHoTrobyBoPhanID(chanDoanDTO.getBoPhanID(), true);
-                List<PhongKhamChiTiet> phongKhamChiTietListChanDoan = phongKhamChiTietRepo.findByphonngKhamID(strings.get(0));
+                List<PhongKhamChiTiet> phongKhamChiTietListSoBo = phongKhamChiTietRepo.findPhongKhamHoTrobyBoPhanID(chanDoanDTO.getBoPhanID(), true, chanDoanDTO.getCoSoID());
+                List<PhongKhamChiTiet> phongKhamChiTietListChanDoan = phongKhamChiTietRepo.findByphonngKhamID(strings.get(0), chanDoanDTO.getCoSoID());
 
                 phongKhamChiTiets.addAll(phongKhamChiTietListSoBo);
                 phongKhamChiTiets.addAll(phongKhamChiTietListChanDoan);
