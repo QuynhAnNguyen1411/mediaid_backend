@@ -17,7 +17,7 @@ import java.util.List;
 public class TrieuChung {
     @Id
     private String TrieuChungID;
-
+    @Column(unique = true, nullable = false)
     private String TrieuChung;
     private boolean status;
 

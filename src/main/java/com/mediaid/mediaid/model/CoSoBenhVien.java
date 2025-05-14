@@ -17,8 +17,9 @@ import java.util.List;
 public class CoSoBenhVien {
     @Id
     private int CoSoID;
-
+    @Column(nullable = false, unique = true)
     private String ten;
+    @Column(nullable = false, unique = true)
     private String diaChi;
 
     public CoSoBenhVien(int coSoID, String ten, String diaChi) {

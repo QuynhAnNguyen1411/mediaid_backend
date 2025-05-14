@@ -16,7 +16,7 @@ public class MucDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int mucDoID;
-
+    @Column(nullable = false, unique = true)
     private String mucDo;
 
     private boolean status;

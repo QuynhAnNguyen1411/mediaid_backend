@@ -14,8 +14,9 @@ public class DichVuKham {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int dichVuKhamID;
-
+    @Column(nullable = false, unique = true)
     private String tenLoai;
+    @Column(nullable = false)
     private Double gia;
     private boolean status;
 

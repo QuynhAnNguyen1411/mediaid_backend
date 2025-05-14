@@ -14,7 +14,7 @@ public class TrangThaiKham {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int trangThaiKhamID;
-
+    @Column(nullable = false, unique = true)
     private String trangThai;
 
     public TrangThaiKham(String trangThai) {

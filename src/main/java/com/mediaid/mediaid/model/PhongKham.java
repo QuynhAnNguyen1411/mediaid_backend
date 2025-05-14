@@ -14,7 +14,7 @@ public class PhongKham {
 
     @Id
     private String phongKhamID;
-
+    @Column(nullable = false, unique = true)
     private String phongKham;
     private boolean isPhongKhamChanDoan;
     private boolean status;

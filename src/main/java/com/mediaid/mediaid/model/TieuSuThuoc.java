@@ -25,6 +25,7 @@ public class TieuSuThuoc {
     @JoinColumn(name = "loaiSanPhamID", nullable = false)
     private LoaiSanPham loaiSanPham;
 
+    @Column(nullable = false)
     private String tenThuoc;
     private String batDau;
     private String ketThuc;

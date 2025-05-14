@@ -22,6 +22,7 @@ public class TieuSuDiUng {
     @JoinColumn(name = "mucDoDiUngID", nullable = false)
     private MucDo mucDo;
 
+    @Column(nullable = false)
     private String tacNhan;
 
     private String trieuChung;

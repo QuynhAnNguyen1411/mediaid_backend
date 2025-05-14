@@ -16,7 +16,7 @@ public class LyDoPhauThuat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int lyDoPhauThuatID;
-
+    @Column(nullable = false, unique = true)
     private String lyDo;
 
     private boolean status;

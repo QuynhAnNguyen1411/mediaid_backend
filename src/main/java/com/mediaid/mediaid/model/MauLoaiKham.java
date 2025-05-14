@@ -16,7 +16,7 @@ public class MauLoaiKham {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int mauLoaiKhamID;
-
+    @Column(nullable = false, unique = true)
     private String mau;
     private String loaiDichVu;
 

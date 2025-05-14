@@ -16,7 +16,7 @@ public class MoiTruong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int moiTruongID;
-
+    @Column(nullable = false, unique = true)
     private String ten;
     private boolean status;
 

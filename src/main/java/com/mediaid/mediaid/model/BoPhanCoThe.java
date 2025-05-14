@@ -17,7 +17,7 @@ import java.util.List;
 public class BoPhanCoThe {
     @Id
     private String boPhanID;
-
+    @Column(nullable = false)
     private String ten;
     private boolean status;
 

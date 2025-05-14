@@ -25,7 +25,7 @@ public class TieuSuPhauThuat {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mucDoPhauThuatID", nullable = false)
     private MucDo mucDo;
-
+    @Column(nullable = false)
     private String ten;
 
     private String thoiDiemThucHien;

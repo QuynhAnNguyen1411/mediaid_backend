@@ -18,7 +18,7 @@ public class DanToc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int danTocID;
-
+    @Column(nullable = false, unique = true)
     private String title;
     @OneToMany(mappedBy = "danToc", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TaiKhoan> taiKhoans;

@@ -19,7 +19,7 @@ public class LoaiSanPham {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int loaiSanPhamID;
-
+    @Column(nullable = false, unique = true)
     private String loaiSanPham;
     private boolean status;
 

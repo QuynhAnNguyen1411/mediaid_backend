@@ -16,7 +16,7 @@ public class ThoiQuen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int thoiQuenID;
-
+    @Column(nullable = false, unique = true)
     private String ten;
     private boolean status;
 

@@ -19,9 +19,13 @@ public class NguoiGiamHo {
     @JoinColumn(name = "soKhamID", nullable = false)
     private SoKham soKham;
 
+    @Column(nullable = false)
     private String ten;
+    @Column(nullable = false, unique = true)
     private String cccdCmt;
+    @Column(nullable = false)
     private String moiQuanHe;
+    @Column(nullable = false)
     private String sdt;
 
 

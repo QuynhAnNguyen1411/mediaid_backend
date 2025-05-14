@@ -15,7 +15,7 @@ import java.util.List;
 public class PhanVungCoThe {
     @Id
     private String phanVungID;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String ten;
     private boolean status;
 

@@ -18,8 +18,11 @@ public class SoKhamTheoPhong {
 
     @Id
     private String soKhamTheoPhongID;
+    @Column(nullable = false)
     private int soKhamTheoPhong;
+    @Column(nullable = false)
     private LocalDate date;
+    @Column(nullable = false)
     private String tinhTrangKham;
 
     @ManyToOne(fetch = FetchType.LAZY)
