@@ -310,39 +310,51 @@ public class SoKhamServiceImpl implements SoKhamService {
         LoiSongNguoiBenh loiSongNguoiBenh;
         MoiTruong moiTruong = null;
         try {
-            List<ThoiQuen> thoiQuens = thoiQuenRepo.findThoiQuenByIds(tieuSuLoiSongDTO.getThoiQuenLoiSongs());
-            if (CommonUtil.isNullOrEmpty(thoiQuens) || thoiQuens.size()!=tieuSuLoiSongDTO.getThoiQuenLoiSongs().size()){
-                log.warn("Invalid thoiQuen options");
-                return ResponseEntity.badRequest().body("Invalid thoiQuen options");
-            }
             loiSongNguoiBenh = loiSongNguoiBenhRepo.findByAccountID(tieuSuLoiSongDTO.getAccountID());
-            if (CommonUtil.isNullOrEmpty(loiSongNguoiBenh)){
+            if (CommonUtil.isNullOrEmpty(loiSongNguoiBenh)) {
                 log.warn("Invalid tieuSuLoiSong");
                 return ResponseEntity.badRequest().body("Invalid tieuSuLoiSong");
             }
-            if (!CommonUtil.isNullOrEmpty(tieuSuLoiSongDTO.getMoiTruongID())){
-                moiTruong = moiTruongRepo.findByMoiTruongID(tieuSuLoiSongDTO.getMoiTruongID());
-            }
-            if (!CommonUtil.isNullOrEmpty(tieuSuLoiSongDTO.getThoiQuenLoiSongs())){
-                List<ThoiQuenLoiSong> thoiQuenLoiSongs = thoiQuenLoiSongRepo.findByLoiSongNguoiBenhID(loiSongNguoiBenh.getLoiSongNguoiBenhID());
-                for (ThoiQuenLoiSong thoiQuenLoiSong: thoiQuenLoiSongs){
-                    for (ThoiQuen thoiQuen: thoiQuens){
-                        if(thoiQuen.getThoiQuenID() == thoiQuenLoiSong.getThoiQuen().getThoiQuenID()){
-                            thoiQuenLoiSongs.remove(thoiQuenLoiSong);
-                            thoiQuens.remove(thoiQuen);
+            if(CommonUtil.isNullOrEmpty(tieuSuLoiSongDTO.getThoiQuenLoiSongs())){
+                List<ThoiQuenLoiSong> thoiQuenLoiSongs = thoiQuenLoiSongRepo.findByLoiSongID(loiSongNguoiBenh.getLoiSongNguoiBenhID());
+                if(!CommonUtil.isNullOrEmpty(thoiQuenLoiSongs)){
+                    thoiQuenLoiSongRepo.deleteAll(thoiQuenLoiSongs);
+                }
+            } else {
+                List<ThoiQuen> thoiQuens = thoiQuenRepo.findThoiQuenByIds(tieuSuLoiSongDTO.getThoiQuenLoiSongs());
+                System.out.println(thoiQuens.size());
+                if (CommonUtil.isNullOrEmpty(thoiQuens) || thoiQuens.size() != tieuSuLoiSongDTO.getThoiQuenLoiSongs().size()) {
+                    log.warn("Invalid thoiQuen options");
+                    return ResponseEntity.badRequest().body("Invalid thoiQuen options");
+                }
+                if (!CommonUtil.isNullOrEmpty(tieuSuLoiSongDTO.getMoiTruongID())) {
+                    moiTruong = moiTruongRepo.findByMoiTruongID(tieuSuLoiSongDTO.getMoiTruongID());
+                }
+                if (!CommonUtil.isNullOrEmpty(tieuSuLoiSongDTO.getThoiQuenLoiSongs()) && !CommonUtil.isNullOrEmpty(thoiQuens)) {
+                    System.out.println("loiSongNguoiBenhID "+loiSongNguoiBenh.getLoiSongNguoiBenhID());
+                    List<ThoiQuenLoiSong> thoiQuenLoiSongs = thoiQuenLoiSongRepo.findByLoiSongNguoiBenhID(loiSongNguoiBenh.getLoiSongNguoiBenhID());
+                    if(!CommonUtil.isNullOrEmpty(thoiQuenLoiSongs)) {
+                        for (ThoiQuenLoiSong thoiQuenLoiSong : thoiQuenLoiSongs) {
+                            for (ThoiQuen thoiQuen : thoiQuens) {
+                                if (thoiQuen.getThoiQuenID() == thoiQuenLoiSong.getThoiQuen().getThoiQuenID()) {
+                                    thoiQuenLoiSongs.remove(thoiQuenLoiSong);
+                                    thoiQuens.remove(thoiQuen);
+                                }
+                            }
                         }
+                        List<ThoiQuenLoiSong> thoiQuenLoiSongsAddList = thoiQuens.stream().map(e -> new ThoiQuenLoiSong(UUID.randomUUID().toString(), e, loiSongNguoiBenh)).toList();
+                        if (!thoiQuenLoiSongs.isEmpty())
+                            thoiQuenLoiSongRepo.deleteAll(thoiQuenLoiSongs);
+                        if (!thoiQuenLoiSongsAddList.isEmpty())
+                            thoiQuenLoiSongRepo.saveAll(thoiQuenLoiSongsAddList);
                     }
                 }
-                List<ThoiQuenLoiSong> thoiQuenLoiSongsAddList = thoiQuens.stream().map(e -> new ThoiQuenLoiSong(UUID.randomUUID().toString(),e,loiSongNguoiBenh)).toList();
-                if (!thoiQuenLoiSongs.isEmpty())
-                    thoiQuenLoiSongRepo.deleteAll(thoiQuenLoiSongs);
-                if (!thoiQuenLoiSongsAddList.isEmpty())
-                    thoiQuenLoiSongRepo.saveAll(thoiQuenLoiSongsAddList);
             }
         } catch (Exception e) {
             log.error("Exception", e);
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Internal error appear"));
         }
+        System.out.println(tieuSuLoiSongDTO.getGhiChu());
         loiSongNguoiBenh.setGhiChu(tieuSuLoiSongDTO.getGhiChu());
         loiSongNguoiBenh.setMoiTruong(moiTruong);
         try {

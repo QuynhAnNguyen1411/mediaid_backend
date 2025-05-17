@@ -2,6 +2,7 @@ package com.mediaid.mediaid.service.implement;
 
 import com.mediaid.mediaid.DTO.lichSuKham.*;
 import com.mediaid.mediaid.model.LichSuKham;
+import com.mediaid.mediaid.repository.AccountRepo;
 import com.mediaid.mediaid.repository.LichSuKhamChiTietRepo;
 import com.mediaid.mediaid.repository.LichSuKhamRepo;
 import com.mediaid.mediaid.repository.LichSuSuDungThuocRepo;
@@ -22,6 +23,8 @@ public class LichSuKhamServiceImpl implements LichSuKhamService {
     LichSuKhamChiTietRepo lichSuKhamChiTietRepo;
     @Autowired
     LichSuSuDungThuocRepo lichSuSuDungThuocRepo;
+    @Autowired
+    AccountRepo accountRepo;
 
     @Override
     public ResponseEntity<?> layDanhSachLichSuKham(String soKhamID) {
@@ -58,6 +61,8 @@ public class LichSuKhamServiceImpl implements LichSuKhamService {
             lichSuKhamDTO.setCoSo(lichSuKham.getCoSoBenhVien().getTen());
             lichSuKhamDTO.setKet_luan(lichSuKham.getKetLuan());
             lichSuKhamDTO.setTrang_thai(lichSuKham.getTrangThaiKham().getTrangThai());
+            lichSuKhamDTO.setGia(lichSuKham.getTongThu());
+            lichSuKhamDTO.setTenBacSi(lichSuKham.getBacSi().getTaiKhoan().getTen());
 
             return ResponseEntity.ok().body(lichSuKhamDTO);
         }catch (Exception e){

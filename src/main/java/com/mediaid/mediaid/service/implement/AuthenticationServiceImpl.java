@@ -142,8 +142,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             if(!CommonUtil.isNullOrEmpty(taiKhoan)){
                 String token = JwtHandler.generateJWT(taiKhoan.getAccountID());
                 HashMap<String, String> response = CommonUtil.returnMessage("token", token);
+                System.out.println(taiKhoan.getAccountID());
                 response.put("accountID", taiKhoan.getAccountID());
-                response.put("soKhamID", taiKhoan.getSoKham().getSoKhamID());
+                if(taiKhoan.getRole().getRoleId()==1){
+                    response.put("soKhamID", taiKhoan.getSoKham().getSoKhamID());
+                }
                 log.info("Login successfully");
                 return ResponseEntity.ok().body(response);
             }

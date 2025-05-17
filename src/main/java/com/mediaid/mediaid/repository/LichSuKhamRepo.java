@@ -17,8 +17,8 @@ public interface LichSuKhamRepo extends JpaRepository<LichSuKham, String> {
             "inner join a.soKham b " +
             "inner join a.trangThaiKham c " +
             "inner join a.coSoBenhVien d " +
-            "inner join a.bacSi e " +
-            "inner join e.taiKhoan f " +
+            "left join a.bacSi e " +
+            "left join e.taiKhoan f " +
             "where a.soKham.soKhamID = ?1 " +
             "order by a.ngayKham desc ")
     List<LichSuKhamDTO> findBySoKhamID(String soKhamID);

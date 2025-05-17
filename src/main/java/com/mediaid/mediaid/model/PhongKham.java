@@ -27,7 +27,7 @@ public class PhongKham {
         this.dichVuKham = dichVuKham;
     }
 
-    @OneToMany(mappedBy = "phongKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "phongKham", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<PhongKhamChiTiet> phongKhamChiTiets;
     @OneToMany(mappedBy = "phongKham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ChanDoanBangPhanVung> chanDoanBangPhanVungs;

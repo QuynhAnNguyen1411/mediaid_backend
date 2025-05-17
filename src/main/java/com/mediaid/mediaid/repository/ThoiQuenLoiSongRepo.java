@@ -14,4 +14,7 @@ public interface ThoiQuenLoiSongRepo extends JpaRepository<ThoiQuenLoiSong, Stri
     List<ThoiQuenLoiSong> findByLoiSongNguoiBenhID(String id);
     @Query(nativeQuery = true, value = "SELECT u.thoi_quenid FROM thoi_quen_loi_song u WHERE u.loi_song_nguoi_benhid= ?1 ")
     List<Integer> findIDByLoiSongNguoiBenhIds(String loi_song_nguoi_benhid);
+
+    @Query(nativeQuery = true, value="SELECT * FROM mediate_db.thoi_quen_loi_song a where a.loi_song_nguoi_benhid= ?1")
+    List<ThoiQuenLoiSong> findByLoiSongID(String loiSongID);
 }

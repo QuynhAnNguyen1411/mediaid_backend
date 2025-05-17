@@ -46,6 +46,7 @@ public class DataInitializer implements CommandLineRunner {
     private final NguoiGiamHoRepo nguoiGiamHoRepo;
     private final ChanDoanBangBoPhanRepo chanDoanBangBoPhanRepo;
     private final ChanDoanBangBoPhanVaTrieuChungRepo chanDoanBangBoPhanVaTrieuChungRepo;
+    private final LoiSongNguoiBenhRepo loiSongNguoiBenhRepo;
 
 
     public DataInitializer(DanTocRepo danTocRepository, GenderRepo genderRepo, RoleRepo roleRepo, LyDoPhauThuatRepo lyDoPhauThuatRepo,
@@ -58,7 +59,8 @@ public class DataInitializer implements CommandLineRunner {
                            BacSiRepo bacSiRepo, DecodeEncodeUtil decodeEncodeUtil, SoKhamRepo soKhamRepo, LichSuKhamRepo lichSuKhamRepo,
                            LichSuKhamChiTietRepo lichSuKhamChiTietRepo, PhongKhamChiTietRepo phongKhamChiTietRepo,
                            LichSuSuDungThuocRepo lichSuSuDungThuocRepo, NguoiGiamHoRepo nguoiGiamHoRepo,
-                           ChanDoanBangBoPhanRepo chanDoanBangBoPhanRepo, ChanDoanBangBoPhanVaTrieuChungRepo chanDoanBangBoPhanVaTrieuChungRepo) {
+                           ChanDoanBangBoPhanRepo chanDoanBangBoPhanRepo, ChanDoanBangBoPhanVaTrieuChungRepo chanDoanBangBoPhanVaTrieuChungRepo,
+                           LoiSongNguoiBenhRepo loiSongNguoiBenhRepo) {
         this.danTocRepository = danTocRepository;
         this.genderRepo = genderRepo;
         this.roleRepo = roleRepo;
@@ -90,6 +92,7 @@ public class DataInitializer implements CommandLineRunner {
         this.nguoiGiamHoRepo = nguoiGiamHoRepo;
         this.chanDoanBangBoPhanRepo = chanDoanBangBoPhanRepo;
         this.chanDoanBangBoPhanVaTrieuChungRepo = chanDoanBangBoPhanVaTrieuChungRepo;
+        this.loiSongNguoiBenhRepo = loiSongNguoiBenhRepo;
     }
 
     @Override
@@ -291,7 +294,7 @@ public class DataInitializer implements CommandLineRunner {
             dichVuKhamRepo.saveAll(dichVuKhams);
         }
         if(coSoBenhVienRepo.count() == 0 || phongKhamRepo.count() ==0){
-            CoSoBenhVien coSoBenhVien1 = new CoSoBenhVien(1, "Cơ sở K Tân Triều", "Tân Triều");
+            CoSoBenhVien coSoBenhVien1 = new CoSoBenhVien(1, "Cơ sở K Tân Triều", "30 Đ. Cầu Bươu, Tân Triều, Thanh Trì, Hà Nội");
             DichVuKham dichVuKham = dichVuKhamRepo.findById(14).get();
             coSoBenhVien1 = coSoBenhVienRepo.save(coSoBenhVien1);
             List<PhongKham> phongKhams = List.of(
@@ -344,6 +347,8 @@ public class DataInitializer implements CommandLineRunner {
                     new PhongKhamChiTiet("pkct9","1_pk5_ct01",70,true, phongKhams.get(4), coSoBenhVien1)
             );
             phongKhams.get(4).setPhongKhamChiTiets(phongKhamChiTietsPk5);
+            phongKhamChiTietsAddALl.addAll(phongKhamChiTietsPk5);
+
             List<PhongKhamChiTiet> phongKhamChiTietsPk6 = List.of(
                     new PhongKhamChiTiet("pkct10","1_pk6_ct01",70,true, phongKhams.get(5), coSoBenhVien1)
             );
@@ -404,9 +409,114 @@ public class DataInitializer implements CommandLineRunner {
             phongKhamChiTietsAddALl.addAll(phongKhamChiTietsPk14);
 
             coSoBenhVien1.setPhongKhamChiTiets(phongKhamChiTietsAddALl);
-            phongKhamRepo.saveAll(phongKhams);
+            phongKhams = phongKhamRepo.saveAll(phongKhams);
             coSoBenhVienRepo.save(coSoBenhVien1);
             log.info("Insert default coSoBenhViens data into the database.");
+
+
+            CoSoBenhVien coSoBenhVien2 = new CoSoBenhVien(2, "Cơ sở K Quán Sứ", "Số 43 Quán Sứ, Hoàn Kiếm, Hà Nội");
+            coSoBenhVien2 = coSoBenhVienRepo.save(coSoBenhVien2);
+            List<PhongKhamChiTiet> phongKhamChiTietsPk15 = List.of(
+                    new PhongKhamChiTiet("pkct24","2_pk1_ct01",70,true, phongKhams.get(0), coSoBenhVien2),
+                    new PhongKhamChiTiet("pkct25","2_pk1_ct02",70,true, phongKhams.get(0), coSoBenhVien2)
+            );
+            phongKhams.get(0).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk15);
+            List<PhongKhamChiTiet> phongKhamChiTietsAddALl1 = new ArrayList<>(phongKhamChiTietsPk15);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk16 = List.of(
+                    new PhongKhamChiTiet("pkct26","2_pk2_ct01",70,true, phongKhams.get(1), coSoBenhVien2),
+                    new PhongKhamChiTiet("pkct27","2_pk2_ct02",70,true, phongKhams.get(1), coSoBenhVien2)
+            );
+            phongKhams.get(1).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk16);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk16);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk17 = List.of(
+                    new PhongKhamChiTiet("pkct28","2_pk3_ct01",70,true, phongKhams.get(2), coSoBenhVien2),
+                    new PhongKhamChiTiet("pkct29","2_pk3_ct02",70,true, phongKhams.get(2), coSoBenhVien2)
+            );
+            phongKhams.get(2).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk17);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk17);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk18 = List.of(
+                    new PhongKhamChiTiet("pkct30","2_pk4_ct01",70,true, phongKhams.get(3), coSoBenhVien2),
+                    new PhongKhamChiTiet("pkct31","2_pk4_ct02",70,true, phongKhams.get(3), coSoBenhVien2)
+            );
+            phongKhams.get(3).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk18);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk18);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk19 = List.of(
+                    new PhongKhamChiTiet("pkct32","2_pk5_ct01",70,true, phongKhams.get(4), coSoBenhVien2)
+            );
+            phongKhams.get(4).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk19);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk19);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk20 = List.of(
+                    new PhongKhamChiTiet("pkct33","2_pk6_ct01",70,true, phongKhams.get(5), coSoBenhVien2)
+            );
+            phongKhams.get(5).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk20);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk20);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk21 = List.of(
+                    new PhongKhamChiTiet("pkct34","2_pk7_ct01",70,true, phongKhams.get(6),coSoBenhVien2)
+            );
+            phongKhams.get(6).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk21);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk21);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk22 = List.of(
+                    new PhongKhamChiTiet("pkct35","2_pk8_ct01",70,true, phongKhams.get(7),coSoBenhVien2)
+            );
+            phongKhams.get(7).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk22);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk22);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk23 = List.of(
+                    new PhongKhamChiTiet("pkct36","2_pk9_ct01",70,true, phongKhams.get(8),coSoBenhVien2)
+            );
+            phongKhams.get(8).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk23);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk23);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk24 = List.of(
+                    new PhongKhamChiTiet("pkct37","2_pk10_ct01",70,true, phongKhams.get(9),coSoBenhVien2)
+            );
+            phongKhams.get(9).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk24);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk24);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk25 = List.of(
+                    new PhongKhamChiTiet("pkct38","2_pk11_ct01",70,true, phongKhams.get(10),coSoBenhVien2),
+                    new PhongKhamChiTiet("pkct39","2_pk11_ct02",70,true, phongKhams.get(10),coSoBenhVien2)
+            );
+            phongKhams.get(10).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk25);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk25);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk26 = List.of(
+                    new PhongKhamChiTiet("pkct40","2_pk12_ct01",70,true, phongKhams.get(11),coSoBenhVien2),
+                    new PhongKhamChiTiet("pkct41","2_pk12_ct02",70,true, phongKhams.get(11),coSoBenhVien2),
+                    new PhongKhamChiTiet("pkct42","2_pk12_ct03",70,true, phongKhams.get(11),coSoBenhVien2)
+            );
+            phongKhams.get(11).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk26);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk26);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk27 = List.of(
+                    new PhongKhamChiTiet("pkct43","2_pk13_ct01",70,true, phongKhams.get(12),coSoBenhVien2),
+                    new PhongKhamChiTiet("pkct44","2_pk13_ct02",70,true, phongKhams.get(12),coSoBenhVien2)
+            );
+            phongKhams.get(12).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk27);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk27);
+
+            List<PhongKhamChiTiet> phongKhamChiTietsPk28 = List.of(
+                    new PhongKhamChiTiet("pkct45","2_pk14_ct01",70,true, phongKhams.get(13),coSoBenhVien2),
+                    new PhongKhamChiTiet("pkct46","2_pk14_ct02",70,true, phongKhams.get(13),coSoBenhVien2)
+            );
+            phongKhams.get(13).getPhongKhamChiTiets().addAll(phongKhamChiTietsPk28);
+            phongKhamChiTietsAddALl1.addAll(phongKhamChiTietsPk28);
+
+            phongKhamChiTietsAddALl1 = phongKhamChiTietRepo.saveAll(phongKhamChiTietsAddALl1);
+
+            coSoBenhVien2.setPhongKhamChiTiets(phongKhamChiTietsAddALl1);
+            phongKhamRepo.saveAll(phongKhams);
+            coSoBenhVienRepo.save(coSoBenhVien2);
+            log.info("Insert default coSoBenhViens data into the database.");
+
+
         }
         if (phanVungCoTheRepo.count() == 0){
             List<PhanVungCoThe> phanVungCoThes = List.of(
@@ -855,6 +965,15 @@ public class DataInitializer implements CommandLineRunner {
             soKham.setTaiKhoan(taiKhoan);
             soKham.setBhyt("012345678910");
             soKham = soKhamRepo.save(soKham);
+
+            LoiSongNguoiBenh loiSongNguoiBenh = new LoiSongNguoiBenh();
+            loiSongNguoiBenh.setLoiSongNguoiBenhID(UUID.randomUUID().toString());
+            loiSongNguoiBenh.setSoKham(soKham);
+            try {
+                loiSongNguoiBenhRepo.save(loiSongNguoiBenh);
+            }catch (Exception e){
+                log.error("Get data from database fail");
+            }
 
             NguoiGiamHo nguoiGiamHo = new NguoiGiamHo();
             nguoiGiamHo.setGiamHoID(UUID.randomUUID().toString());

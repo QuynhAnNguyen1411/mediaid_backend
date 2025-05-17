@@ -21,8 +21,10 @@ public class LichSuKhamDTO {
     private String tenBacSi;
     private List<LichSuKhamChiTietDTO> lichSuKhamChiTietDTOS;
     private List<LichSuSuDungThuocDTO> lichSuSuDungThuocDTOList;
+    private Double gia;
 
-    public LichSuKhamDTO(String lich_su_khamid, String ket_luan, String trang_thai, LocalDateTime ngay_kham, String coSo, String tenBacSi) {
+    public LichSuKhamDTO(String lich_su_khamid, String ket_luan, String trang_thai, LocalDateTime ngay_kham,
+                         String coSo, String tenBacSi) {
         this.lich_su_khamid = lich_su_khamid;
         this.ket_luan = ket_luan;
         this.trang_thai = trang_thai;

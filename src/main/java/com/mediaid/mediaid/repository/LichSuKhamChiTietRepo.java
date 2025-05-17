@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface LichSuKhamChiTietRepo extends JpaRepository<LichSuKhamChiTiet, String> {
     @Query("SELECT new com.mediaid.mediaid.DTO.lichSuKham.LichSuKhamChiTietDTO(" +
-            "a.lichSuKhamChiTietID, f.loaiDichVu, d.tenLoai, a.ngayKham, b.maPhongKham, a.ghiChu, e.ten) " +
+            "a.lichSuKhamChiTietID, f.loaiDichVu, c.phongKham, a.ngayKham, b.maPhongKham, a.ghiChu, e.ten, a.gia, a.soKhamThuTu) " +
             "FROM LichSuKhamChiTiet a " +
             "inner join a.phongKhamChiTiet b " +
             "inner join b.phongKham c " +
@@ -25,7 +25,7 @@ public interface LichSuKhamChiTietRepo extends JpaRepository<LichSuKhamChiTiet, 
     List<LichSuKhamChiTietDTO> findByLichSuKhamID(String lichSuKhamID);
 
     @Query("SELECT new com.mediaid.mediaid.DTO.lichSuKham.LichSuKhamChiTietDTO(" +
-            "a.lichSuKhamChiTietID, f.loaiDichVu, d.tenLoai, a.ngayKham, b.maPhongKham, a.ghiChu, e.ten, a.anhKetQua, a.gia) " +
+            "a.lichSuKhamChiTietID, f.loaiDichVu, c.phongKham, a.ngayKham, b.maPhongKham, a.ghiChu, e.ten, a.anhKetQua, a.gia, a.soKhamThuTu) " +
             "from LichSuKhamChiTiet a " +
             "inner join a.phongKhamChiTiet b " +
             "inner join b.phongKham c " +

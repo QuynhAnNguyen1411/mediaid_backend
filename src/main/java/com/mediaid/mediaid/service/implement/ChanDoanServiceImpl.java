@@ -43,6 +43,8 @@ public class ChanDoanServiceImpl implements ChanDoanService {
     LichSuKhamRepo lichSuKhamRepo;
     @Autowired
     LichSuKhamChiTietRepo lichSuKhamChiTietRepo;
+    @Autowired
+    BacSiRepo bacSiRepo;
 
     @Override
     public ResponseEntity<?> layDanhSachBoPhanVaTrieuChung(String accountID) {
@@ -92,13 +94,17 @@ public class ChanDoanServiceImpl implements ChanDoanService {
     @Transactional
     public ResponseEntity<?> chanDoan(ChanDoanDTO chanDoanDTO) {
         TaiKhoan taiKhoan = accountRepo.findByAccountID(chanDoanDTO.getAccountID());
+        log.info(chanDoanDTO.getAccountID());
         if(taiKhoan == null){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid accountID"));
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "AccountID không hợp lệ"));
         }
         if(lichSuKhamChiTietRepo.checkNumberOfLichSuKhamDangChoOnCurrentDay(taiKhoan.getSoKham().getSoKhamID(), LocalDate.now(), 1)>=2){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "You already have 2 on progress schedules today"));
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Bạn đã có 2 lịch đang khám trong ngày hôm nay, hãy hủy 1 trong các lịch khám để đặt lịch khám mới"));
         }
         List<PhongKhamChiTiet> phongKhamChiTiets = new ArrayList<>();
+        log.info("phanVungID: "+chanDoanDTO.getPhanVungID());
+        log.info("boPhanID: "+chanDoanDTO.getBoPhanID());
+        log.info("trieuChungID: "+(chanDoanDTO.getTrieuChungID()!=null ? chanDoanDTO.getTrieuChungID().size() : null));
         if(!CommonUtil.isNullOrEmpty(chanDoanDTO.getPhanVungID())){
             phongKhamChiTiets = phongKhamChiTietRepo.findbyPhanVungID(chanDoanDTO.getPhanVungID(), chanDoanDTO.getCoSoID());
         } else if(!CommonUtil.isNullOrEmpty(chanDoanDTO.getBoPhanID()) && CommonUtil.isNullOrEmpty(chanDoanDTO.getTrieuChungID())){
@@ -138,10 +144,10 @@ public class ChanDoanServiceImpl implements ChanDoanService {
                 phongKhamChiTiets.addAll(phongKhamChiTietListChanDoan);
             }
         } else {
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid chanDoan combo input"));
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Combo chẩn đoán để chọn phòng không hợp lệ"));
         }
         if(CommonUtil.isNullOrEmpty(phongKhamChiTiets)){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "0 phong kham found match the combo input"));
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Không có phòng khám nào hợp lệ với lựa chọn của bạn"));
         }
         int smallestNumber=0;
         PhongKhamChiTiet available = null;
@@ -166,11 +172,11 @@ public class ChanDoanServiceImpl implements ChanDoanService {
             }
         }
         if(available == null){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "No phong kham available for now"));
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Hiện tại không có phòng khám nào còn slot"));
         }
 
         if(!CommonUtil.isNullOrEmpty(lichSuKhamChiTietRepo.checkIfUserHaveNumberAtThisRoom(taiKhoan.getSoKham().getSoKhamID(), available.getPhongKham().getPhongKhamID(), LocalDate.now()))){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "You already have number at this room"));
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Bạn đã có số trong phòng khám này"));
         }
 
         SoKhamTheoPhong soKhamTheoPhong = new SoKhamTheoPhong(UUID.randomUUID().toString(),smallestNumber+1, LocalDate.now(),"Chua Kham", available);
@@ -178,11 +184,11 @@ public class ChanDoanServiceImpl implements ChanDoanService {
 
         Optional<CoSoBenhVien> coSoBenhVien = coSoBenhVienRepo.findById(chanDoanDTO.getCoSoID());
         if(coSoBenhVien.isEmpty()){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Invalid coSoID"));
+            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "CosoID không hợp lệ"));
         }
         Optional<TrangThaiKham> trangThaiKham = trangThaiKhamSoBoRepo.findById(1);
         if(trangThaiKham.isEmpty()){
-            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "TrangThaiKham not found"));
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Không tìm thấy TrangThaiKham"));
         }
 
         LichSuKham lichSuKham = new LichSuKham();
@@ -191,11 +197,12 @@ public class ChanDoanServiceImpl implements ChanDoanService {
         lichSuKham.setNgayKham(LocalDateTime.now());
         lichSuKham.setCoSoBenhVien(coSoBenhVien.get());
         lichSuKham.setTrangThaiKham(trangThaiKham.get());
+        lichSuKham.setBacSi(bacSiRepo.findAll().get(0));
         try{
             lichSuKham = lichSuKhamRepo.save(lichSuKham);
         }catch (Exception e){
             log.error("Exception", e);
-            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Save lichSuKham fail"));
+            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Lưu lichSuKham thất bại"));
         }
 
         DichVuKham dichVuKhamTestData = available.getPhongKham().getDichVuKham();
@@ -209,13 +216,14 @@ public class ChanDoanServiceImpl implements ChanDoanService {
         lichSuKhamChiTiet.setLichSuKhamChiTietID(UUID.randomUUID().toString());
         lichSuKhamChiTietRepo.save(lichSuKhamChiTiet);
         try{
-            lichSuKhamChiTietRepo.save(lichSuKhamChiTiet);
+            lichSuKhamChiTiet = lichSuKhamChiTietRepo.save(lichSuKhamChiTiet);
             lichSuKham.setTongThu(lichSuKhamChiTiet.getGia());
             lichSuKhamRepo.save(lichSuKham);
+            log.info("Ket qua xep so: "+lichSuKhamChiTiet.getLichSuKhamChiTietID());
+            return ResponseEntity.ok(CommonUtil.returnMessage("lichSuKhamID", lichSuKham.getLichSuKhamID()));
         }catch (Exception e){
             log.error("Exception", e);
             return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Save lichSuKham fail"));
         }
-        return ResponseEntity.ok(CommonUtil.returnMessage("message", "Add new soKham successfully"));
     }
 }
