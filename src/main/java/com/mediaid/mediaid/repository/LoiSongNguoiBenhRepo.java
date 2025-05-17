@@ -11,7 +11,9 @@ import org.springframework.stereotype.Repository;
 public interface LoiSongNguoiBenhRepo extends JpaRepository<LoiSongNguoiBenh, String> {
     @Query("SELECT new com.mediaid.mediaid.DTO.form.formTieuSuYTe.TieuSuLoiSongDTO(" +
             "a.loiSongNguoiBenhID, c.accountID, b.soKhamID, d.moiTruongID, a.ghiChu) " +
-            "FROM LoiSongNguoiBenh a inner join a.soKham b inner join b.taiKhoan c inner join a.moiTruong d " +
+            "FROM LoiSongNguoiBenh a inner join a.soKham b " +
+            "inner join b.taiKhoan c " +
+            "left join a.moiTruong d " +
             "where c.accountID = ?1")
     TieuSuLoiSongDTO findDTOByAccountID(String id);
 

@@ -357,6 +357,10 @@ public class SoKhamServiceImpl implements SoKhamService {
                             thoiQuenLoiSongRepo.deleteAll(thoiQuenLoiSongs);
                         if (!thoiQuenLoiSongsAddList.isEmpty())
                             thoiQuenLoiSongRepo.saveAll(thoiQuenLoiSongsAddList);
+                    } else {
+                        List<ThoiQuenLoiSong> thoiQuenLoiSongsAddList = thoiQuens.stream().map(e -> new ThoiQuenLoiSong(UUID.randomUUID().toString(), e, loiSongNguoiBenh)).toList();
+                        if (!thoiQuenLoiSongsAddList.isEmpty())
+                            thoiQuenLoiSongRepo.saveAll(thoiQuenLoiSongsAddList);
                     }
                 }
             }
@@ -527,6 +531,7 @@ public class SoKhamServiceImpl implements SoKhamService {
         }
         try {
             TieuSuLoiSongDTO tieuSuLoiSongDTO=loiSongNguoiBenhRepo.findDTOByAccountID(accountID);
+            System.out.println(accountID);
             if (CommonUtil.isNullOrEmpty(tieuSuLoiSongDTO)){
                 log.warn("TieuSuLoiSong not exit in db");
                 return ResponseEntity.internalServerError().body("TieuSuLoiSong not exit in db");
