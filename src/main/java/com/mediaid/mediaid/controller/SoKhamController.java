@@ -1,6 +1,7 @@
 package com.mediaid.mediaid.controller;
 
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.*;
+import com.mediaid.mediaid.DTO.staticData.GetMappingData.SoKhamDTO;
 import com.mediaid.mediaid.service.abstracts.SoKhamService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,10 @@ public class SoKhamController {
     @PostMapping("/capNhatTieuSuThuoc")
     public ResponseEntity<?> capNhatTieuSuThuoc(@RequestBody @Valid TieuSuThuocDTO tieuSuThuocDTO, BindingResult bindingResult) {
         return soKhamService.capNhatTieuSuThuoc(tieuSuThuocDTO, bindingResult);
+    }
+    @PostMapping("/capNhatThongTinCaNhan")
+    public ResponseEntity<?> capNhatThongTinCaNhan(@RequestBody @Valid SoKhamDTO soKhamDTO, BindingResult bindingResult) {
+        return soKhamService.capNhatThongTinSoKham(soKhamDTO, bindingResult);
     }
     @GetMapping("/layThongTinSoKham")
     public ResponseEntity<?> layThongTinSoKham(@RequestParam String accountID) {

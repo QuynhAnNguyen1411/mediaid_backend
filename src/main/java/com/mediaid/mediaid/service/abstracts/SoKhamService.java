@@ -1,6 +1,7 @@
 package com.mediaid.mediaid.service.abstracts;
 
 import com.mediaid.mediaid.DTO.form.formTieuSuYTe.*;
+import com.mediaid.mediaid.DTO.staticData.GetMappingData.SoKhamDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
@@ -14,6 +15,7 @@ public interface SoKhamService {
 
 
     ResponseEntity<?> getSoKham(String accountID);
+    ResponseEntity<?> capNhatThongTinSoKham(SoKhamDTO soKhamDTO, BindingResult bindingResult);
     ResponseEntity<?> getDanhSachTieuSuTheoLoai(String accountID, String type);
     ResponseEntity<?> deleteTieuSuTheoLoai(String tieuSuID, String type);
     ResponseEntity<?> getTieuSuLoiSong(String accountID);
