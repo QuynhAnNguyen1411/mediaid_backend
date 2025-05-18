@@ -1,9 +1,6 @@
 package com.mediaid.mediaid.service.implement;
 
-import com.mediaid.mediaid.DTO.chanDoan.ChanDoanDTO;
-import com.mediaid.mediaid.DTO.chanDoan.DanhSachBoPhan;
-import com.mediaid.mediaid.DTO.chanDoan.DanhSachBoPhanVaTrieuChung;
-import com.mediaid.mediaid.DTO.chanDoan.DanhSachTrieuChung;
+import com.mediaid.mediaid.DTO.chanDoan.*;
 import com.mediaid.mediaid.model.*;
 import com.mediaid.mediaid.repository.*;
 import com.mediaid.mediaid.service.abstracts.ChanDoanService;
@@ -93,15 +90,24 @@ public class ChanDoanServiceImpl implements ChanDoanService {
     @Override
     @Transactional
     public ResponseEntity<?> chanDoan(ChanDoanDTO chanDoanDTO) {
+        KetQuaChanDoanDTO ketQuaChanDoanDTO = new KetQuaChanDoanDTO("", "");
         TaiKhoan taiKhoan = accountRepo.findByAccountID(chanDoanDTO.getAccountID());
         log.info(chanDoanDTO.getAccountID());
         if(taiKhoan == null){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "AccountID không hợp lệ"));
+            ketQuaChanDoanDTO.setMessage("AccountID không hợp lệ");
+            return ResponseEntity.badRequest().body(ketQuaChanDoanDTO);
         }
         if(lichSuKhamChiTietRepo.checkNumberOfLichSuKhamDangChoOnCurrentDay(taiKhoan.getSoKham().getSoKhamID(), LocalDate.now(), 1)>=2){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Bạn đã có 2 lịch đang khám trong ngày hôm nay, hãy hủy 1 trong các lịch khám để đặt lịch khám mới"));
+            ketQuaChanDoanDTO.setMessage("Bạn đã có 2 lịch đang khám trong ngày hôm nay, hãy hủy 1 trong các lịch khám để đặt lịch khám mới");
+            return ResponseEntity.badRequest().body(ketQuaChanDoanDTO);
+        }
+        Optional<CoSoBenhVien> coSoBenhVien = coSoBenhVienRepo.findById(chanDoanDTO.getCoSoID());
+        if(coSoBenhVien.isEmpty()){
+            ketQuaChanDoanDTO.setMessage("Xin hãy chọn cơ sở khám bệnh trước khi lấy lịch khám");
+            return ResponseEntity.badRequest().body(ketQuaChanDoanDTO);
         }
         List<PhongKhamChiTiet> phongKhamChiTiets = new ArrayList<>();
+        log.info("cosobenhVien: "+chanDoanDTO.getCoSoID());
         log.info("phanVungID: "+chanDoanDTO.getPhanVungID());
         log.info("boPhanID: "+chanDoanDTO.getBoPhanID());
         log.info("trieuChungID: "+(chanDoanDTO.getTrieuChungID()!=null ? chanDoanDTO.getTrieuChungID().size() : null));
@@ -144,10 +150,12 @@ public class ChanDoanServiceImpl implements ChanDoanService {
                 phongKhamChiTiets.addAll(phongKhamChiTietListChanDoan);
             }
         } else {
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Combo chẩn đoán để chọn phòng không hợp lệ"));
+            ketQuaChanDoanDTO.setMessage("Combo chẩn đoán để chọn phòng không hợp lệ");
+            return ResponseEntity.badRequest().body(ketQuaChanDoanDTO);
         }
         if(CommonUtil.isNullOrEmpty(phongKhamChiTiets)){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Không có phòng khám nào hợp lệ với lựa chọn của bạn"));
+            ketQuaChanDoanDTO.setMessage("Không có phòng khám nào hợp lệ với lựa chọn của bạn");
+            return ResponseEntity.badRequest().body(ketQuaChanDoanDTO);
         }
         int smallestNumber=0;
         PhongKhamChiTiet available = null;
@@ -172,23 +180,22 @@ public class ChanDoanServiceImpl implements ChanDoanService {
             }
         }
         if(available == null){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Hiện tại không có phòng khám nào còn slot"));
+            ketQuaChanDoanDTO.setMessage("Hiện tại không có phòng khám nào còn slot");
+            return ResponseEntity.badRequest().body(ketQuaChanDoanDTO);
         }
 
         if(!CommonUtil.isNullOrEmpty(lichSuKhamChiTietRepo.checkIfUserHaveNumberAtThisRoom(taiKhoan.getSoKham().getSoKhamID(), available.getPhongKham().getPhongKhamID(), LocalDate.now()))){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "Bạn đã có số trong phòng khám này"));
+            ketQuaChanDoanDTO.setMessage("Bạn đã có số trong phòng khám này");
+            return ResponseEntity.badRequest().body(ketQuaChanDoanDTO);
         }
 
         SoKhamTheoPhong soKhamTheoPhong = new SoKhamTheoPhong(UUID.randomUUID().toString(),smallestNumber+1, LocalDate.now(),"Chua Kham", available);
         soKhamTheoPhongRepo.save(soKhamTheoPhong);
 
-        Optional<CoSoBenhVien> coSoBenhVien = coSoBenhVienRepo.findById(chanDoanDTO.getCoSoID());
-        if(coSoBenhVien.isEmpty()){
-            return ResponseEntity.badRequest().body(CommonUtil.returnMessage("message", "CosoID không hợp lệ"));
-        }
         Optional<TrangThaiKham> trangThaiKham = trangThaiKhamSoBoRepo.findById(1);
         if(trangThaiKham.isEmpty()){
-            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Không tìm thấy TrangThaiKham"));
+            ketQuaChanDoanDTO.setMessage("Không tìm thấy TrangThaiKham");
+            return ResponseEntity.badRequest().body(ketQuaChanDoanDTO);
         }
 
         LichSuKham lichSuKham = new LichSuKham();
@@ -202,7 +209,8 @@ public class ChanDoanServiceImpl implements ChanDoanService {
             lichSuKham = lichSuKhamRepo.save(lichSuKham);
         }catch (Exception e){
             log.error("Exception", e);
-            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Lưu lichSuKham thất bại"));
+            ketQuaChanDoanDTO.setMessage("Lưu lichSuKham thất bại");
+            return ResponseEntity.badRequest().body(ketQuaChanDoanDTO);
         }
 
         DichVuKham dichVuKhamTestData = available.getPhongKham().getDichVuKham();
@@ -220,10 +228,12 @@ public class ChanDoanServiceImpl implements ChanDoanService {
             lichSuKham.setTongThu(lichSuKhamChiTiet.getGia());
             lichSuKhamRepo.save(lichSuKham);
             log.info("Ket qua xep so: "+lichSuKhamChiTiet.getLichSuKhamChiTietID());
-            return ResponseEntity.ok(CommonUtil.returnMessage("lichSuKhamID", lichSuKham.getLichSuKhamID()));
+            ketQuaChanDoanDTO.setLichSuKhamID(lichSuKham.getLichSuKhamID());
+            return ResponseEntity.badRequest().body(ketQuaChanDoanDTO);
         }catch (Exception e){
             log.error("Exception", e);
-            return ResponseEntity.internalServerError().body(CommonUtil.returnMessage("message", "Save lichSuKham fail"));
+            ketQuaChanDoanDTO.setMessage("Lưu lichSuKham thất bại");
+            return ResponseEntity.badRequest().body(ketQuaChanDoanDTO);
         }
     }
 }
